@@ -1,1 +1,15 @@
 help
+exe gcc
+exe output
+clear
+ls
+help
+exe make
+exit
+exit
+exit
+exe dir
+clear
+exit
+exit
+clear

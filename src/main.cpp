@@ -15,8 +15,8 @@
 
 /* INCLUDES */
 
-#include "core/core.cpp"
-#include "interface/gui.cpp"
+#include "core/shell.hpp"
+// #include "interface/gui.cpp"
 
 #ifndef std_def
 	#include <iostream>
@@ -30,7 +30,6 @@
 /* INSTANCES */
 
 // Main
-SnabbGET sget;
 // Graphics
 // GUI gui;
 
@@ -40,13 +39,14 @@ std::string input_user;
 
 int main()
 {
+	SnabbGET sget;
 	std::cout << sget.init();
 	while (true)
 	{
 		getline(std::cin, input_user);
 		std::cout << sget.read_input(input_user);
-		if (input_user == "exit")
-			exit(EXIT_SUCCESS);
+
+		if (input_user == "exit") exit(EXIT_SUCCESS);
 		else std::cout << sget.new_line();
 	}
 }
