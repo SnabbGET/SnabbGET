@@ -49,4 +49,5 @@ int main()
 		if (input_user == "exit") exit(EXIT_SUCCESS);
 		else std::cout << sget.new_line();
 	}
+	return 0;
 }
