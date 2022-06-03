@@ -72,26 +72,10 @@ std::string SnabbGET::read_input(std::string input_user_t)
 	help - Show this message\n\
 	help <command> - Show help for <command>\n\
 	clear - Clear the screen\n\
-	exe <command> - Execute a command of your OS (e.g. gcc, npm, ls, dir...).\
-Use it the same way as start.\n";
-	
-	else if (input_user.substr(0, ((std::string)"help ").size()) == "help ")
-	{
-		if (input_user.substr(((std::string)"help ").size(), input_user.size()) == "exit")
-			return "exit - Exit the shell\n";
-		else if (input_user.substr(((std::string)"help ").size(), input_user.size()) == "help")
-			return "help - Show help message to have all commands\n";
-		else if (input_user.substr(((std::string)"help ").size(), input_user.size()) == "clear")
-			return "clear - Clear the screen (like 'cls' or 'clear')\n";
-		else if (input_user.substr(((std::string)"help ").size(), input_user.size()) == "exe")
-			return "exe <command> - Execute a command of your OS (e.g. gcc, npm, ls, dir...).\
-If you don't find your command on help menu, type 'exe <your command in bash or batch>'\
-For example: 'exe dir -R / | less' on bash\n";
-		else
-			return "Unknown command.\n";
-	}
-
-	else if (input_user == "clear")
+	exe <command> - Execute a command of your OS (eg. gcc, npm, ls, dir...). Use it the same way as start.\n\
+	\n\
+	You don't find the parameters of a commmand? Write '<your command> -?'\n";
+	else if (input_user == "clear" || input_user == "cls")
 		return "\033[2J\033[H";
 	// Input start with "exe "?
 	else if (input_user.substr(0, ((std::string)"exe ").size()) == "exe ")
@@ -100,7 +84,8 @@ For example: 'exe dir -R / | less' on bash\n";
 		return "\n\033[92mCommand executed!\033[0m\n";
 	}
 	else if (input_user == "exe") return "You must specify a command to execute!\n";
-	else if (input_user == "") return "\n";
+	else if (input_user == "") return new_line();
+	else if (input_user.find("-?") != std::string::npos) return help_params(input_user.substr(0, input_user.find("-?")));
 	else return "Unknown command. Type 'help' for help.\n";
 };
 
