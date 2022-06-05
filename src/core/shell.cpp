@@ -54,12 +54,41 @@ std::string SnabbGET::read_input(std::string input_user_t)
 	input_user = input_user_t;
 
 	historyFile.open("dist/.history.txt", std::ios_base::app);
+
+	// Check the file
 	if (!historyFile.is_open())
 	{
 		#ifdef DEBUG
 			std::cout << "Error opening history file!" << std::endl;
 		#endif
-		exit(EXIT_FAILURE);
+
+		// Try to create the file
+		historyFile.open("dist/.history.txt", std::ios_base::out);
+		if (!historyFile.is_open())
+		{
+			#ifdef DEBUG
+				std::cout << "Error creating history file!" << std::endl;
+			#endif
+
+			// Use system() and to create the file
+			system("mkdir dist");
+			system("echo \"\" > dist/.history.txt");
+
+			// Try to open the file again
+			historyFile.open("dist/.history.txt", std::ios_base::app);
+			if (!historyFile.is_open())
+			{
+				#ifdef DEBUG
+					std::cout << "Error opening history file!" << std::endl;
+				#endif
+				
+				exit(EXIT_FAILURE);
+			}
+
+		} else {
+			historyFile.close();
+			historyFile.open("dist/.history.txt", std::ios_base::app);
+		}
 	}
 	historyFile << input_user;
 	historyFile << "\n";
@@ -73,6 +102,7 @@ std::string SnabbGET::read_input(std::string input_user_t)
 	help <command> - Show help for <command>\n\
 	clear - Clear the screen\n\
 	exe <command> - Execute a command of your OS (eg. gcc, npm, ls, dir...). Use it the same way as start.\n\
+	doc - Open the website of the documentation\n\
 	\n\
 	You don't find the parameters of a commmand? Write '<your command> -?'\n";
 	else if (input_user == "clear" || input_user == "cls")
@@ -84,6 +114,15 @@ std::string SnabbGET::read_input(std::string input_user_t)
 		return "\n\033[92mCommand executed!\033[0m\n";
 	}
 	else if (input_user == "exe") return "You must specify a command to execute!\n";
+	else if (input_user == "help --web")
+	{
+		#ifdef _WIN32
+			system("start https://snabbget.github.io/");
+		#else
+			system("xdg-open https://snabbget.github.io/");
+		#endif
+		return "\n\033[92mDocumentation opened!\033[0m\n";
+	}
 	else if (input_user == "") return new_line();
 	else if (input_user.find("-?") != std::string::npos) return help_params(input_user.substr(0, input_user.find("-?")));
 	else return "Unknown command. Type 'help' for help.\n";
@@ -101,6 +140,9 @@ std::string SnabbGET::new_line()
 	msg += this->computerName;
 	msg += "\033[39m:\033[96m";
 	msg += this->currentDir;
+	#ifdef DEBUG
+		msg += "\033[93m [DEBUG]";
+	#endif
 	msg += "\033[95m |>\033[0m ";
 
 	return msg;

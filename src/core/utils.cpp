@@ -43,7 +43,7 @@ std::string help_params(std::string cmd)
 Description: \n\
 \033[32mPrint documentation in the terminal.\033[0m\n\
 \n\
-		| --web => open documentation of commands in web browser\n";
+	| --web => open documentation of commands in web browser\n";
 	} else {
 		return "No documentation found for the command " + cmd + ".\n";
 	}

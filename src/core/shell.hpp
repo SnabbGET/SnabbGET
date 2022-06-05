@@ -7,6 +7,8 @@
 #include <fstream>
 #include <cstdlib>
 
+#include "utils.hpp"
+
 #define VERSION "0.0.0"
 
 // Class with the shell.
