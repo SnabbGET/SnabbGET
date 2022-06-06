@@ -100,9 +100,9 @@ std::string SnabbGET::read_input(std::string input_user_t)
 	exit - Exit the shell\n\
 	help - Show this message\n\
 	help <command> - Show help for <command>\n\
+	help --web - Show the web help\n\
 	clear - Clear the screen\n\
 	exe <command> - Execute a command of your OS (eg. gcc, npm, ls, dir...). Use it the same way as start.\n\
-	doc - Open the website of the documentation\n\
 	\n\
 	You don't find the parameters of a commmand? Write '<your command> -?'\n";
 	else if (input_user == "clear" || input_user == "cls")

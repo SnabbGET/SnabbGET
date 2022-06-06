@@ -37,6 +37,7 @@
 [^bin/]*.hex
 [^bin/]*.bin
 output
+gui
 
 # Debug files
 *.dSYM/
