@@ -7,14 +7,20 @@ Graphic and fast terminal in C/C++.
 To use the termial version:
 
 ```bash
-g++ -Wall src/main.cpp -o "output"
+g++ src/*.cpp src/core/*.cpp -o "output"
+# if it doesn't works, try:
+g++ -D FILEENUMERR src/main.cpp -o "output"
+
 ./output
 ```
 
 To debug use:
 
 ```bash
-g++ -Wall -D DEBUG -g3 src/main.cpp -o "output"
+g++ -Wall -D DEBUG -g3 src/*.cpp src/core/*.cpp -o "output"
+# if it doesn't works, try:
+g++ -Wall -D FILEENUMERR -D DEBUG -g3 src/main.cpp -o "output"
+
 gdb ./output
 ```
 

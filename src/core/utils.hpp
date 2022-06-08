@@ -6,5 +6,8 @@
 std::string getdate();
 std::string gettime();
 std::string help_params(std::string cmd);
+bool contain(std::string *lst, unsigned int lstLen, std::string tfind);
 
-#include "utils.cpp"
+#ifdef FILEENUMERR
+	#include "utils.cpp"
+#endif

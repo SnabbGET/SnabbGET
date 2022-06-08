@@ -38,13 +38,18 @@ std::string gettime()
 std::string help_params(std::string cmd)
 {
 	if (cmd == "help")
-	{
 		return "\
 Description: \n\
 \033[32mPrint documentation in the terminal.\033[0m\n\
 \n\
-	| --web => open documentation of commands in web browser\n";
-	} else {
+	--web => open documentation of commands in web browser\n";
+	else 
 		return "No documentation found for the command " + cmd + ".\n";
-	}
+}
+
+bool contain(std::string *lst, unsigned int lstLen, std::string tfind)
+{
+	for (unsigned int i = 0; i < lstLen; i++)
+		if (lst[i] == tfind) return true;
+	return false;
 }
