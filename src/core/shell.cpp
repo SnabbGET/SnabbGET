@@ -210,7 +210,6 @@ You don't find the parameters of a commmand? Write '<your command> -?'\n";
 	exit - Exit the shell\n\
 	help - Show this message\n\
 	help <command> - Show help for <command>\n\
-	help --web - Show the web help\n\
 	clear - Clear the screen\n\
 	exe <command> - Execute a command of your OS (eg. gcc, npm, ls, dir...). Use it the same way as start.\n\
 	\n\
@@ -221,7 +220,14 @@ You don't find the parameters of a commmand? Write '<your command> -?'\n";
 	else if (input_user.substr(0, ((std::string)"exe ").size()) == "exe ")
 	{
 		system(input_user.substr(4).c_str());
-		return "\n\033[92mCommand executed!\033[0m\n";
+
+		// DEBUG: Success command execution message
+
+		#ifdef DEBUG
+			return "\n\033[92mCommand executed!\033[0m\n";
+		#else
+			return "";
+		#endif
 	}
 	else if (input_user == "exe") return "You must specify a command to execute!\n";
 	else if (input_user == "help --web")
@@ -231,7 +237,14 @@ You don't find the parameters of a commmand? Write '<your command> -?'\n";
 		#else
 			system("xdg-open https://snabbget.github.io/");
 		#endif
-		return "\n\033[92mDocumentation opened!\033[0m\n";
+
+		// DEBUG: Success Webpage opened
+
+		#ifdef DEBUG
+			return "\n\033[92mWeb page opened!\033[0m\n";
+		#else
+			return "";
+		#endif
 	}
 	else if (input_user == "") return new_line();
 	else if (input_user.find("-?") != std::string::npos) return help_params(input_user.substr(0, input_user.find("-?")));
