@@ -91,4 +91,6 @@ class SnabbGET
 			#endif*/
 };
 
-#include "shell.cpp"
+#ifdef FILEENUMERR
+	#include "shell.cpp"
+#endif
