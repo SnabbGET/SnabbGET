@@ -9,7 +9,6 @@
 #include <climits>
 #include <unistd.h>
 #include <termios.h>
-#include <cstdio>
 
 #include "utils.hpp"
 
@@ -22,10 +21,9 @@
 		*a_ = (T) { 0 };\
 } while (0)
 
-
 /* Initialize new terminal i/o settings */
-static struct termios old, new1;
-
+static struct termios old, new1; // I know, it's return warnings...
+// TODO: Delete warning of unused variable because they are used in the function
 
 // Class with the shell.
 class SnabbGET
@@ -42,6 +40,39 @@ class SnabbGET
 		std::string read_input(std::string input_user_t);
 		// Print a new line.
 		std::string new_line();
+
+		class Raw_mode
+		{
+			public:
+				Raw_mode(int echo);
+				~Raw_mode();
+
+				enum KEY_ACTIO
+				{
+					KEY_NULL = 0,		/* NULL */
+					CTRL_C = 3,			/* Ctrl-c */
+					CTRL_D = 4,			/* Ctrl-d */
+					CTRL_F = 6,			/* Ctrl-f */
+					CTRL_H = 8,			/* Ctrl-h */
+					TAB = 9,			/* Tab */
+					CTRL_L = 12,		/* Ctrl+l */
+					ENTER = 13,			/* Enter */
+					CTRL_Q = 17,		/* Ctrl-q */
+					CTRL_S = 19,		/* Ctrl-s */
+					CTRL_U = 21,		/* Ctrl-u */
+					ESC = 27,			/* Escape */
+					BACKSPACE =  127,	/* Backspace */
+					ARROW_LEFT = 1000,
+					ARROW_RIGHT,
+					ARROW_UP,
+					ARROW_DOWN,
+					DEL_KEY,
+					HOME_KEY,
+					END_KEY,
+					PAGE_UP,
+					PAGE_DOWN
+				};
+		};
 
 	private:
 		// Last user input.
@@ -69,13 +100,6 @@ class SnabbGET
 		unsigned int cmdLen = 0;
 
 		std::string TOGGLE_DEBUG();
-
-		class Raw_mode
-		{
-			public:
-				Raw_mode(int echo);
-				~Raw_mode();
-		};
 };
 
 #ifdef FILEENUMERR

@@ -1,5 +1,38 @@
 // Core (main part)
 
+/*-------------------------------------------------
+ * ------------------************------------------
+ * -----------------**************-----------------
+ * ----------------****************----------------
+ * ---------------********--********---------------
+ * --------------********----********--------------
+ * -------------********--##--********-------------
+ * ------------********---##---********------------
+ * -----------********----##----********-----------
+ * ----------********-----##-----********----------
+ * ---------********------##------********---------
+ * --------********-------##-------********--------
+ * -------********--------##--------********-------
+ * ------********--------------------********------
+ * -----********----------------------********-----
+ * ----********-----------##-----------********----
+ * ---********------------##------------********---
+ * --********************************************--
+ * -**********************************************-
+ * ************************************************
+ * -                                              -
+ * -  USE ALWAYS CRLF (\r\n) TO ENTER A NEW LINE  -
+ * -            Don't use "std::endl"             -
+ * -  ==========================================  -
+ * -                                              -
+ *##  ## ###### ######   ###### ###### ##     ######
+ *##  ## ##     ##       ##     ##  ## ##     ##    
+ *##  ## ###### ######   ##     ###### ##     ######
+ *##  ##     ## ##       ##     ## ##  ##     ##
+ *###### ###### ######   ###### ##  ## ###### ##
+ *       It can be read on a mini-map ;D
+ */
+
 /**
  * @file src/core/core.cpp
  * @brief Main part of the project.
@@ -32,24 +65,24 @@
 SnabbGET::SnabbGET()
 {
 	dateOpen = std::time(0);
-	Raw_mode(0);
 }
 
 SnabbGET::~SnabbGET()
 {
-	std::cout << "Shell closed." << std::endl;
+	std::cout << "\r\nShell closed.\r\n";
 }
 
 std::string SnabbGET::init()
 {
-	std::string msg = "\
-       SnabbGET\n\
- Welcome to SnabbGET!\n\
+	std::string msg = htmlToRgbEsc("#ff0000", true) + "\r\
+       SnabbGET\r\n\033[0m\
+ Welcome to SnabbGET!\r\n\
 Version: ";
 	msg += VERSION;
-	msg += "\n\
-Copyright (c) LAPCoder\n\
-----------------------\n";
+	msg += "\r\n\
+Copyright (c) SnabbGET\r\n\
+----------------------\r\n";
+	msg += "\033[1A\r\n";
 	msg += new_line();
 	return msg;
 }
@@ -79,11 +112,11 @@ std::string SnabbGET::read_input(std::string input_user_t)
 	get_command(input_user);
 
 	#ifdef DEBUG
-		std::cout << "Command: [";
+		std::cout << "\r\nCommand: [";
 		for (unsigned int i = 0; i < cmdLen; i++)
 			std::cout << cmd[i] << ", ";
-		std::cout << "]" << std::endl << "Input: " << input_user
-			<< std::endl << "CmdLen: " << cmdLen << std::endl;
+		std::cout << "]" << "\r\n" << "Input: " << input_user
+			<< "\r\n" << "CmdLen: " << cmdLen << "\r\n";
 	#endif
 
 	//std::cout << &cmd << std::endl;
@@ -128,14 +161,14 @@ std::string SnabbGET::read_input(std::string input_user_t)
 		}
 	}
 	historyFile << input_user;
-	historyFile << "\n";
+	historyFile << "\r\n";
 	historyFile.close();
 
 	if (cmdLen == 0) return "";
 
 	//Check if 'cmd' contain '-?'
 	else if (cmd[0] != "exe" && contain(cmd, cmdLen, "-?"))
-			return help_params(cmd[0]);
+		return help_params(cmd[0]);
 
 	// Exit
 	else if (cmd[0] == "exit")
@@ -153,22 +186,22 @@ std::string SnabbGET::read_input(std::string input_user_t)
 
 			// DEBUG: Success Webpage opened
 			#ifdef DEBUG
-				return "\n\033[92mWeb page opened!\033[0m\n";
+				return "\r\n\033[92mWeb page opened!\033[0m\r\n";
 			#else
 				return "";
 			#endif
 		}
 		else
-			return "Commands:\n\
-	exit - Exit the shell\n\
-	help - Show this message\n\
-	clear OR cls - Clear the screen\n\
-	exe <command> - Execute a command of your OS (eg. gcc, npm, ls, dir...). Use it the same way as start.\n\
-\n\
-	DELETED:\n\
-	debug - Enter in the DEBUG mode. WORK ONLY WITH THE TERMINAL OPENED!\n\
-\n\
-You don't find the parameters of a commmand? Write '<your command> -?'\n";
+			return "Commands:\r\n\
+	exit - Exit the shell\r\n\
+	help [-web] - Show this message\r\n\
+	clear OR cls - Clear the screen\r\n\
+	exe <command> - Execute a command of your OS (eg. gcc, npm, ls, dir...). Use it the same way as start.\r\n\
+\r\n\
+	DELETED:\r\n\
+	debug - Enter in the DEBUG mode. WORK ONLY WITH THE TERMINAL OPENED!\r\n\
+\r\n\
+You don't find the parameters of a commmand? Write '<your command> -?'\r\n";
 
 	// Clear
 	else if (cmd[0] == "clear" || cmd[0] == "cls")
@@ -191,14 +224,14 @@ You don't find the parameters of a commmand? Write '<your command> -?'\n";
 		// DEBUG: Success command execution message
 
 		#ifdef DEBUG
-			return "\n\033[92mCommand executed!\033[0m\n";
+			return "\r\n\033[92mCommand executed!\033[0m\r\n";
 		#else
 			return "";
 		#endif
 	}
 	else if (cmd[0] == "exe" && cmdLen == 1)
-		return "You must enter a command!\n";
-	else return "Command not found!\n";
+		return "You must enter a command!\r\n";
+	else return "Command not found!\r\n";
 	
 
 	
@@ -267,7 +300,7 @@ std::string SnabbGET::new_line()
 	#ifdef DEBUG
 		msg += "\033[93m [DEBUG]";
 	#endif
-	msg += "\033[95m |>\033[0m ";
+	msg += "\033[95m |>\033[0m \033[1A\n";
 
 	return msg;
 }
@@ -336,7 +369,7 @@ void SnabbGET::set_machine_name()
 
 void SnabbGET::set_current_dir()
 {
-	this->currentDir = "";
+	this->currentDir = "/";
 	#ifdef _WIN32
 		this->currentDir = getcwd(NULL, 0);
 		#ifdef DEBUG
@@ -349,7 +382,7 @@ void SnabbGET::set_current_dir()
 			this->currentDir = "~" + this->currentDir.substr(((std::string)getenv("HOME")).size());
 
 		#ifdef DEBUG
-			std::cout << "Current dir: " << this->currentDir << std::endl;
+			//std::cout << "Current dir: " << this->currentDir << std::endl;
 		#endif
 	#else
 		#ifdef DEBUG
@@ -360,11 +393,14 @@ void SnabbGET::set_current_dir()
 
 SnabbGET::Raw_mode::Raw_mode(int echo)
 {
-	tcgetattr(0, &old); /* grab old terminal i/o settings */
-	new1 = old; /* make new settings same as old settings */
-	new1.c_lflag &= ~ICANON; /* disable buffered i/o */
-	new1.c_lflag &= echo ? ECHO : ~ECHO; /* set echo mode */
-	tcsetattr(0, TCSANOW, &new1); /* use these new terminal i/o settings now */
+	#ifdef __linux__
+		tcgetattr(0, &old); // grab old terminal i/o settings 
+		new1 = old; /* make new settings same as old settings */
+		new1.c_lflag &= ~ICANON; /* disable buffered i/o */
+		new1.c_lflag &= echo ? ECHO : ~ECHO; /* set echo mode */
+		new1.c_oflag &= ~(OPOST); /* disable output processing */
+		tcsetattr(0, TCSANOW, &new1); // use these new terminal i/o settings now
+	#endif
 }
 
 SnabbGET::Raw_mode::~Raw_mode()

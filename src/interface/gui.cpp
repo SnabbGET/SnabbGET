@@ -12,9 +12,11 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
+// https://sourceforge.net/projects/cpptk/files/
+
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(200, 200), "SnabbGET");
+	sf::RenderWindow window(sf::VideoMode(200, 300), "SnabbGET");
 	sf::CircleShape shape(100.f);
 	shape.setFillColor(sf::Color::Green);
 
