@@ -37,7 +37,7 @@
  * @file src/core/core.cpp
  * @brief Main part of the project.
  * @author LAPCoder
- * @version 0.0.0
+ * @version 0.0.1
  * 
  * MIT License
  */
@@ -54,13 +54,12 @@
 #include <algorithm>
 #include <unistd.h>
 #include <termios.h>
+#include <functional>
 
 #ifdef _WIN32
 	#include <windows.h>
 	#include <Lmcons.h>
 #endif
-
-#include "shell.hpp"
 
 SnabbGET::SnabbGET()
 {
@@ -105,6 +104,12 @@ void SnabbGET::get_command(std::string input_user_t)
 	cmdLen = j;
 }
 
+std::string SnabbGET::runCmd(int id, std::string cmd[], int cmdLen, std::string input_user)
+{
+	auto& cmdTmp = run.cmdLst[id];
+	return cmdTmp(cmd, cmdLen, input_user);
+}
+
 std::string SnabbGET::read_input(std::string input_user_t)
 {
 	input_user = input_user_t;
@@ -112,11 +117,11 @@ std::string SnabbGET::read_input(std::string input_user_t)
 	get_command(input_user);
 
 	#ifdef DEBUG
-		std::cout << "\r\nCommand: [";
+		/*std::cout << "\r\nCommand: [";
 		for (unsigned int i = 0; i < cmdLen; i++)
 			std::cout << cmd[i] << ", ";
 		std::cout << "]" << "\r\n" << "Input: " << input_user
-			<< "\r\n" << "CmdLen: " << cmdLen << "\r\n";
+			<< "\r\n" << "CmdLen: " << cmdLen << "\r\n";*/
 	#endif
 
 	//std::cout << &cmd << std::endl;
@@ -172,40 +177,23 @@ std::string SnabbGET::read_input(std::string input_user_t)
 
 	// Exit
 	else if (cmd[0] == "exit")
-		return "Bye!\n"; // Auto exit! (see in main.cpp)
+		return runCmd(EXIT, cmd, cmdLen, input_user);
 
 	// Help
 	else if (cmd[0] == "help")
-		if (contain(cmd, cmdLen, "-web"))
-		{
-			#ifdef _WIN32
-				system("start https://snabbget.github.io/");
-			#else
-				system("xdg-open https://snabbget.github.io/");
-			#endif
-
-			// DEBUG: Success Webpage opened
-			#ifdef DEBUG
-				return "\r\n\033[92mWeb page opened!\033[0m\r\n";
-			#else
-				return "";
-			#endif
-		}
-		else
-			return "Commands:\r\n\
-	exit - Exit the shell\r\n\
-	help [-web] - Show this message\r\n\
-	clear OR cls - Clear the screen\r\n\
-	exe <command> - Execute a command of your OS (eg. gcc, npm, ls, dir...). Use it the same way as start.\r\n\
-\r\n\
-	DELETED:\r\n\
-	debug - Enter in the DEBUG mode. WORK ONLY WITH THE TERMINAL OPENED!\r\n\
-\r\n\
-You don't find the parameters of a commmand? Write '<your command> -?'\r\n";
+		return runCmd(HELP, cmd, cmdLen, input_user);
 
 	// Clear
 	else if (cmd[0] == "clear" || cmd[0] == "cls")
-		return "\033[2J\033[H";
+		return runCmd(CLS,  cmd, cmdLen, input_user);
+
+	// Say (echo)
+	else if (cmd[0] == "say" || cmd[0] == "echo")
+		return runCmd(SAY,  cmd, cmdLen, input_user);
+
+	// Cd
+	else if (cmd[0] == "cd")
+		return runCmd(CD,   cmd, cmdLen, input_user);
 
 	// DEBUG
 	/*else if (cmd[0] == "debug")
@@ -218,71 +206,40 @@ You don't find the parameters of a commmand? Write '<your command> -?'\r\n";
 		#endif
 	}*/
 
+	// Execute
 	else if (cmd[0] == "exe" && cmdLen > 1)
 	{
-		system(input_user.substr(4).c_str());
+		Raw_mode::pause();
+		std::string msg = "cd ";
+		#ifdef _WIN32
+			if (currentDir.substr(0, 1) == "~")
+			{
+				msg += "&& cd ";
+				msg += currentDir.substr(2);
+			}
+		#else
+			msg += currentDir;
+		#endif
+		msg += " && ";
+		msg += input_user.substr(4);
+		system(msg.c_str());
+		Raw_mode::resume();
 		// DEBUG: Success command execution message
 
 		#ifdef DEBUG
 			return "\r\n\033[92mCommand executed!\033[0m\r\n";
 		#else
-			return "";
+			if (cmd[1] == "cd")
+				return "WARNING! You had enter a 'cd' command. THE DIRECTORY IS NOT SAVED! Use the SnabbGET command.\r\n";
+			else
+				return "";
 		#endif
 	}
 	else if (cmd[0] == "exe" && cmdLen == 1)
 		return "You must enter a command!\r\n";
+
+	// Not found
 	else return "Command not found!\r\n";
-	
-
-	
-	/*
-	if (input_user == "exit")
-		return "Bye!\n";
-	else if (input_user == "help")
-		return "Commands:\n\
-	exit - Exit the shell\n\
-	help - Show this message\n\
-	help <command> - Show help for <command>\n\
-	clear - Clear the screen\n\
-	exe <command> - Execute a command of your OS (eg. gcc, npm, ls, dir...). Use it the same way as start.\n\
-	\n\
-	You don't find the parameters of a commmand? Write '<your command> -?'\n";
-	else if (input_user == "clear" || input_user == "cls")
-		return "\033[2J\033[H";
-	// Input start with "exe "?
-	else if (input_user.substr(0, ((std::string)"exe ").size()) == "exe ")
-	{
-		system(input_user.substr(4).c_str());
-
-		// DEBUG: Success command execution message
-
-		#ifdef DEBUG
-			return "\n\033[92mCommand executed!\033[0m\n";
-		#else
-			return "";
-		#endif
-	}
-	else if (input_user == "exe") return "You must specify a command to execute!\n";
-	else if (input_user == "help --web")
-	{
-		#ifdef _WIN32
-			system("start https://snabbget.github.io/");
-		#else
-			system("xdg-open https://snabbget.github.io/");
-		#endif
-
-		// DEBUG: Success Webpage opened
-
-		#ifdef DEBUG
-			return "\n\033[92mWeb page opened!\033[0m\n";
-		#else
-			return "";
-		#endif
-	}
-	else if (input_user == "") return new_line();
-	else if (input_user.find("-?") != std::string::npos) return help_params(input_user.substr(0, input_user.find("-?")));
-	else return "Unknown command. Type 'help' for help.\n";
-	*/
 }
 
 std::string SnabbGET::new_line()
@@ -391,6 +348,9 @@ void SnabbGET::set_current_dir()
 	#endif
 }
 
+/* Initialize new terminal i/o settings */
+static struct termios old, new1;
+
 SnabbGET::Raw_mode::Raw_mode(int echo)
 {
 	#ifdef __linux__
@@ -403,7 +363,41 @@ SnabbGET::Raw_mode::Raw_mode(int echo)
 	#endif
 }
 
+SnabbGET::Raw_mode::Raw_mode()
+{
+	#ifdef __linux__
+		tcgetattr(0, &old); // grab old terminal i/o settings 
+		new1 = old; /* make new settings same as old settings */
+		new1.c_lflag &= ~ICANON; /* disable buffered i/o */
+		new1.c_lflag &= ~ECHO; /* set echo mode */
+		new1.c_oflag &= ~(OPOST); /* disable output processing */
+		tcsetattr(0, TCSANOW, &new1); // use these new terminal i/o settings now
+	#endif
+}
+
 SnabbGET::Raw_mode::~Raw_mode()
 {
 	tcsetattr(0, TCSANOW, &old);
 }
+
+void SnabbGET::Raw_mode::pause()
+{
+	tcsetattr(0, TCSANOW, &old);
+}
+
+void SnabbGET::Raw_mode::resume()
+{
+	tcsetattr(0, TCSANOW, &new1);
+}
+
+SnabbGET::CMDS::CMDS()
+{
+	cmdLst.emplace_back(_exit_);
+	cmdLst.emplace_back(_help_);
+	cmdLst.emplace_back(_cls_ );
+	cmdLst.emplace_back(_say_ );
+	cmdLst.emplace_back( _cd_ );
+}
+
+SnabbGET::CMDS::~CMDS()
+{}

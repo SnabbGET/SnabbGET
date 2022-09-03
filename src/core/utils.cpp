@@ -4,7 +4,7 @@
  * @file src/code/utils.cpp
  * @brief Utils.
  * @author LAPCoder
- * @version 0.0.0
+ * @version 0.0.1
  * 
  * MIT License
  */
@@ -42,7 +42,7 @@ std::string help_params(std::string cmd)
 Description: \r\n\
 \033[32mPrint documentation in the terminal.\033[0m\r\n\
 \r\n\
-	-web => open documentation of commands in web browser\n";
+	--web => open documentation of commands in web browser\n";
 	else 
 		return "No documentation found for the command '" + cmd + "'.\r\n";
 }
