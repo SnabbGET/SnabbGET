@@ -18,12 +18,12 @@ on:
     # The branches below must be a subset of the branches above
     branches: [ main ]
   schedule:
-    - cron: '23 12 * * 2'
+    - cron: '1 2 * * 3'
 
 jobs:
   analyze:
     name: Analyze
-    runs-on: [ubuntu-latest, windows-latest]
+    runs-on: ubuntu-latest
     permissions:
       actions: read
       contents: read
