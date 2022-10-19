@@ -262,7 +262,7 @@ std::string SnabbGET::new_line()
 	msg += "\033[95m |>\033[0m ";
 
 	#ifdef __linux__
-		msg += "\033[1A\n"
+		msg += "\033[1A\n";
 	#endif
 	return msg;
 }
