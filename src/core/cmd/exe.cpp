@@ -12,9 +12,18 @@
 #include <algorithm>
 
 //#include "../shell.hpp"
-/*
+
+/**
+ * @brief Execute command [DELETED]
+ * 
+ * @param cmd [NOT USED]
+ * @param cmdLen [NOT USED]
+ * @param input_user The user input
+ * @return [std::string] Command result
+ */
 std::string SnabbGET::CMDS::_exe_(std::string[], int, std::string input_user)
 {
+	/*
 	__snabbget.__rawmode.pause();
 	std::string msg = "cd ";
 	#ifdef _WIN32
@@ -39,6 +48,6 @@ std::string SnabbGET::CMDS::_exe_(std::string[], int, std::string input_user)
 			return "WARNING! You had enter a 'cd' command. THE DIRECTORY IS NOT SAVED! Use the SnabbGET command.\r\n";
 		else
 			return "";
-	#endif
+	#endif*/return "error";
 }
-*/
+

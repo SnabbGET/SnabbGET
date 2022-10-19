@@ -13,6 +13,14 @@
 
 //#include "../shell.hpp"
 
+/**
+ * @brief Clear command
+ * 
+ * @param cmd [NOT USED]
+ * @param cmdLen [NOT USED]
+ * @param input_user [NOT USED]
+ * @return [std::string] Command result
+ */
 std::string SnabbGET::CMDS::_cls_(std::string[], int, std::string)
 {
 	return "\033[2J\033[H";

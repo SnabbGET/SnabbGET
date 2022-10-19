@@ -12,7 +12,14 @@
 #include <algorithm>
 
 //#include "../shell.hpp"
-
+/**
+ * @brief Exit command
+ * 
+ * @param cmd [NOT USED]
+ * @param cmdLen [NOT USED]
+ * @param input_user [NOT USED]
+ * @return [std::string] Command result
+ */
 std::string SnabbGET::CMDS::_exit_(std::string[], int, std::string)
 {
 	return "Bye!\n"; // Auto exit! (see in main.cpp)

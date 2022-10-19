@@ -41,9 +41,10 @@ std::string input_user_tmp;
 
 int main(int agrc, char **argv)
 {
+	system(""); // I don't kwon why i must put that but if i don't add that escape codes don't work on Windows :(
 	SnabbGET sget;
 	SnabbGET::Raw_mode rw(0);
-	std::cout << sget.init() ;//<< "\0337\n\0338";
+	std::cout << sget.init();//<< "\0337\n\0338";
 	while (true)
 	{
 		//getline(std::cin, input_user);
@@ -114,7 +115,9 @@ int main(int agrc, char **argv)
 					}
 				}
 			}
-			std::cout << input_user_tmp << /*"(" << (int)c << ")" << */"\033[1A\n";
+			#ifdef __linux__
+				std::cout << input_user_tmp << /*"(" << (int)c << ")" << */"\033[1A\n";
+			#endif
 		}
 
 		std::cout << "\r\n" << sget.read_input(input_user);

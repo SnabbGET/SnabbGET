@@ -53,7 +53,9 @@
 #include <unistd.h>
 #include <algorithm>
 #include <unistd.h>
-#include <termios.h>
+#ifdef __linux__
+	#include <termios.h>
+#endif
 #include <functional>
 
 #ifdef _WIN32
@@ -257,8 +259,11 @@ std::string SnabbGET::new_line()
 	#ifdef DEBUG
 		msg += "\033[93m [DEBUG]";
 	#endif
-	msg += "\033[95m |>\033[0m \033[1A\n";
+	msg += "\033[95m |>\033[0m ";
 
+	#ifdef __linux__
+		msg += "\033[1A\n"
+	#endif
 	return msg;
 }
 
@@ -349,7 +354,10 @@ void SnabbGET::set_current_dir()
 }
 
 /* Initialize new terminal i/o settings */
-static struct termios old, new1;
+
+#ifdef __linux__
+	static struct termios old, new1;
+#endif
 
 SnabbGET::Raw_mode::Raw_mode(int echo)
 {
@@ -361,6 +369,9 @@ SnabbGET::Raw_mode::Raw_mode(int echo)
 		new1.c_oflag &= ~(OPOST); /* disable output processing */
 		tcsetattr(0, TCSANOW, &new1); // use these new terminal i/o settings now
 	#endif
+	if (echo) {}
+	// /o o\ ?
+	// \---/  Hum...
 }
 
 SnabbGET::Raw_mode::Raw_mode()
@@ -377,17 +388,23 @@ SnabbGET::Raw_mode::Raw_mode()
 
 SnabbGET::Raw_mode::~Raw_mode()
 {
-	tcsetattr(0, TCSANOW, &old);
+	#ifdef __linux__
+		tcsetattr(0, TCSANOW, &old);
+	#endif
 }
 
 void SnabbGET::Raw_mode::pause()
 {
-	tcsetattr(0, TCSANOW, &old);
+	#ifdef __linux__
+		tcsetattr(0, TCSANOW, &old);
+	#endif
 }
 
 void SnabbGET::Raw_mode::resume()
 {
-	tcsetattr(0, TCSANOW, &new1);
+	#ifdef __linux__
+		tcsetattr(0, TCSANOW, &new1);
+	#endif
 }
 
 SnabbGET::CMDS::CMDS()

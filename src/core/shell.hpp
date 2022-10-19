@@ -21,13 +21,18 @@
 	#include <cstdlib>
 	#include <climits>
 	#include <unistd.h>
-	#include <termios.h>
+	#ifdef __linux__
+		#include <termios.h>
+	#endif
 	#include <functional>
 	#include <vector>
 
 	#include "utils.hpp"
 
 	#define VERSION "0.0.1"
+	#ifndef MAX_INPUT
+		#define MAX_INPUT 256
+	#endif
 
 	#define ZERO_ANY(T, a, n) do{\
 		T *a_ = (a);\
@@ -38,34 +43,96 @@
 
 	#define SNABBGET_CORE
 
+	/**
+	 * @brief The SnabbGET Class
+	 * @version 0.0.1
+	 */
 	class SnabbGET
 	{
 		public:
-			// Constructor.
+			/**
+			 * @brief Construct a new SnabbGET object
+			 * 
+			 * @return Nothing
+			 */
 			SnabbGET();
-			// Destructor.
+
+			/**
+			 * @brief Destroy the SnabbGET object
+			 * 
+			 * @return Nothing
+			 */
 			~SnabbGET();
 
-			// Initialize the shell.
+			/**
+			 * @brief Initialize the shell
+			 * 
+			 * @return [std::string] Welcome message
+			 */
 			std::string init();
 
-			// Read the input from the user.
+			/**
+			 * @brief Read the input from the user
+			 * 
+			 * @param input_user_t A string contain the user's command
+			 * @return [std::string] Command result
+			 */
 			std::string read_input(std::string input_user_t);
-			// Print a new line.
+
+			/**
+			 * @brief Print a new line
+			 *
+			 * @return [std::string] The new line text
+			 */
 			std::string new_line();
 
-			// Active the raw mode to get a best terminal experience.
+			/**
+			 * @brief Active the raw mode to get a best terminal experience in Linux
+			 * 
+			 * @param echo [OPTIONAL] Set to 0 or see in code
+			 */
 			class Raw_mode
 			{
 				public:
+					/**
+					 * @brief Construct a new Raw_mode object
+					 * 
+					 * @return Nothing
+					 */
 					Raw_mode();
+					
+					/**
+					 * @brief Construct a new Raw_mode object
+					 * 
+					 * @param echo [OPTIONAL] Set to 0 or see in code
+					 * @return Nothing
+					 */
 					Raw_mode(int echo);
+
+					/**
+					 * @brief Destroy the Raw_mode object
+					 * 
+					 * @return Nothing
+					 */
 					~Raw_mode();
 
-
+					/**
+					 * @brief Stop the raw mode
+					 * 
+					 * @return Nothing
+					 */
 					static void pause();
+
+					/**
+					 * @brief Restart the raw mode
+					 * 
+					 * @return Nothing
+					 */
 					static void resume();
 
+					/**
+					 * @brief Define the key actions
+					 */
 					enum KEY_ACTIO
 					{
 						KEY_NULL = 0,		/* NULL */
@@ -108,23 +175,56 @@
 			std::string computerName = "Computer";
 			std::string currentDir = "/";
 
-			// Get user's name
+			/**
+			 * @brief Set the user name object in the var
+			 * 
+			 * @return Nothing
+			 */
 			void set_user_name();
-			// Get user PC name
+			
+			/**
+			 * @brief Set the machine name object in the var
+			 * 
+			 * @return Nothing
+			 */
 			void set_machine_name();
-			// Get current directory
+			
+			/**
+			 * @brief Set the current dir object  in the var
+			 * 
+			 * @return Nothing
+			 */
 			void set_current_dir();
 
-			// Put user's command in array.
+			/**
+			 * @brief Get the command and put user's command in array
+			 * 
+			 * @param input_user_t
+			 * @return Nothing
+			 */
 			void get_command(std::string input_user_t);
+
 			std::string cmd[MAX_INPUT];
 			unsigned int cmdLen = 0;
 
-			// All commands
+			/**
+			 * @brief All commands (aka. say, cd, help...) are here
+			 */
 			class CMDS
 			{
 				public:
+					/**
+					 * @brief Construct a new CMDS object
+					 * 
+					 * @return Nothing
+					 */
 					CMDS();
+					
+					/**
+					 * @brief Destroy the CMDS object
+					 * 
+					 * @return Nothing
+					 */
 					~CMDS();
 
 					#ifndef CMDS_DEF
@@ -150,9 +250,20 @@
 					std::vector<std::function<std::string(std::string[], int, std::string)>> cmdLst;
 			} run;
 
+			/**
+			 * @brief Command runner
+			 * 
+			 * @param id Id of the command
+			 * @return [std::string] Command result
+			 */
 			std::string runCmd(int id, std::string[], int, std::string);
 
 		private:
+			/**
+			 * @brief [UNUSED]
+			 * 
+			 * @return std::string 
+			 */
 			std::string TOGGLE_DEBUG();
 	} __snabbget;
 

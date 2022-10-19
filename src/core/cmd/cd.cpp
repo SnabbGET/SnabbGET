@@ -16,10 +16,17 @@
 	#define _CD_
 
 	// #include "../shell.hpp" // NO
-
+	/**
+	 * @brief CD command [DELETED]
+	 * 
+	 * @param cmd The commands in array
+	 * @param cmdLen The commands' array lenght
+	 * @param input_user [NOT USED]
+	 * @return [std::string] Command result
+	 */
 	std::string SnabbGET::CMDS::_cd_(std::string cmd[], int cmdLen, std::string)
 	{
-		std::string msg = "cd ";
+		/*std::string msg = "cd ";
 		msg += cmd[1];
 		if (! system(msg.c_str()))
 		{
@@ -36,7 +43,7 @@
 			__snabbget.set_current_dir();
 			return __snabbget.currentDir;
 		}
-		else
+		else*/
 			return "\rError";
 	}
 
