@@ -54,9 +54,6 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-# VS Code
-.vscode/
-.vscode_modules/
 
 # History files
 dist/

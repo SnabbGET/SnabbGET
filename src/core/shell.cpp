@@ -75,6 +75,7 @@ SnabbGET::~SnabbGET()
 
 std::string SnabbGET::init()
 {
+	set_current_dir();
 	std::string msg = htmlToRgbEsc("#ff0000", true) + "\r\
        SnabbGET\r\n\033[0m\
  Welcome to SnabbGET!\r\n\
@@ -197,20 +198,10 @@ std::string SnabbGET::read_input(std::string input_user_t)
 	else if (cmd[0] == "cd")
 		return runCmd(CD,   cmd, cmdLen, input_user);
 
-	// DEBUG
-	/*else if (cmd[0] == "debug")
-	{
-		#ifndef DEBUG
-			#define DEBUG
-			return "Entering DEBUG mode... You will quit the Muggles world and see an other world...\n";
-		#else
-			return "Sorry, but you are already in DEBUG mode!\n";
-		#endif
-	}*/
-
 	// Execute
 	else if (cmd[0] == "exe" && cmdLen > 1)
-	{
+		return runCmd(EXE,  cmd, cmdLen, input_user);
+	/*{
 		Raw_mode::pause();
 		std::string msg = "cd ";
 		#ifdef _WIN32
@@ -236,7 +227,7 @@ std::string SnabbGET::read_input(std::string input_user_t)
 			else
 				return "";
 		#endif
-	}
+	}*/
 	else if (cmd[0] == "exe" && cmdLen == 1)
 		return "You must enter a command!\r\n";
 
@@ -330,7 +321,7 @@ void SnabbGET::set_machine_name()
 }
 
 void SnabbGET::set_current_dir()
-{
+{ //USE PWD COMMAND
 	this->currentDir = "/";
 	#ifdef _WIN32
 		this->currentDir = getcwd(NULL, 0);
@@ -351,6 +342,7 @@ void SnabbGET::set_current_dir()
 			std::cout << "Get current dir is not avilable for MacOS." << std::endl;
 		#endif
 	#endif
+	__snabbget.currentDir = this->currentDir;
 }
 
 /* Initialize new terminal i/o settings */
@@ -393,14 +385,14 @@ SnabbGET::Raw_mode::~Raw_mode()
 	#endif
 }
 
-void SnabbGET::Raw_mode::pause()
+void SGET_RWpause()
 {
 	#ifdef __linux__
 		tcsetattr(0, TCSANOW, &old);
 	#endif
 }
 
-void SnabbGET::Raw_mode::resume()
+void SGET_RWresume()
 {
 	#ifdef __linux__
 		tcsetattr(0, TCSANOW, &new1);
@@ -414,6 +406,7 @@ SnabbGET::CMDS::CMDS()
 	cmdLst.emplace_back(_cls_ );
 	cmdLst.emplace_back(_say_ );
 	cmdLst.emplace_back( _cd_ );
+	cmdLst.emplace_back(_exe_ );
 }
 
 SnabbGET::CMDS::~CMDS()

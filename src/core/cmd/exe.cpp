@@ -10,6 +10,7 @@
 #include <cstring>
 #include <unistd.h>
 #include <algorithm>
+#include <functional>
 
 //#include "../shell.hpp"
 
@@ -23,31 +24,45 @@
  */
 std::string SnabbGET::CMDS::_exe_(std::string[], int, std::string input_user)
 {
-	/*
-	__snabbget.__rawmode.pause();
-	std::string msg = "cd ";
-	#ifdef _WIN32
-		if (__snabbget.currentDir.substr(0, 1) == "~")
-		{
-			msg += "&& cd ";
-			msg += __snabbget.currentDir.substr(2);
-		}
-	#else
-		msg += __snabbget.currentDir;
-	#endif
-	msg += " && ";
-	msg += input_user.substr(4);
-	system(msg.c_str());
-	__snabbget.__rawmode.resume();
-	// DEBUG: Success command execution message
+	try
+	{
+		//std::cout << "ok\r\n";
+		SGET_RWpause();
+		//std::cout << "ok\r\n";
+		std::string msg = "cd ";
+		//std::cout << "ok\r\n";
+		#ifdef _WIN32
+			if (__snabbget.currentDir.substr(0, 1) == "~")
+			{
+				msg += "%%USERPROFILE%% && cd ";
+				msg += __snabbget.currentDir.substr(2);
+			}
+		#else
+			msg += __snabbget.currentDir;
+		#endif
+		//std::cout << "ok\r\n";
+		msg += " && ";
+		//std::cout << "ok\r\n";
+		msg += input_user.substr(4);
+		//std::cout << "ok\r\n";
+		system(msg.c_str());
+		//std::cout << "ok\r\n";
+		SGET_RWresume();
+		//std::cout << "ok\r\n";
+		// DEBUG: Success command execution message
 
-	#ifdef DEBUG
-		return "\r\n\033[92mCommand executed!\033[0m\r\n";
-	#else
-		if (cmd[1] == "cd")
-			return "WARNING! You had enter a 'cd' command. THE DIRECTORY IS NOT SAVED! Use the SnabbGET command.\r\n";
-		else
-			return "";
-	#endif*/return "error";
+		#ifdef DEBUG
+			return "\r\n\033[92mCommand executed!\033[0m\r\n";
+		#else
+			if (__snabbget.cmd[1] == "cd")
+				return "WARNING! You had enter a 'cd' command. THE DIRECTORY IS NOT SAVED! Use the SnabbGET command.\r\n";
+			else
+				return "";
+		#endif
+	}
+	catch (std::bad_function_call& e)
+	{
+		return "ERROR in EXE command";
+	}
 }
 

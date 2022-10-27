@@ -31,7 +31,7 @@
 
 	#define VERSION "0.0.1"
 	#ifndef MAX_INPUT
-		#define MAX_INPUT 256
+		#define MAX_INPUT 255
 	#endif
 
 	#define ZERO_ANY(T, a, n) do{\
@@ -159,6 +159,9 @@
 						PAGE_DOWN
 					};
 			};
+
+			void RWpause();
+			void RWresume();
 
 		protected:
 			//Raw_mode __rawmode;
