@@ -67,7 +67,7 @@ std::string hexToDec(std::string num)
 	num1 >> hex;
 
 	#ifdef DEBUG
-		std::cout << num << " hexToDec " << hex << "\r\n";
+		//std::cout << num << " hexToDec " << hex << "\r\n";
 	#endif
 
 	return std::to_string(hex);
@@ -94,4 +94,17 @@ std::string exec(const char* cmd) {
 		result += buffer.data();
 	}
 	return result;
+}
+
+std::string concatArr(std::string arr[], int N)
+{
+	std::string tmp = "";
+	for (int i = 0; i < N - 1; i++)
+	{
+		tmp += arr[i];
+		tmp += " ";
+	}
+	tmp.erase(tmp.length() - 1);
+
+	return tmp;
 }

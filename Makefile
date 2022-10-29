@@ -1,5 +1,6 @@
 filename = output
 DEBUG = on
+arg =
 
 .PHONY: all pre-compile compile execute
 
@@ -20,7 +21,7 @@ endif
 run: ${filename}
 	@echo "Starting..."
 ifeq (${DEBUG}, on)
-	gdb ${filename}
+	gdb ${filename} ${arg}
 else
-	./${filename}
+	./${filename} ${arg}
 endif

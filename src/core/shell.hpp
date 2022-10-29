@@ -56,6 +56,13 @@
 			 * @return Nothing
 			 */
 			SnabbGET();
+			/**
+			 * @brief Construct a new SnabbGET object
+			 * 
+			 * @param cmd_line Is a command-line? ($ sget say hello)
+			 * @return Nothing
+			 */
+			SnabbGET(bool cmd_line);
 
 			/**
 			 * @brief Destroy the SnabbGET object
@@ -166,6 +173,9 @@
 		protected:
 			//Raw_mode __rawmode;
 
+			// TODO: Fix __snabbget
+			bool is____snabbget = false;
+
 			// Last user input.
 			std::string input_user;
 			// Time when the shell was started.
@@ -177,6 +187,8 @@
 			std::string userName = "User";
 			std::string computerName = "Computer";
 			std::string currentDir = "/";
+
+			bool CMD_LINE = false;
 
 			/**
 			 * @brief Set the user name object in the var

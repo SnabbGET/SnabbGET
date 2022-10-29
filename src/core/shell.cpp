@@ -66,11 +66,20 @@
 SnabbGET::SnabbGET()
 {
 	dateOpen = std::time(0);
+	__snabbget.is____snabbget = true; 
+}
+
+SnabbGET::SnabbGET(bool cmd_line)
+{
+	dateOpen = std::time(0);
+	CMD_LINE = cmd_line;
+	__snabbget.CMD_LINE = CMD_LINE;
 }
 
 SnabbGET::~SnabbGET()
 {
-	std::cout << "\r\nShell closed.\r\n";
+	if (! CMD_LINE && !this->is____snabbget)
+		std::cout << "\r\nShell closed.\r\n";
 }
 
 std::string SnabbGET::init()

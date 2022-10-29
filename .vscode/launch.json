@@ -10,7 +10,8 @@
 			"request": "launch",
 			"externalConsole": true,
 			"program": "${workspaceFolder}/output",
-			"cwd": "${workspaceFolder}"
+			"cwd": "${workspaceFolder}",
+			"args": ["say", "a"]
 		}
 	]
 }

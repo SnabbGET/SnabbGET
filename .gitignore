@@ -38,6 +38,7 @@
 [^bin/]*.bin
 output
 gui
+includes
 
 # Debug files
 *.dSYM/
@@ -53,7 +54,6 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-
 
 # History files
 dist/
