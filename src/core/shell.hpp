@@ -176,6 +176,12 @@
 			// TODO: Fix __snabbget
 			bool is____snabbget = false;
 
+			#ifdef __EMSCRIPTEN__
+				bool one_line = true;
+			#else
+				bool one_line = false;
+			#endif
+
 			// Last user input.
 			std::string input_user;
 			// Time when the shell was started.

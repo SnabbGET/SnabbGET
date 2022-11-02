@@ -28,11 +28,35 @@
 	#define print(x, ...) std::cout << x // For a friend :D
 #endif
 
-/* INSTANCES */
+// WebAssembly
+#ifdef __EMSCRIPTEN__ 
+	#include <emscripten.h>
+	bool one_line = true;
+#else
+	bool one_line = false;
+#endif
 
-// Main
-// Graphics
-// GUI gui;
+#ifdef __cplusplus
+	#define EXTERN extern "C"
+#else
+	#define EXTERN
+#endif
+
+#ifndef EMSCRIPTEN_KEEPALIVE
+	#define EMSCRIPTEN_KEEPALIVE
+#endif
+
+EXTERN EMSCRIPTEN_KEEPALIVE void RunSnabbGETCommand(int argc, char **argv)
+{
+	SnabbGET sget;
+	//SnabbGET::Raw_mode rw(0);
+	sget.init();
+	std::string cmd;
+	std::cin >> cmd;
+	std::cout << sget.read_input(cmd) << "\r\n";
+}
+
+// End Wasm
 
 /* Start */
 
@@ -41,8 +65,8 @@ std::string input_user_tmp;
 
 int main(int argc, char *argv[])
 {
-	system(""); // I don't kwon why i must put that but if i don't add that escape codes don't work on Windows :(
-	if (argc == 1)
+	system(""); // I don't kwon why I must put that, but if I don't add that, escape codes don't work on Windows :(
+	if (argc == 1 && !one_line)
 	{
 		SnabbGET sget;
 		SnabbGET::Raw_mode rw(0);
@@ -134,9 +158,10 @@ int main(int argc, char *argv[])
 		}
 		return 0;
 	}
-	else
+	else if (argc > 1 && !one_line)
 	{
 		SnabbGET sget(true);
+		SnabbGET::Raw_mode rw(0);
 		sget.init();
 		std::string arr[MAX_INPUT];
 		for(int b = 0; b < argc - 1 ; b++)
@@ -146,5 +171,15 @@ int main(int argc, char *argv[])
 		//std::cout << concatArr(arr, argc) << std::endl;
 		std::cout << sget.read_input(concatArr(arr, argc)) << "\r\n";
 		return EXIT_SUCCESS;
+	}
+	else // one_line
+	{
+		/*SnabbGET sget(true);
+		SnabbGET::Raw_mode rw(0);
+		sget.init();
+		std::string cmd;
+		std::cin >> cmd;
+		std::cout << sget.read_input(cmd) << "\r\n";
+		return EXIT_SUCCESS;*/
 	}
 }

@@ -137,49 +137,51 @@ std::string SnabbGET::read_input(std::string input_user_t)
 	#endif
 
 	//std::cout << &cmd << std::endl;
-
-	historyFile.open("dist/.history.txt", std::ios_base::app);
-
-	// Check the file
-	if (!historyFile.is_open())
+	if (! one_line)
 	{
-		#ifdef DEBUG
-			std::cout << "Error opening history file!" << std::endl;
-		#endif
+		historyFile.open("dist/.history.txt", std::ios_base::app);
 
-		// Try to create the file
-		historyFile.open("dist/.history.txt", std::ios_base::out);
+		// Check the file
 		if (!historyFile.is_open())
 		{
 			#ifdef DEBUG
-				std::cout << "Error creating history file!" << std::endl;
+				std::cout << "Error opening history file!" << std::endl;
 			#endif
 
-			// Use system() to create the file
-			system("mkdir dist");
-			system("echo \"\" > dist/.history.txt");
-
-			// Try to open the file again
-			historyFile.open("dist/.history.txt", std::ios_base::app);
+			// Try to create the file
+			historyFile.open("dist/.history.txt", std::ios_base::out);
 			if (!historyFile.is_open())
 			{
 				#ifdef DEBUG
-					std::cout << "Error opening history file!" << std::endl;
+					std::cout << "Error creating history file!" << std::endl;
 				#endif
-				
-				exit(EXIT_FAILURE);
-			}
 
+				// Use system() to create the file
+				system("mkdir dist");
+				system("echo \"\" > dist/.history.txt");
+
+				// Try to open the file again
+				historyFile.open("dist/.history.txt", std::ios_base::app);
+				if (!historyFile.is_open())
+				{
+					#ifdef DEBUG
+						std::cout << "Error opening history file!" << std::endl;
+					#endif
+					
+					exit(EXIT_FAILURE);
+				}
+
+			}
+			else
+			{
+				historyFile.close();
+				historyFile.open("dist/.history.txt", std::ios_base::app);
+			}
 		}
-		else
-		{
-			historyFile.close();
-			historyFile.open("dist/.history.txt", std::ios_base::app);
-		}
+		historyFile << input_user;
+		historyFile << "\r\n";
+		historyFile.close();
 	}
-	historyFile << input_user;
-	historyFile << "\r\n";
-	historyFile.close();
 
 	if (cmdLen == 0) return "";
 
