@@ -2,3 +2,4 @@
 *        linguist-documentation=false
 LICENSE  linguist-documentation=true
 assets/* linguist-documentation=true
+web/*    linguist-documentation=true

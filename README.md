@@ -17,7 +17,7 @@ Graphic and fast terminal in C/C++.
 Use the termial version (CLI):
 
 ```bash
-make
+make DEBUG=off
 ./output
 ```
 
