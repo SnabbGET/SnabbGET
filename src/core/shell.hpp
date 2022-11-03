@@ -259,6 +259,7 @@
 						#define EXE  5
 						#define LS   6
 						#define CP   7
+						#define MV   8
 					#endif
 
 					static std::string _exit_(std::string[], int, std::string);
@@ -269,6 +270,7 @@
 					static std::string _exe_ (std::string[], int, std::string);
 					static std::string _ls_  (std::string[], int, std::string);
 					static std::string _cp_  (std::string[], int, std::string);
+					static std::string _mv_  (std::string[], int, std::string);
 
 					
 

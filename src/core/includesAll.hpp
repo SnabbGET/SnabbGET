@@ -3,6 +3,7 @@
 #pragma once
 #include "./cmd/exe.cpp"
 #include "./cmd/cpp.cpp"
+#include "./cmd/mv.cpp"
 #include "./cmd/help.cpp"
 #include "./cmd/cls.cpp"
 #include "./cmd/ls.cpp"

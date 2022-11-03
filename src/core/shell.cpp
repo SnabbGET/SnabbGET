@@ -230,6 +230,10 @@ std::string SnabbGET::read_input(std::string input_user_t)
 	// Cp
 	else if (cmd[0] == "cp")
 		return runCmd(CP,  cmd, cmdLen, input_user);
+
+	// Mv
+	else if (cmd[0] == "mv")
+		return runCmd(MV,  cmd, cmdLen, input_user);
 	/*{
 		Raw_mode::pause();
 		std::string msg = "cd ";
@@ -436,6 +440,7 @@ SnabbGET::CMDS::CMDS()
 	cmdLst.emplace_back(_exe_ );
 	cmdLst.emplace_back( _ls_ );
 	cmdLst.emplace_back( _cp_ );
+	cmdLst.emplace_back( _mv_ );
 }
 
 SnabbGET::CMDS::~CMDS()
