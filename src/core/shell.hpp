@@ -258,6 +258,7 @@
 						#define CD   4
 						#define EXE  5
 						#define LS   6
+						#define CP   7
 					#endif
 
 					static std::string _exit_(std::string[], int, std::string);
@@ -267,6 +268,7 @@
 					static std::string _cd_  (std::string[], int, std::string);
 					static std::string _exe_ (std::string[], int, std::string);
 					static std::string _ls_  (std::string[], int, std::string);
+					static std::string _cp_  (std::string[], int, std::string);
 
 					
 

@@ -65,4 +65,3 @@ std::string SnabbGET::CMDS::_exe_(std::string[], int, std::string input_user)
 		return "ERROR in EXE command";
 	}
 }
-
