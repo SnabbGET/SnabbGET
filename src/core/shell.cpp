@@ -185,6 +185,14 @@ std::string SnabbGET::read_input(std::string input_user_t)
 
 	if (cmdLen == 0) return "";
 
+/* ####### ####### ##   ## ##   ##   ###   ##   ## #####    ######
+ * ##      ##   ## ### ### ### ###  ## ##  ###  ## ##   ## ##
+ * ##      ##   ## ####### ####### ##   ## #### ## ##   ##   ##
+ * ##      ##   ## ## # ## ## # ## ####### ## #### ##   ##    ##
+ * ##      ##   ## ##   ## ##   ## ##   ## ##  ### ##   ##      ##
+ * ####### ####### ##   ## ##   ## ##   ## ##   ## #####   ###### 
+ */
+
 	//Check if 'cmd' contain '-?'
 	else if (cmd[0] != "exe" && contain(cmd, cmdLen, "-?"))
 		return help_params(cmd[0]);
@@ -212,6 +220,12 @@ std::string SnabbGET::read_input(std::string input_user_t)
 	// Execute
 	else if (cmd[0] == "exe" && cmdLen > 1)
 		return runCmd(EXE,  cmd, cmdLen, input_user);
+	else if (cmd[0] == "exe" && cmdLen == 1)
+		return "You must enter a command!\r\n";
+
+	// Ls
+	else if (cmd[0] == "ls")
+		return runCmd(LS,  cmd, cmdLen, input_user);
 	/*{
 		Raw_mode::pause();
 		std::string msg = "cd ";
@@ -239,8 +253,6 @@ std::string SnabbGET::read_input(std::string input_user_t)
 				return "";
 		#endif
 	}*/
-	else if (cmd[0] == "exe" && cmdLen == 1)
-		return "You must enter a command!\r\n";
 
 	// Not found
 	else return "Command not found!\r\n";
@@ -418,6 +430,7 @@ SnabbGET::CMDS::CMDS()
 	cmdLst.emplace_back(_say_ );
 	cmdLst.emplace_back( _cd_ );
 	cmdLst.emplace_back(_exe_ );
+	cmdLst.emplace_back( _ls_ );
 }
 
 SnabbGET::CMDS::~CMDS()

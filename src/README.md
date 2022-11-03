@@ -16,7 +16,7 @@ C[Core] <==> |All| A
 
 For the moment, the GUI is `std` (CLI).
 
-You can also use the command-line version
+**You can also use the command-line version.**
 
 ```sh
 $ <SnabbGET file path> say hello

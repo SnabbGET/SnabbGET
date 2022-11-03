@@ -42,12 +42,13 @@ std::string SnabbGET::CMDS::_help_(std::string cmd[], int cmdLen, std::string)
 		return "Commands:\r\n\
 	say,\r\n\
 	echo          - Write something\r\n\
-	cd            - Change Directory\r\n\
+	cd [<dir>]    - Change Directory\r\n\
 	exit          - Exit the shell\r\n\
 	help [--web]  - Show this message\r\n\
 	clear,\r\n\
 	cls           - Clear the screen\r\n\
 	exe <command> - Execute a command of your OS (eg. gcc, npm, ls, dir...). Use it the same way as start.\r\n\
+	ls            - List file and dirs in the current directory\r\n\
 \r\n\
 	DELETED:\r\n\
 	debug - Enter in the DEBUG mode. WORK ONLY WITH THE TERMINAL OPENED!\r\n\

@@ -4,9 +4,11 @@
 #include <fstream>
 #include <string>
 
-int main() {
-    DIR *dir; struct dirent *diread;
-    std::vector<char *> files;
+int main()
+{
+	DIR *dir;
+	struct dirent *diread;
+	std::vector<char *> files;
 
 	std::ofstream fileOut;
 	remove("./src/core/includesAll.hpp");
@@ -15,23 +17,23 @@ int main() {
 	fileOut << "// DON'T CHANGE IT!\n";
 	fileOut << "#pragma once\n";
 
-    if ((dir = opendir("./src/core/cmd/")) != nullptr) {
-        while ((diread = readdir(dir)) != nullptr) {
+	if ((dir = opendir("./src/core/cmd/")) != nullptr) {
+		while ((diread = readdir(dir)) != nullptr) {
 			if (((std::string)diread->d_name).rfind(".", 0) == std::string::npos)
-            	files.push_back(diread->d_name);
-        }
-        closedir (dir);
-    } else {
-        perror ("opendir");
-        return EXIT_FAILURE;
-    }
+				files.push_back(diread->d_name);
+		}
+		closedir (dir);
+	} else {
+		perror ("opendir");
+		return EXIT_FAILURE;
+	}
 
-    for (auto file : files)
+	for (auto file : files)
 	{
 		std::cout << file << " | ";
 		fileOut << "#include \"./cmd/" << file << "\"\n";
 	}
-    std::cout << std::endl;
+	std::cout << std::endl;
 
-    return EXIT_SUCCESS;
+	return EXIT_SUCCESS;
 }
