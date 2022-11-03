@@ -8,5 +8,6 @@
 #include "./cmd/cls.cpp"
 #include "./cmd/ls.cpp"
 #include "./cmd/exit.cpp"
+#include "./cmd/mk.cpp"
 #include "./cmd/say.cpp"
 #include "./cmd/cd.cpp"
