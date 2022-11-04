@@ -37,7 +37,7 @@ If applicable, add screenshots to help explain your problem.
 - Browser [e.g. stock browser, safari]
 - Version [e.g. 22]
 
-**Version of the shell**: [e.g. 0.0.1]
+**Version of the shell**: [e.g. 0.1.0]
 
 **Additional context**
 Add any other context about the problem here.

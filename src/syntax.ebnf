@@ -7,7 +7,7 @@
 						"mv" | "say";
 <params>			::= ["--" | "-"], <param_name>;
 <param_name>		::= <string>;
-<for>				::= "for", "[", ((<int>, <bool> (*, int++ *)) |
+<for>				::= "for", "[", ((<int>, <bool> (* , int++ *) ) |
 									 (<list<char>>, ":", "$", <string>)), "]", "do",
 						{<command>, "\n"}, "end";
 <if>				::= "if", "[", <bool>, "]", "then",

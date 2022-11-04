@@ -4,14 +4,14 @@
  * @file src/main.cpp
  * @brief Main file of the project.
  * @author LAPCoder
- * @version 0.0.1
+ * @version 0.1.0
  * 
  * MIT License
  */
 
 /* DEFINES */
 //See shell.hpp
-//#define VERSION "0.0.1"
+//#define VERSION "0.1.0"
 
 /* INCLUDES */
 

@@ -37,7 +37,7 @@
  * @file src/core/core.cpp
  * @brief Main part of the project.
  * @author LAPCoder
- * @version 0.0.1
+ * @version 0.1.0
  * 
  * MIT License
  */
@@ -271,7 +271,7 @@ std::string SnabbGET::new_line()
 	set_machine_name();
 	set_current_dir();
 	
-	std::string msg = "\033[1m\033[92m";
+	/*std::string msg = "\033[1m\033[92m";
 	msg += userName;
 	msg += "@";
 	msg += computerName;
@@ -285,7 +285,8 @@ std::string SnabbGET::new_line()
 	#ifdef __linux__
 		msg += "\033[1A\n";
 	#endif
-	return msg;
+	return msg;*/
+	return promptSettings();
 }
 
 void SnabbGET::set_user_name()

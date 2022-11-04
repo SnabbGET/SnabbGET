@@ -4,7 +4,7 @@
  * @file src/core/shell.hpp
  * @brief Header of the main part.
  * @author LAPCoder
- * @version 0.0.1
+ * @version 0.1.0
  * 
  * MIT License
  */
@@ -29,7 +29,7 @@
 
 	#include "utils.hpp"
 
-	#define VERSION "0.0.1"
+	#define VERSION "0.1.0"
 	#ifndef MAX_INPUT
 		#define MAX_INPUT 255
 	#endif
@@ -45,19 +45,19 @@
 
 	/**
 	 * @brief The SnabbGET Namespace
-	 * @version 0.0.1
+	 * @version 0.1.0
 	 */
 	namespace SnabbGET
 	{
 	
 		/**
-		 * @brief Construct a new SnabbGET object
+		 * @brief Initialise SnabbGET
 		 * 
 		 * @return Nothing
 		 */
 		void SnabbGET();
 		/**
-		 * @brief Construct a new SnabbGET object
+		 * @brief Initialise SnabbGET
 		 * 
 		 * @param cmd_line Is a command-line? ($ sget say hello)
 		 * @return Nothing
@@ -78,6 +78,13 @@
 		 * @return [std::string] Command result
 		 */
 		std::string read_input(std::string input_user_t);
+
+		/**
+		 * @brief Use user' settings for the prompt in file settings/prompt.sget.txt
+		 *
+		 * @return [std::string] The prompt text
+		 */
+		std::string promptSettings();
 
 		/**
 		 * @brief Print a new line
@@ -168,7 +175,7 @@
 		// Time when the shell was started.
 		std::time_t dateOpen;
 		// File with the history.
-		std::ofstream historyFile;
+		std::fstream historyFile;
 
 		// User name and computer name.
 		std::string userName = "User";
@@ -284,6 +291,7 @@
 	//                          ====
 	#include "shell.cpp"
 	#include "./includesAll.hpp"
+	#include "./settings/reader.cpp"
 
 #endif // SNABBGET_CORE
 
