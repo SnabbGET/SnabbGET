@@ -41,7 +41,7 @@ hello!
 
 *)
 
-<bool>				::= <condition> | "true" | "false" | <bool>;
+<bool>				::= <condition> | "true" | "false" | ("(", <bool>, ")");
 <condition>			::= (((<int> | <bool> | <string>),
 						  ("==" | "!="), 
 						  (<int> | <bool> | <string>)) |
