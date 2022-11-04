@@ -29,7 +29,7 @@ std::string SnabbGET::CMDS::_ls_(std::string[], int, std::string)
 	struct dirent *diread;
 	std::vector<char *> files;
 
-	std::string currDir = __snabbget.currentDir;
+	std::string currDir = SnabbGET::currentDir;
 	if (currDir.find("~") == 0)
 	{
 		std::string r = ((std::string)exec("echo ~")) // the result

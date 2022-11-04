@@ -26,12 +26,12 @@
  */
 std::string SnabbGET::CMDS::_mk_(std::string cmd[], int cmdLen, std::string)
 {
-	if (cmdLen < 1)
+	if (cmdLen < 2)
 		return "Error: you must give the new file";
 	
 	std::ofstream outfile(cmd[1].c_str());
 	outfile.close();
-	outfile.open("dist/.history.txt", std::ios_base::app);
+	outfile.open(cmd[1].c_str(), std::ios_base::app);
 
 	// Check the file
 	if (!outfile.is_open())
@@ -51,7 +51,7 @@ std::string SnabbGET::CMDS::_mk_(std::string cmd[], int cmdLen, std::string)
 			system(("echo \"\" > " + cmd[1]).c_str());
 
 			// Try to open the file again
-			outfile.open("dist/.history.txt", std::ios_base::app);
+			outfile.open(cmd[1].c_str(), std::ios_base::app);
 			if (!outfile.is_open())
 			{
 				#ifdef DEBUG

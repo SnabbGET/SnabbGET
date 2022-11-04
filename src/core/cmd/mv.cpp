@@ -26,7 +26,7 @@
  */
 std::string SnabbGET::CMDS::_mv_(std::string cmd[], int cmdLen, std::string)
 {
-	if (cmdLen < 2)
+	if (cmdLen < 3)
 		return "Error: you must give the source file and the destination dir";
 	
 	std::string dst = cmd[1];

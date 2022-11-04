@@ -63,27 +63,22 @@
 	#include <Lmcons.h>
 #endif
 
-SnabbGET::SnabbGET()
+void SnabbGET::SnabbGET()
 {
 	dateOpen = std::time(0);
-	__snabbget.is____snabbget = true; 
+	//is____snabbget = true; 
 }
 
-SnabbGET::SnabbGET(bool cmd_line)
+void SnabbGET::SnabbGET(bool cmd_line)
 {
 	dateOpen = std::time(0);
 	CMD_LINE = cmd_line;
-	__snabbget.CMD_LINE = CMD_LINE;
-}
-
-SnabbGET::~SnabbGET()
-{
-	if (! CMD_LINE && !this->is____snabbget)
-		std::cout << "\r\nShell closed.\r\n";
+	//CMD_LINE = CMD_LINE;
 }
 
 std::string SnabbGET::init()
 {
+	CMDS::CMDS();
 	set_current_dir();
 	std::string msg = htmlToRgbEsc("#ff0000", true) + "\r\
        SnabbGET\r\n\033[0m\
@@ -118,7 +113,7 @@ void SnabbGET::get_command(std::string input_user_t)
 
 std::string SnabbGET::runCmd(int id, std::string cmd[], int cmdLen, std::string input_user)
 {
-	auto& cmdTmp = run.cmdLst[id];
+	auto &cmdTmp = SnabbGET::CMDS::cmdLst[id];
 	return cmdTmp(cmd, cmdLen, input_user);
 }
 
@@ -185,12 +180,12 @@ std::string SnabbGET::read_input(std::string input_user_t)
 
 	if (cmdLen == 0) return "";
 
-/* ####### ####### ##   ## ##   ##   ###   ##   ## #####    ######
- * ##      ##   ## ### ### ### ###  ## ##  ###  ## ##   ## ##
+/*  ######  #####  ##   ## ##   ##   ###   ##   ## #####    ######
+ * ###     ### ### ### ### ### ###  ## ##  ###  ## ##   ## ##
  * ##      ##   ## ####### ####### ##   ## #### ## ##   ##   ##
  * ##      ##   ## ## # ## ## # ## ####### ## #### ##   ##    ##
- * ##      ##   ## ##   ## ##   ## ##   ## ##  ### ##   ##      ##
- * ####### ####### ##   ## ##   ## ##   ## ##   ## #####   ###### 
+ * ###     ### ### ##   ## ##   ## ##   ## ##  ### ##   ##      ##
+ *  ######  #####  ##   ## ##   ## ##   ## ##   ## #####   ###### 
  */
 
 	//Check if 'cmd' contain '-?'
@@ -272,16 +267,16 @@ std::string SnabbGET::read_input(std::string input_user_t)
 
 std::string SnabbGET::new_line()
 {
-	this->set_user_name();
-	this->set_machine_name();
-	this->set_current_dir();
+	set_user_name();
+	set_machine_name();
+	set_current_dir();
 	
 	std::string msg = "\033[1m\033[92m";
-	msg += this->userName;
+	msg += userName;
 	msg += "@";
-	msg += this->computerName;
+	msg += computerName;
 	msg += "\033[39m:\033[96m";
-	msg += this->currentDir;
+	msg += currentDir;
 	#ifdef DEBUG
 		msg += "\033[93m [DEBUG]";
 	#endif
@@ -295,14 +290,14 @@ std::string SnabbGET::new_line()
 
 void SnabbGET::set_user_name()
 {
-	this->userName = "guest";
+	userName = "guest";
 	#ifdef _WIN32
 	
 		TCHAR name [UNLEN + 1];
 		DWORD size = UNLEN + 1;
 
 		if (GetUserName((TCHAR*)name, &size ))
-			this->userName = name;
+			userName = name;
 		else
 		{
 			#ifdef DEBUG
@@ -311,8 +306,8 @@ void SnabbGET::set_user_name()
 		}
 
 	#elif __linux__
-		this->userName = getenv("USER");
-		if (this->userName == "")
+		userName = getenv("USER");
+		if (userName == "")
 		{
 			#ifdef DEBUG
 				std::cout << "Error getting user name on Linux!" << std::endl;
@@ -323,13 +318,13 @@ void SnabbGET::set_user_name()
 		#ifdef DEBUG
 			std::cout << "Get user name is not avilable for MacOS." << std::endl;
 		#endif
-		this->userName = "user";
+		userName = "user";
 	#endif
 }
 
 void SnabbGET::set_machine_name()
 {
-	this->computerName = "computer";
+	computerName = "computer";
 	#ifdef _WIN32
 		//std::string computerName = getenv("COMPUTERNAME");
 		this->computerName = getenv("COMPUTERNAME"); //this->computerName = computerName;
@@ -347,7 +342,7 @@ void SnabbGET::set_machine_name()
 				std::cout << "Error getting machine name on Linux!" << std::endl;
 			#endif
 		}
-		else this->computerName = hostname;
+		else computerName = hostname;
 	#else
 		#ifdef DEBUG
 			std::cout << "Get machine name is not avilable for MacOS." << std::endl;
@@ -357,17 +352,17 @@ void SnabbGET::set_machine_name()
 
 void SnabbGET::set_current_dir()
 { //USE PWD COMMAND
-	this->currentDir = "/";
+	currentDir = "/";
 	#ifdef _WIN32
 		this->currentDir = getcwd(NULL, 0);
 		#ifdef DEBUG
-			std::cout << "Current dir: " << this->currentDir << std::endl;
+			std::cout << "Current dir: " << currentDir << std::endl;
 		#endif
 	#elif __linux__
-		this->currentDir = getenv("PWD");
+		currentDir = getenv("PWD");
 		// Minimify the path (if start of path is user home, replace it with ~)
-		if (this->currentDir.substr(0, ((std::string)getenv("HOME")).size()) == getenv("HOME"))
-			this->currentDir = "~" + this->currentDir.substr(((std::string)getenv("HOME")).size());
+		if (currentDir.substr(0, ((std::string)getenv("HOME")).size()) == getenv("HOME"))
+			currentDir = "~" + currentDir.substr(((std::string)getenv("HOME")).size());
 
 		#ifdef DEBUG
 			//std::cout << "Current dir: " << this->currentDir << std::endl;
@@ -377,7 +372,7 @@ void SnabbGET::set_current_dir()
 			std::cout << "Get current dir is not avilable for MacOS." << std::endl;
 		#endif
 	#endif
-	__snabbget.currentDir = this->currentDir;
+	//__snabbget.currentDir = this->currentDir;
 }
 
 /* Initialize new terminal i/o settings */
@@ -386,7 +381,7 @@ void SnabbGET::set_current_dir()
 	static struct termios old, new1;
 #endif
 
-SnabbGET::Raw_mode::Raw_mode(int echo)
+void SnabbGET::Raw_mode::Raw_mode(int echo)
 {
 	#ifdef __linux__
 		tcgetattr(0, &old); // grab old terminal i/o settings 
@@ -401,7 +396,7 @@ SnabbGET::Raw_mode::Raw_mode(int echo)
 	// \---/  Hum...
 }
 
-SnabbGET::Raw_mode::Raw_mode()
+void SnabbGET::Raw_mode::Raw_mode()
 {
 	#ifdef __linux__
 		tcgetattr(0, &old); // grab old terminal i/o settings 
@@ -413,28 +408,21 @@ SnabbGET::Raw_mode::Raw_mode()
 	#endif
 }
 
-SnabbGET::Raw_mode::~Raw_mode()
+void SnabbGET::Raw_mode::pause()
 {
 	#ifdef __linux__
 		tcsetattr(0, TCSANOW, &old);
 	#endif
 }
 
-void SGET_RWpause()
-{
-	#ifdef __linux__
-		tcsetattr(0, TCSANOW, &old);
-	#endif
-}
-
-void SGET_RWresume()
+void SnabbGET::Raw_mode::resume()
 {
 	#ifdef __linux__
 		tcsetattr(0, TCSANOW, &new1);
 	#endif
 }
 
-SnabbGET::CMDS::CMDS()
+void SnabbGET::CMDS::CMDS()
 {
 	cmdLst.emplace_back(_exit_);
 	cmdLst.emplace_back(_help_);
@@ -447,6 +435,3 @@ SnabbGET::CMDS::CMDS()
 	cmdLst.emplace_back( _mv_ );
 	cmdLst.emplace_back( _mk_ );
 }
-
-SnabbGET::CMDS::~CMDS()
-{}

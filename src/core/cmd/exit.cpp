@@ -22,5 +22,8 @@
  */
 std::string SnabbGET::CMDS::_exit_(std::string[], int, std::string)
 {
+	#ifdef __linux__
+		tcsetattr(0, TCSANOW, &old);
+	#endif
 	return "Bye!\n"; // Auto exit! (see in main.cpp)
 }

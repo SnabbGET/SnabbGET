@@ -11,7 +11,7 @@
 			"externalConsole": true,
 			"program": "${workspaceFolder}/output",
 			"cwd": "${workspaceFolder}",
-			"args": ["say", "a"]
+			//"args": ["say", "a"]
 		}
 	]
 }
