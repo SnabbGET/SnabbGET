@@ -63,6 +63,14 @@
 	#include <Lmcons.h>
 #endif
 
+/* #######  #####  ##   ##  ###### ####### #######  #####  ##   ##  ######
+ * ##      ### ### ###  ## ###       ###     ###   ### ### ###  ## ##
+ * ##      ##   ## #### ## ##        ###     ###   ##   ## #### ##   ##
+ * ####### ##   ## ## #### ##        ###     ###   ##   ## ## ####    ##
+ * ##      ### ### ##  ### ###       ###     ###   ### ### ##  ###      ##
+ * ##       #####  ##   ##  ######   ###   #######  #####  ##   ## ######
+ */
+
 void SnabbGET::SnabbGET()
 {
 	dateOpen = std::time(0);
@@ -230,9 +238,13 @@ std::string SnabbGET::read_input(std::string input_user_t)
 	else if (cmd[0] == "mv")
 		return runCmd(MV,  cmd, cmdLen, input_user);
 
-	// Mv
+	// Mk
 	else if (cmd[0] == "mk")
 		return runCmd(MK,  cmd, cmdLen, input_user);
+
+	// Rm
+	else if (cmd[0] == "rm")
+		return runCmd(RM,  cmd, cmdLen, input_user);
 	/*{
 		Raw_mode::pause();
 		std::string msg = "cd ";
@@ -378,6 +390,14 @@ void SnabbGET::set_current_dir()
 
 /* Initialize new terminal i/o settings */
 
+/* ######  ## # ##
+ * ##   ## ## # ##
+ * ######  ##,#,##
+ * ## ##   #######
+ * ##  ##   #####
+ * ##   ##  ## ##
+ */
+
 #ifdef __linux__
 	static struct termios old, new1;
 #endif
@@ -435,4 +455,5 @@ void SnabbGET::CMDS::CMDS()
 	cmdLst.emplace_back( _cp_ );
 	cmdLst.emplace_back( _mv_ );
 	cmdLst.emplace_back( _mk_ );
+	cmdLst.emplace_back( _rm_ );
 }
