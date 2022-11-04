@@ -1,0 +1,56 @@
+@@ ::= [ <line>, @@ ], <none>
+
+<line>				::= <command> | <for> | <if> | <while> | <var> | <list>
+<command>			::= <command_name>, {[<params>]};
+<command_name>		::= "cd" | "cls" | "cp" | "exe" |
+						"exit" | "help" | "ls" | "mk" |
+						"mv" | "say";
+<params>			::= ["--" | "-"], <param_name>;
+<param_name>		::= <string>;
+<for>				::= "for", "[", ((<int>, <bool> (*, int++ *)) |
+									 (<list<char>>, ":", "$", <string>)), "]", "do",
+						{<command>, "\n"}, "end";
+<if>				::= "if", "[", <bool>, "]", "then",
+						{<command>, "\n"}, "end";
+<while>				::= "while", "[", <bool>, "]", "do",
+						{<command>, "\n"}, "end";
+<var>				::= "$" + <string>, "=", (<bool> | <string> | <char> | <int>);
+<list<TYPE>>		::= "#" + <string>, "=", "[", [{<TYPE>, ","}, <TYPE>], "]";
+
+(*Ex:
+#list1 = ["hello", "i am", "a list"]
+$var1 = 1337
+for [#list1 : $tmp] do
+	say $tmp
+end
+
+if [$var1 == 133*10+7] then
+	say hello!
+end
+
+while [true] do
+	cls
+end
+
+Result:
+hello
+i am
+a list
+hello!
+[All the text is now deleted]
+
+*)
+
+<bool>				::= <condition> | "true" | "false" | <bool>;
+<condition>			::= (((<int> | <bool> | <string>),
+						  ("==" | "!="), 
+						  (<int> | <bool> | <string>)) |
+						 (<int>, ("<" | "<=" | ">" | ">="), <int>) |
+						 (<bool>, ("&&" | "||"), <bool>) |
+						 ("!", <bool>));
+<string>			::= {<char>};
+<char>				::= 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' |
+						'/' | '.' | '$' | '&' | ...;
+<int>				::= '0' .. '9' | (<int>, ("+" | "-" | "/" | "*" | "%" | "^"), <int>);
+<list<TYPE>>		::= {<TYPE>};
+<TYPE>				::= <bool> | <string> | <char> | <int>;

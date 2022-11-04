@@ -287,6 +287,15 @@
 			 */
 			std::string runCmd(int id, std::string[], int, std::string);
 
+
+			/**
+			 * @brief The syntax analyser
+			 */
+			class SYNTAX
+			{
+
+			};
+
 		private:
 			/**
 			 * @brief [UNUSED]

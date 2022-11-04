@@ -32,3 +32,5 @@ A{Main} ==> |Command| B
 B[Core] ==> |Result| A
 A ==> |Result| C
 ```
+
+See `syntax.ebnf` for syntax details.
