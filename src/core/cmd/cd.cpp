@@ -27,7 +27,7 @@
 	std::string SnabbGET::CMDS::_cd_(std::string cmd[], int cmdLen, std::string)
 	{
 		std::string msg = "cd ";
-		msg += __snabbget.currentDir;
+		msg += SnabbGET::currentDir;
 		msg += " && cd ";
 		msg += cmd[1];
 		#ifdef DEBUG
@@ -47,14 +47,14 @@
 				if (cmdLen > 1)
 				{
 					msg = "cd ";
-					msg += __snabbget.currentDir;
+					msg += SnabbGET::currentDir;
 					msg += " && cd ";
 					msg += cmd[1];
 					msg += " && pwd";
 					#ifdef DEBUG
 						std::cout << "CMD = " << msg << "\r\n";
 					#endif
-					__snabbget.currentDir = 
+					SnabbGET::currentDir = 
 						((std::string)exec(msg.c_str())) // the result
 							.find_last_of('\n') != std::string::npos ?  // \n is found?
 						((std::string)exec(msg.c_str())) //the result
@@ -65,11 +65,11 @@
 						((std::string)exec(msg.c_str())); // the result
 				}
 				else
-					__snabbget.currentDir = "~";
-				setenv("PWD", __snabbget.currentDir.c_str(), 1);
+					SnabbGET::currentDir = "~";
+				setenv("PWD", SnabbGET::currentDir.c_str(), 1);
 			#endif
-			__snabbget.set_current_dir();
-			return __snabbget.currentDir;
+			SnabbGET::set_current_dir();
+			return SnabbGET::currentDir;
 		}
 		else
 			return "\rError";

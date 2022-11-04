@@ -25,7 +25,7 @@
  */
 std::string SnabbGET::CMDS::_cp_(std::string cmd[], int cmdLen, std::string)
 {
-	if (cmdLen < 2)
+	if (cmdLen < 3)
 		return "Error: you must give the source file and the destination file";
 
 	std::ifstream src(cmd[1], std::ios::binary);

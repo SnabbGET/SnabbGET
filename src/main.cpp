@@ -48,12 +48,14 @@
 
 EXTERN EMSCRIPTEN_KEEPALIVE void RunSnabbGETCommand(int argc, char **argv)
 {
-	SnabbGET sget;
-	//SnabbGET::Raw_mode rw(0);
-	sget.init();
+	sget::SnabbGET();
+	sget::rw::Raw_mode(0);
+	sget::init();
 	std::string cmd;
 	std::cin >> cmd;
-	std::cout << sget.read_input(cmd) << "\r\n";
+	std::cout << sget::read_input(cmd) << "\r\n";
+	std::string tmp[0];
+	sget::CMDS::_exit_(tmp, 0, "");
 }
 
 // End Wasm
@@ -65,12 +67,14 @@ std::string input_user_tmp;
 
 int main(int argc, char *argv[])
 {
+	sget::SnabbGET();
+	sget::rw::Raw_mode(0);
 	system(""); // I don't kwon why I must put that, but if I don't add that, escape codes don't work on Windows :(
 	if (argc == 1 && !one_line)
 	{
-		SnabbGET sget;
-		SnabbGET::Raw_mode rw(0);
-		std::cout << sget.init();//<< "\0337\n\0338";
+		//using namespace SnabbGET sget;
+		//using SnabbGET::Raw_mode rw(0);
+		std::cout << sget::init();//<< "\0337\n\0338";
 		while (true)
 		{
 			//getline(std::cin, input_user);
@@ -93,13 +97,13 @@ int main(int argc, char *argv[])
 					(126 >= c)) || 
 					((161 <= c) &&
 					(255 >= c)) ||
-					c == rw.TAB)
+					c == sget::rw::TAB)
 				{
 					input_user += (char)c;
 					input_user_tmp = (char)c;
 					chars_count++;
 				}
-				if (c == rw.BACKSPACE)
+				if (c == sget::rw::BACKSPACE)
 				{
 					if (input_user.length() > 0)
 					{
@@ -108,7 +112,7 @@ int main(int argc, char *argv[])
 					}
 					input_user_tmp = "\033[D \033[D";
 				}
-				if (c == rw.DEL_KEY)
+				if (c == sget::rw::DEL_KEY)
 				{
 					if (input_user.length() > 0 && right_count > 0)
 					{
@@ -117,7 +121,7 @@ int main(int argc, char *argv[])
 					}
 					input_user_tmp = "\033[D \033[D";
 				}
-				if ((int)c == rw.ESC) // ESC like \[ \033 \x1b
+				if ((int)c == sget::rw::ESC) // ESC like \[ \033 \x1b
 				{
 					read(0, &c, 1);
 					if (c == '[')
@@ -146,7 +150,7 @@ int main(int argc, char *argv[])
 				#endif
 			}
 
-			std::cout << "\r\n" << sget.read_input(input_user);
+			std::cout << "\r\n" << sget::read_input(input_user);
 
 			if (input_user == "exit") 
 			{
@@ -154,22 +158,22 @@ int main(int argc, char *argv[])
 				return EXIT_SUCCESS;
 				exit(EXIT_SUCCESS);
 			}
-			else std::cout << "\r\n" << sget.new_line();
+			else std::cout << "\r\n" << sget::new_line();
 		}
 		return 0;
 	}
 	else if (argc > 1 && !one_line)
 	{
-		SnabbGET sget(true);
-		SnabbGET::Raw_mode rw(0);
-		sget.init();
+		sget::SnabbGET(true);
+		sget::rw::Raw_mode(0);
+		sget::init();
 		std::string arr[MAX_INPUT];
 		for(int b = 0; b < argc - 1 ; b++)
 		{
 			arr[b] = argv[b + 1];
 		}
 		//std::cout << concatArr(arr, argc) << std::endl;
-		std::cout << sget.read_input(concatArr(arr, argc)) << "\r\n";
+		std::cout << sget::read_input(concatArr(arr, argc)) << "\r\n";
 		return EXIT_SUCCESS;
 	}
 	else // one_line
