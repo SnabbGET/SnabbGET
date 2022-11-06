@@ -48,7 +48,7 @@ std::string SnabbGET::CMDS::_mk_(std::string cmd[], int cmdLen, std::string)
 				std::cout << "Error creating file!" << std::endl;
 			#endif
 
-			system(("echo \"\" > " + cmd[1]).c_str());
+			system(("cd " + SnabbGET::currentDir + " && echo \"\" > " + cmd[1]).c_str());
 
 			// Try to open the file again
 			outfile.open(cmd[1].c_str(), std::ios_base::app);
@@ -61,11 +61,6 @@ std::string SnabbGET::CMDS::_mk_(std::string cmd[], int cmdLen, std::string)
 				return "Error: can't make this file";
 			}
 
-		}
-		else
-		{
-			outfile.close();
-			outfile.open("dist/.history.txt", std::ios_base::app);
 		}
 	}
 	outfile.close();

@@ -157,6 +157,10 @@
 				PAGE_UP,
 				PAGE_DOWN
 			};
+			
+			#ifdef __linux__
+				static struct termios old, new1;
+			#endif
 		}
 
 		/*void RWpause();

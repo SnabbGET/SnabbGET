@@ -46,6 +46,20 @@
 	#define EMSCRIPTEN_KEEPALIVE
 #endif
 
+#ifdef _FORJAVAGUI_
+
+int main()
+{	
+	sget::SnabbGET();
+	sget::rw::Raw_mode(0);
+	sget::init();
+	std::cout << sget::new_line();
+	sget::read_input("exit");
+	return EXIT_SUCCESS;
+}
+
+#else
+
 EXTERN EMSCRIPTEN_KEEPALIVE void RunSnabbGETCommand(int argc, char **argv)
 {
 	sget::SnabbGET();
@@ -154,7 +168,6 @@ int main(int argc, char *argv[])
 
 			if (input_user == "exit") 
 			{
-				//sget.~SnabbGET();
 				return EXIT_SUCCESS;
 				exit(EXIT_SUCCESS);
 			}
@@ -165,7 +178,7 @@ int main(int argc, char *argv[])
 	else if (argc > 1 && !one_line)
 	{
 		sget::SnabbGET(true);
-		sget::rw::Raw_mode(0);
+		//sget::rw::Raw_mode(0);
 		sget::init();
 		std::string arr[MAX_INPUT];
 		for(int b = 0; b < argc - 1 ; b++)
@@ -174,6 +187,8 @@ int main(int argc, char *argv[])
 		}
 		//std::cout << concatArr(arr, argc) << std::endl;
 		std::cout << sget::read_input(concatArr(arr, argc)) << "\r\n";
+		sget::read_input("exit");
+		//sget::rw::pause();
 		return EXIT_SUCCESS;
 	}
 	else // one_line
@@ -187,3 +202,5 @@ int main(int argc, char *argv[])
 		return EXIT_SUCCESS;*/
 	}
 }
+
+#endif

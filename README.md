@@ -28,10 +28,8 @@ make
 make run
 ```
 
-To use the GUI version (in dev), you must have [SFML](https://www.sfml-dev.org/download/sfml/2.5.1/) installed:
+To use the GUI version (in dev), you must have a sdk installed:
 
 ```bash
-g++ -c src/interface/gui.cpp
-g++ gui.o -o gui -lsfml-graphics -lsfml-window -lsfml-system
-./gui
+make runGui
 ```

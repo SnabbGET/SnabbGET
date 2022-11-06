@@ -3,7 +3,7 @@ DEBUG = on
 arg =
 wasm = off
 
-.PHONY: all pre-compile compile execute
+.PHONY: all pre-compile compile execute gui runGui
 
 all: pre-compile compile
 
@@ -33,3 +33,12 @@ endif
 else
 	@echo "The web page is available on web/${filename}.html"
 endif
+
+gui:
+	@echo "Generating the gui..."
+	cd src/interface && javac gui.java
+	g++ -D _FORJAVAGUI_ src/*.cpp src/core/utils.cpp -o "src/interface/prompt"
+
+runGui: gui
+	@echo "Running the gui..."
+	cd src/interface && java editor

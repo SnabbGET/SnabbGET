@@ -24,6 +24,6 @@
 std::string SnabbGET::CMDS::_say_(std::string cmd[], int, std::string input_user)
 {
 	std::string msg = input_user.substr(cmd[0].length()+1).c_str();
-	msg += "\r\n";
+	//msg += "\r\n";
 	return msg;
 }

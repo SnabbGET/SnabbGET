@@ -63,8 +63,8 @@
 	#include <Lmcons.h>
 #endif
 
-/* #######  #####  ##   ##  ###### ####### #######  #####  ##   ##  ######
- * ##      ### ### ###  ## ###       ###     ###   ### ### ###  ## ##
+/* ####### ##   ## ##   ##  ###### ####### #######  #####  ##   ##  ######
+ * ##      ##   ## ###  ## ###       ###     ###   ### ### ###  ## ##
  * ##      ##   ## #### ## ##        ###     ###   ##   ## #### ##   ##
  * ####### ##   ## ## #### ##        ###     ###   ##   ## ## ####    ##
  * ##      ### ### ##  ### ###       ###     ###   ### ### ##  ###      ##
@@ -74,14 +74,13 @@
 void SnabbGET::SnabbGET()
 {
 	dateOpen = std::time(0);
-	//is____snabbget = true; 
+	init();
 }
 
 void SnabbGET::SnabbGET(bool cmd_line)
 {
-	dateOpen = std::time(0);
+	SnabbGET();
 	CMD_LINE = cmd_line;
-	//CMD_LINE = CMD_LINE;
 }
 
 std::string SnabbGET::init()
@@ -385,7 +384,6 @@ void SnabbGET::set_current_dir()
 			std::cout << "Get current dir is not avilable for MacOS." << std::endl;
 		#endif
 	#endif
-	//__snabbget.currentDir = this->currentDir;
 }
 
 /* Initialize new terminal i/o settings */
@@ -398,19 +396,15 @@ void SnabbGET::set_current_dir()
  * ##   ##  ## ##
  */
 
-#ifdef __linux__
-	static struct termios old, new1;
-#endif
-
 void SnabbGET::Raw_mode::Raw_mode(int echo)
 {
 	#ifdef __linux__
-		tcgetattr(0, &old); // grab old terminal i/o settings 
-		new1 = old; /* make new settings same as old settings */
-		new1.c_lflag &= ~ICANON; /* disable buffered i/o */
-		new1.c_lflag &= echo ? ECHO : ~ECHO; /* set echo mode */
-		new1.c_oflag &= ~(OPOST); /* disable output processing */
-		tcsetattr(0, TCSANOW, &new1); // use these new terminal i/o settings now
+		tcgetattr(0, &SnabbGET::Raw_mode::old); // grab old terminal i/o settings 
+		SnabbGET::Raw_mode::new1 = SnabbGET::Raw_mode::old; /* make new settings same as old settings */
+		SnabbGET::Raw_mode::new1.c_lflag &= ~ICANON; /* disable buffered i/o */
+		SnabbGET::Raw_mode::new1.c_lflag &= echo ? ECHO : ~ECHO; /* set echo mode */
+		SnabbGET::Raw_mode::new1.c_oflag &= ~(OPOST); /* disable output processing */
+		tcsetattr(0, TCSANOW, &SnabbGET::Raw_mode::new1); // use these new terminal i/o settings now
 	#endif
 	if (echo) {}
 	// /o o\ ?
@@ -420,26 +414,26 @@ void SnabbGET::Raw_mode::Raw_mode(int echo)
 void SnabbGET::Raw_mode::Raw_mode()
 {
 	#ifdef __linux__
-		tcgetattr(0, &old); // grab old terminal i/o settings 
-		new1 = old; /* make new settings same as old settings */
-		new1.c_lflag &= ~ICANON; /* disable buffered i/o */
-		new1.c_lflag &= ~ECHO; /* set echo mode */
-		new1.c_oflag &= ~(OPOST); /* disable output processing */
-		tcsetattr(0, TCSANOW, &new1); // use these new terminal i/o settings now
+		tcgetattr(0, &SnabbGET::Raw_mode::old); // grab old terminal i/o settings 
+		SnabbGET::Raw_mode::new1 = SnabbGET::Raw_mode::old; /* make new settings same as old settings */
+		SnabbGET::Raw_mode::new1.c_lflag &= ~ICANON; /* disable buffered i/o */
+		SnabbGET::Raw_mode::new1.c_lflag &= ~ECHO; /* set echo mode */
+		SnabbGET::Raw_mode::new1.c_oflag &= ~(OPOST); /* disable output processing */
+		tcsetattr(0, TCSANOW, &SnabbGET::Raw_mode::new1); // use these new terminal i/o settings now
 	#endif
 }
 
 void SnabbGET::Raw_mode::pause()
 {
 	#ifdef __linux__
-		tcsetattr(0, TCSANOW, &old);
+		tcsetattr(0, TCSANOW, &SnabbGET::Raw_mode::old);
 	#endif
 }
 
 void SnabbGET::Raw_mode::resume()
 {
 	#ifdef __linux__
-		tcsetattr(0, TCSANOW, &new1);
+		tcsetattr(0, TCSANOW, &SnabbGET::Raw_mode::new1);
 	#endif
 }
 
