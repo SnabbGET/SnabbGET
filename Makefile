@@ -3,7 +3,7 @@ DEBUG = on
 arg =
 wasm = off
 
-.PHONY: all pre-compile compile execute gui runGui
+.PHONY: all pre-compile compile gui
 
 all: pre-compile compile
 

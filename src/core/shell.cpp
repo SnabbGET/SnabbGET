@@ -339,8 +339,8 @@ void SnabbGET::set_machine_name()
 	computerName = "computer";
 	#ifdef _WIN32
 		//std::string computerName = getenv("COMPUTERNAME");
-		this->computerName = getenv("COMPUTERNAME"); //this->computerName = computerName;
-		if (this->computerName == "")
+		computerName = getenv("COMPUTERNAME"); //this->computerName = computerName;
+		if (computerName == "")
 		{
 			#ifdef DEBUG
 				std::cout << "Error getting machine name on Windows!" << std::endl;
@@ -366,7 +366,7 @@ void SnabbGET::set_current_dir()
 { //USE PWD COMMAND
 	currentDir = "/";
 	#ifdef _WIN32
-		this->currentDir = getcwd(NULL, 0);
+		currentDir = getcwd(NULL, 0);
 		#ifdef DEBUG
 			std::cout << "Current dir: " << currentDir << std::endl;
 		#endif
