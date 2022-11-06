@@ -23,6 +23,8 @@
  */
 std::string SnabbGET::CMDS::_help_(std::string cmd[], int cmdLen, std::string)
 {
+	// Yes, it's bad to use a help function to debug...
+	//return join(SCREEN, "\r\n");
 	if (contain(cmd, cmdLen, "--web"))
 	{
 		#ifdef _WIN32

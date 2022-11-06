@@ -23,5 +23,6 @@
  */
 std::string SnabbGET::CMDS::_cls_(std::string[], int, std::string)
 {
+	SCREEN.clear();
 	return "\033[J\033[2J\033[3J\033[H";
 }

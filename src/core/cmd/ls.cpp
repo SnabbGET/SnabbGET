@@ -32,14 +32,18 @@ std::string SnabbGET::CMDS::_ls_(std::string[], int, std::string)
 	std::string currDir = SnabbGET::currentDir;
 	if (currDir.find("~") == 0)
 	{
-		std::string r = ((std::string)exec("echo ~")) // the result
-							.find_last_of('\n') != std::string::npos ?  // \n is found?
-						((std::string)exec("echo ~")) //the result
-							.erase( // delete
-								((std::string)exec("echo ~")).length() - 1, // length of the result
-								1 // number of char
-							) :
-						((std::string)exec("echo ~")); // the result
+		#ifdef __WIN32
+			std::string = "%%USERPROFILE%%";
+		#else
+			std::string r = ((std::string)exec("echo ~")) // the result
+								.find_last_of('\n') != std::string::npos ?  // \n is found?
+							((std::string)exec("echo ~")) //the result
+								.erase( // delete
+									((std::string)exec("echo ~")).length() - 1, // length of the result
+									1 // number of char
+								) :
+							((std::string)exec("echo ~")); // the result
+		#endif
 		currDir.erase(0, 1);
 		currDir = r + currDir;
 	}

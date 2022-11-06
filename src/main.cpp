@@ -60,7 +60,7 @@ int main()
 
 #else
 
-EXTERN EMSCRIPTEN_KEEPALIVE void RunSnabbGETCommand(int argc, char **argv)
+EXTERN EMSCRIPTEN_KEEPALIVE void RunSnabbGETCommand(/*int argc, char **argv*/)
 {
 	sget::SnabbGET();
 	sget::rw::Raw_mode(0);
@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 	{
 		//using namespace SnabbGET sget;
 		//using SnabbGET::Raw_mode rw(0);
-		std::cout << sget::init();//<< "\0337\n\0338";
+		std::cout << sget::addToSCREEN(sget::init());//<< "\0337\n\0338";
 		while (true)
 		{
 			//getline(std::cin, input_user);
@@ -163,15 +163,15 @@ int main(int argc, char *argv[])
 					std::cout << input_user_tmp << /*"(" << (int)c << ")" << */"\033[1A\n";
 				#endif
 			}
-
-			std::cout << "\r\n" << sget::read_input(input_user);
+			sget::SCREEN.back() = sget::SCREEN.back() + input_user;
+			std::cout << "\r\n" << sget::addToSCREEN(sget::read_input(input_user));
 
 			if (input_user == "exit") 
 			{
 				return EXIT_SUCCESS;
 				exit(EXIT_SUCCESS);
 			}
-			else std::cout << "\r\n" << sget::new_line();
+			else std::cout << "\r\n" << sget::addToSCREEN(sget::new_line());
 		}
 		return 0;
 	}

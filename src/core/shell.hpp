@@ -26,6 +26,8 @@
 	#endif
 	#include <functional>
 	#include <vector>
+	#include <iterator>
+	#include <sstream>
 
 	#include "utils.hpp"
 
@@ -188,6 +190,8 @@
 
 		bool CMD_LINE = false;
 
+		std::vector<std::string> SCREEN;
+
 		/**
 		 * @brief Set the user name object in the var
 		 * 
@@ -261,7 +265,14 @@
 			std::string _rm_  (std::string[], int, std::string);
 			
 			std::vector<std::function<std::string(std::string[], int, std::string)>> cmdLst;
+			std::vector<const char*> allCmd;
 		}
+
+		std::string addToSCREEN(std::string txt)
+			{SCREEN.emplace_back(txt); return txt;}
+
+		std::string addToSCREEN(std::string txt, std::string txt2)
+			{SCREEN.emplace_back(txt + txt2); return txt2;}
 
 		/**
 		 * @brief Command runner

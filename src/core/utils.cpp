@@ -16,6 +16,9 @@
 #include <memory>
 #include <stdexcept>
 #include <array>
+#include <vector>
+#include <iterator>
+#include <sstream>
 
 #include "utils.hpp"
 
@@ -119,4 +122,12 @@ std::string replaceAll(std::string str, const std::string &from, const std::stri
 		start_pos += to.length(); // Handles case where 'to' is a substring of 'from'
 	}
 	return str;
+}
+
+std::string join(std::vector<std::string> const &strings, const char *delim)
+{
+    std::stringstream ss;
+    std::copy(strings.begin(), strings.end(),
+        std::ostream_iterator<std::string>(ss, delim));
+    return ss.str();
 }

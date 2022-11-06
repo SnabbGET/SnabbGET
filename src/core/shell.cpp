@@ -450,4 +450,16 @@ void SnabbGET::CMDS::CMDS()
 	cmdLst.emplace_back( _mv_ );
 	cmdLst.emplace_back( _mk_ );
 	cmdLst.emplace_back( _rm_ );
+
+	allCmd.emplace_back("exit");
+	allCmd.emplace_back("help");
+	allCmd.emplace_back("cls" );
+	allCmd.emplace_back("say" );
+	allCmd.emplace_back( "cd" );
+	allCmd.emplace_back("exe" );
+	allCmd.emplace_back( "ls" );
+	allCmd.emplace_back( "cp" );
+	allCmd.emplace_back( "mv" );
+	allCmd.emplace_back( "mk" );
+	allCmd.emplace_back( "rm" );
 }
