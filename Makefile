@@ -14,9 +14,9 @@ pre_compile:
 compile: pre_compile
 	@echo "Generating..."
 ifeq (${DEBUG}, on)
-	g++ -Wall -Wextra -D DEBUG -g3 src/*.cpp src/core/utils.cpp -o "${filename}"
+	g++ -Wall -Wextra -D DEBUG -O3 -g3 src/*.cpp src/core/utils.cpp -o "${filename}"
 else
-	g++ -Wall -Wextra -g3 src/*.cpp src/core/utils.cpp -o "${filename}"
+	g++ -Wall -Wextra -O3 -g3 src/*.cpp src/core/utils.cpp -o "${filename}"
 endif
 ifneq (${wasm}, off)
 	em++ -D DEBUG src/*.cpp src/core/utils.cpp -o "web/${filename}.html" --shell-file html_template/shell_minimal.html -s NO_EXIT_RUNTIME=1 -s "EXPORTED_RUNTIME_METHODS=['ccall']"

@@ -88,7 +88,9 @@ int main(int argc, char *argv[])
 	{
 		//using namespace SnabbGET sget;
 		//using SnabbGET::Raw_mode rw(0);
-		std::cout << sget::addToSCREEN(sget::init());//<< "\0337\n\0338";
+		sget::addToSCREEN(sget::init());
+		// Printf is faster than std::cout and \n is faster than std::endl
+		printf(sget::FRAME().c_str());
 		while (true)
 		{
 			//getline(std::cin, input_user);
@@ -164,14 +166,22 @@ int main(int argc, char *argv[])
 				#endif
 			}
 			sget::SCREEN.back() = sget::SCREEN.back() + input_user;
-			std::cout << "\r\n" << sget::addToSCREEN(sget::read_input(input_user));
+			sget::addToSCREEN(sget::read_input(input_user));
+			sget::addToSCREEN("");
+			printf(sget::FRAME().c_str());
 
 			if (input_user == "exit") 
 			{
+				std::cout << "\033[J\033[2J\033[3J\033[H";
 				return EXIT_SUCCESS;
 				exit(EXIT_SUCCESS);
 			}
-			else std::cout << "\r\n" << sget::addToSCREEN(sget::new_line());
+			else
+			{
+				sget::addToSCREEN(sget::new_line());
+				printf(sget::FRAME().c_str());
+				std::cout << "";
+			}
 		}
 		return 0;
 	}

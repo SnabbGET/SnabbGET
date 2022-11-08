@@ -268,11 +268,14 @@
 			std::vector<const char*> allCmd;
 		}
 
-		std::string addToSCREEN(std::string txt)
-			{SCREEN.emplace_back(txt); return txt;}
+		/*std::string*/void addToSCREEN(std::string txt)
+			{SCREEN.emplace_back(txt);}
 
-		std::string addToSCREEN(std::string txt, std::string txt2)
-			{SCREEN.emplace_back(txt + txt2); return txt2;}
+		/**
+		 * @brief Refresh the screen
+		 * 
+		 */
+		std::string FRAME();
 
 		/**
 		 * @brief Command runner
@@ -290,6 +293,12 @@
 		{
 
 		};
+
+		/**
+		 * @brief The screen changer
+		 * 
+		 */
+		//namespace
 	}
 
 	// To replace 'SnabbGET::'

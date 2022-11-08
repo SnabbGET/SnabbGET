@@ -94,6 +94,7 @@ Version: ";
 	msg += VERSION;
 	msg += "\r\n\
 Copyright (c) SnabbGET\r\n\
+Under the  MIT License\r\n\
 ----------------------\r\n";
 	msg += "\033[1A\r\n";
 	msg += new_line();
@@ -116,6 +117,13 @@ void SnabbGET::get_command(std::string input_user_t)
 		}
 	if (tmp != "") cmd[j++] = tmp;
 	cmdLen = j;
+}
+
+std::string SnabbGET::FRAME()
+{
+	std::string tmp = join(SCREEN, "\r\n");
+	tmp.pop_back(); tmp.pop_back();
+	return std::string("\033[J\033[2J\033[3J\033[H") + tmp;
 }
 
 std::string SnabbGET::runCmd(int id, std::string cmd[], int cmdLen, std::string input_user)
