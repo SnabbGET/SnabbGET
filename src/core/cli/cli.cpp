@@ -160,3 +160,22 @@ void SnabbGET::CLI::table(int posX, int posY, std::vector<std::vector<std::strin
 	//        ├bc┼  ┼grh┤
 	//        ╰──┴──┴───╯
 }
+
+void SnabbGET::CLI::popup(int posX, int posY, std::string txt)
+{
+	std::cout << "\0337\033[" << posY << ";" << posX << "H╭"
+		<< std::string("─")*txt.length() // Max size of elements in the vector
+		<< "╮\r\n";
+	//Result: ╭────╮
+	
+	std::cout << "\033[" << posY+1 << ";" << posX << "H│" << txt << "│\r\n";
+	//Result: ╭────╮
+	//        │abcd│
+
+	std::cout << "\033[" << posY+2 << ";" << posX << "H╰"
+		<< std::string("─")*(txt.length()-1) // Max size of elements in the vector
+		<< "╴⨉\r\n\0338";
+	//Result: ╭────╮
+	//        │abcd│
+	//        ╰───╴⨉
+}

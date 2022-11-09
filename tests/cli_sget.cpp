@@ -73,11 +73,13 @@ int main()
 		std::vector<std::string>({""}),
 		std::vector<std::string>({"haha"})
 	});
+	std::string txt3("hello i am a string    ");
 	get_pos(&posY, &posX);
 	posY++;
 	//std::cout << "                        "<<(posY-txt.size()-3 > 1) ? posY-txt.size()-3:0;
 	//sget::CLI::list(posX, (posY-txt.size()-3 > 1) ? posY-txt.size()-3:0, txt);
-	sget::CLI::table(6, 3, txt2, true);
+	//sget::CLI::table(6, 3, txt2, true);
+	sget::CLI::popup(5, 3, txt3);
 	std::cin >> a;
 	sget::read_input("exit");
 	sget::rw::pause();
