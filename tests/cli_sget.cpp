@@ -66,10 +66,18 @@ int main()
 	int posX, posY;
 	char a;
 	std::vector<std::string> txt({"hello", "i", "", ", ", "want a cake"});
+	std::vector<std::vector<std::string>> txt2({
+		std::vector<std::string>({"some text", "ttttt"}),
+		std::vector<std::string>({"hello", "i", "", ", ", "want a cake"}),
+		std::vector<std::string>({"i am", "stilllllllll", "here"}),
+		std::vector<std::string>({""}),
+		std::vector<std::string>({"haha"})
+	});
 	get_pos(&posY, &posX);
 	posY++;
-	std::cout << "                        "<<(posY-txt.size()-3 > 1) ? posY-txt.size()-3:0;
-	sget::CLI::list(posX, (posY-txt.size()-3 > 1) ? posY-txt.size()-3:0, txt);
+	//std::cout << "                        "<<(posY-txt.size()-3 > 1) ? posY-txt.size()-3:0;
+	//sget::CLI::list(posX, (posY-txt.size()-3 > 1) ? posY-txt.size()-3:0, txt);
+	sget::CLI::table(6, 3, txt2, true);
 	std::cin >> a;
 	sget::read_input("exit");
 	sget::rw::pause();

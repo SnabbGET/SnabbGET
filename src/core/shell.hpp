@@ -301,6 +301,9 @@
 		namespace CLI
 		{
 			void list(int posX, int posY, std::vector<std::string> txt);
+			void popup(int posX, int posY, std::string);
+			// For vector: column<list<string>>
+			void table(int posX, int posY, std::vector<std::vector<std::string>> txt, bool with1line);
 		}
 	}
 
