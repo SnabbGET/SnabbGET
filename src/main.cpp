@@ -172,7 +172,7 @@ int main(int argc, char *argv[])
 
 			if (input_user == "exit") 
 			{
-				std::cout << "\033[J\033[2J\033[3J\033[H";
+				std::cout << "";
 				return EXIT_SUCCESS;
 				exit(EXIT_SUCCESS);
 			}

@@ -298,7 +298,10 @@
 		 * @brief The screen changer
 		 * 
 		 */
-		//namespace
+		namespace CLI
+		{
+			void list(int posX, int posY, std::vector<std::string> txt);
+		}
 	}
 
 	// To replace 'SnabbGET::'
@@ -318,6 +321,7 @@
 	#include "shell.cpp"
 	#include "./includesAll.hpp"
 	#include "./settings/reader.cpp"
+	#include "./cli/cli.cpp"
 
 #endif // SNABBGET_CORE
 
