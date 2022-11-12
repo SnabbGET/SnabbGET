@@ -4,7 +4,7 @@
 <command>			::= <command_name>, {[<params>]};
 <command_name>		::= "cd" | "cls" | "cp" | "exe" |
 						"exit" | "help" | "ls" | "mk" |
-						"mv" | "say";
+						"mv" | "say" | "rm";
 <params>			::= ["--" | "-"], <param_name>;
 <param_name>		::= <string>;
 <for>				::= "for", "[", ((<int>, <bool> (* , int++ *) ) |
@@ -41,7 +41,7 @@ hello!
 
 *)
 
-<bool>				::= <condition> | "true" | "false" | <bool>;
+<bool>				::= <condition> | "true" | "false" | ("(", <bool>, ")");
 <condition>			::= (((<int> | <bool> | <string>),
 						  ("==" | "!="), 
 						  (<int> | <bool> | <string>)) |
