@@ -3,6 +3,6 @@
 
 int main()
 {
-	std::cout << getenv("PATH");len
+	std::cout << getenv("PATH");
 	return 0;
 }

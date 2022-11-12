@@ -39,6 +39,7 @@
 output
 gui
 includes
+src/interface/prompt
 
 # Debug files
 *.dSYM/
