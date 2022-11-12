@@ -5,13 +5,16 @@
 
 //#include "../utils.cpp"
 
-static inline void replaceAll2(std::string &str, const std::string &from, const std::string &to)
+static inline void replaceAll2(std::string &str, const std::string &from,
+	const std::string &to
+)
 {
 	size_t start_pos = 0;
 	while((start_pos = str.find(from, start_pos)) != std::string::npos)
 	{
 		str.replace(start_pos, from.length(), to);
-		start_pos += to.length(); // Handles case where 'to' is a substring of 'from'
+		start_pos += to.length();
+		// Handles case where 'to' is a substring of 'from'
 	}
 }
 
@@ -103,8 +106,10 @@ std::string SnabbGET::promptSettings()
 	while (promptFile.good())
 	{
 		std::getline(promptFile, tmp2);
-		tmp += tmp2.rfind("#", 0) != 0 && tmp2.rfind("\n", 0) != 0 && tmp2.rfind("\r", 0) != 0 ?
-				tmp2:"";
+		tmp += tmp2.rfind("#", 0) != 0 &&
+			   tmp2.rfind("\n", 0) != 0 &&
+			   tmp2.rfind("\r", 0) != 0 ?
+			tmp2:"";
 	}
 	promptFile.close();
 
@@ -113,10 +118,10 @@ std::string SnabbGET::promptSettings()
 		tmp3 = "\033[93m [DEBUG]";
 	#endif
 
-	//std::string userName = "pi", machineName="raspberrypi", currDir="~/SnabbGET";
+//std::string userName = "pi", machineName="raspberrypi", currDir="~/SnabbGET";
 
 	replaceAll2(tmp, "\\033", "\033");
-	replaceAll2(tmp, "$$", "œùƒ");
+	replaceAll2(tmp, "$$", "œùƒ"); // ;) oeuf == egg
 	replaceAll2(tmp, "$u", userName);
 	replaceAll2(tmp, "$m", computerName);
 	replaceAll2(tmp, "$d", currentDir);

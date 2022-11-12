@@ -82,7 +82,8 @@
 		std::string read_input(std::string input_user_t);
 
 		/**
-		 * @brief Use user' settings for the prompt in file settings/prompt.sget.txt
+		 * @brief Use user' settings for the prompt in file
+		 * settings/prompt.sget.txt
 		 *
 		 * @return [std::string] The prompt text
 		 */
@@ -96,7 +97,8 @@
 		std::string new_line();
 
 		/**
-		 * @brief Active the raw mode to get a best terminal experience in Linux
+		 * @brief Active the raw mode to get a best terminal
+		 * experience in Linux
 		 * 
 		 * @param echo [OPTIONAL] Set to 0 or see in code
 		 */
@@ -264,7 +266,11 @@
 			std::string _mk_  (std::string[], int, std::string);
 			std::string _rm_  (std::string[], int, std::string);
 			
-			std::vector<std::function<std::string(std::string[], int, std::string)>> cmdLst;
+			std::vector<
+				std::function<
+					std::string(std::string[], int, std::string)
+				>
+			> cmdLst;
 			std::vector<const char*> allCmd;
 		}
 
@@ -303,7 +309,9 @@
 			void list(int posX, int posY, std::vector<std::string> txt);
 			void popup(int posX, int posY, std::string);
 			// For vector: column<list<string>>
-			void table(int posX, int posY, std::vector<std::vector<std::string>> txt, bool with1line);
+			void table(int posX, int posY, 
+				std::vector<std::vector<std::string>> txt, bool with1line
+			);
 		}
 	}
 

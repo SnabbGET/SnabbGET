@@ -90,7 +90,8 @@ int main()
 					}*/
 				}
 			}
-			std::cout << del(input_user) << "\033[1A\n\033[" << del(input_user).length() << "D";
+			std::cout << del(input_user) << "\033[1A\n\033["
+				<< del(input_user).length() << "D";
 		}
 	}
 }

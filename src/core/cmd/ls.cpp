@@ -36,10 +36,12 @@ std::string SnabbGET::CMDS::_ls_(std::string[], int, std::string)
 			std::string = "%%USERPROFILE%%";
 		#else
 			std::string r = ((std::string)exec("echo ~")) // the result
-								.find_last_of('\n') != std::string::npos ?  // \n is found?
+								.find_last_of('\n') != std::string::npos ?
+								// \n is found?
 							((std::string)exec("echo ~")) //the result
 								.erase( // delete
-									((std::string)exec("echo ~")).length() - 1, // length of the result
+									((std::string)exec("echo ~")).length() - 1,
+									// length of the result
 									1 // number of char
 								) :
 							((std::string)exec("echo ~")); // the result
@@ -56,7 +58,7 @@ std::string SnabbGET::CMDS::_ls_(std::string[], int, std::string)
 	{
 		while ((diread = readdir(dir)) != nullptr)
 		{
-			if (((std::string)diread->d_name).rfind(".", 0) == std::string::npos)
+			if (((std::string)diread->d_name).rfind(".", 0)==std::string::npos)
 				files.push_back(diread->d_name);
 		}
 		closedir(dir);

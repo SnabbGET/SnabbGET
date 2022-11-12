@@ -126,7 +126,10 @@ std::string SnabbGET::FRAME()
 	return std::string("\033[J\033[2J\033[3J\033[H") + tmp;
 }
 
-std::string SnabbGET::runCmd(int id, std::string cmd[], int cmdLen, std::string input_user)
+std::string SnabbGET::runCmd(
+	int id, std::string cmd[], int cmdLen,
+	std::string input_user
+)
 {
 	auto &cmdTmp = SnabbGET::CMDS::cmdLst[id];
 	return cmdTmp(cmd, cmdLen, input_user);
@@ -175,7 +178,7 @@ std::string SnabbGET::read_input(std::string input_user_t)
 				if (!historyFile.is_open())
 				{
 					#ifdef DEBUG
-						std::cout << "Error opening history file!" << std::endl;
+						std::cout << "Error opening history file!" <<std::endl;
 					#endif
 					
 					exit(EXIT_FAILURE);
@@ -274,7 +277,8 @@ std::string SnabbGET::read_input(std::string input_user_t)
 			return "\r\n\033[92mCommand executed!\033[0m\r\n";
 		#else
 			if (cmd[1] == "cd")
-				return "WARNING! You had enter a 'cd' command. THE DIRECTORY IS NOT SAVED! Use the SnabbGET command.\r\n";
+				return "WARNING! You had enter a 'cd' command. THE DIRECTORY\
+IS NOT SAVED! Use the SnabbGET command.\r\n";
 			else
 				return "";
 		#endif
@@ -321,7 +325,7 @@ void SnabbGET::set_user_name()
 		else
 		{
 			#ifdef DEBUG
-				std::cout << "Error getting user name on Windows!" << std::endl;
+				std::cout << "Error getting user name on Windows!" <<std::endl;
 			#endif
 		}
 
@@ -336,7 +340,7 @@ void SnabbGET::set_user_name()
 
 	#else 
 		#ifdef DEBUG
-			std::cout << "Get user name is not avilable for MacOS." << std::endl;
+			std::cout << "Get user name is not avilable for MacOS."<<std::endl;
 		#endif
 		userName = "user";
 	#endif
@@ -347,11 +351,11 @@ void SnabbGET::set_machine_name()
 	computerName = "computer";
 	#ifdef _WIN32
 		//std::string computerName = getenv("COMPUTERNAME");
-		computerName = getenv("COMPUTERNAME"); //this->computerName = computerName;
+		computerName = getenv("COMPUTERNAME");
 		if (computerName == "")
 		{
 			#ifdef DEBUG
-				std::cout << "Error getting machine name on Windows!" << std::endl;
+				std::cout<<"Error getting machine name on Windows!"<<std::endl;
 			#endif
 		}
 	#elif __linux__
@@ -359,13 +363,14 @@ void SnabbGET::set_machine_name()
 		if (gethostname(hostname, HOST_NAME_MAX) == 1)
 		{
 			#ifdef DEBUG
-				std::cout << "Error getting machine name on Linux!" << std::endl;
+				std::cout << "Error getting machine name on Linux!"<<std::endl;
 			#endif
 		}
 		else computerName = hostname;
 	#else
 		#ifdef DEBUG
-			std::cout << "Get machine name is not avilable for MacOS." << std::endl;
+			std::cout  << "Get machine name is not avilable for MacOS."
+				<< std::endl;
 		#endif
 	#endif
 }
@@ -381,15 +386,20 @@ void SnabbGET::set_current_dir()
 	#elif __linux__
 		currentDir = getenv("PWD");
 		// Minimify the path (if start of path is user home, replace it with ~)
-		if (currentDir.substr(0, ((std::string)getenv("HOME")).size()) == getenv("HOME"))
-			currentDir = "~" + currentDir.substr(((std::string)getenv("HOME")).size());
+		if (currentDir.substr(0,
+				((std::string)getenv("HOME")).size()
+			) == getenv("HOME")
+		)
+			currentDir = "~" + currentDir.substr(
+				((std::string)getenv("HOME")).size()
+			);
 
 		#ifdef DEBUG
 			//std::cout << "Current dir: " << this->currentDir << std::endl;
 		#endif
 	#else
 		#ifdef DEBUG
-			std::cout << "Get current dir is not avilable for MacOS." << std::endl;
+			std::cout<<"Get current dir is not avilable for MacOS."<<std::endl;
 		#endif
 	#endif
 }
@@ -407,12 +417,18 @@ void SnabbGET::set_current_dir()
 void SnabbGET::Raw_mode::Raw_mode(int echo)
 {
 	#ifdef __linux__
-		tcgetattr(0, &SnabbGET::Raw_mode::old); // grab old terminal i/o settings 
-		SnabbGET::Raw_mode::new1 = SnabbGET::Raw_mode::old; /* make new settings same as old settings */
-		SnabbGET::Raw_mode::new1.c_lflag &= ~ICANON; /* disable buffered i/o */
-		SnabbGET::Raw_mode::new1.c_lflag &= echo ? ECHO : ~ECHO; /* set echo mode */
-		SnabbGET::Raw_mode::new1.c_oflag &= ~(OPOST); /* disable output processing */
-		tcsetattr(0, TCSANOW, &SnabbGET::Raw_mode::new1); // use these new terminal i/o settings now
+		// grab old terminal i/o settings
+		tcgetattr(0, &SnabbGET::Raw_mode::old);
+		// make new settings same as old settings
+		SnabbGET::Raw_mode::new1 = SnabbGET::Raw_mode::old;
+		// disable buffered i/o
+		SnabbGET::Raw_mode::new1.c_lflag &= ~ICANON;
+		// set echo mode
+		SnabbGET::Raw_mode::new1.c_lflag &= echo ? ECHO : ~ECHO;
+		// disable output processing
+		SnabbGET::Raw_mode::new1.c_oflag &= ~(OPOST);
+		// use these new terminal i/o settings now
+		tcsetattr(0, TCSANOW, &SnabbGET::Raw_mode::new1);
 	#endif
 	if (echo) {}
 	// /o o\ ?
@@ -422,12 +438,18 @@ void SnabbGET::Raw_mode::Raw_mode(int echo)
 void SnabbGET::Raw_mode::Raw_mode()
 {
 	#ifdef __linux__
-		tcgetattr(0, &SnabbGET::Raw_mode::old); // grab old terminal i/o settings 
-		SnabbGET::Raw_mode::new1 = SnabbGET::Raw_mode::old; /* make new settings same as old settings */
-		SnabbGET::Raw_mode::new1.c_lflag &= ~ICANON; /* disable buffered i/o */
-		SnabbGET::Raw_mode::new1.c_lflag &= ~ECHO; /* set echo mode */
-		SnabbGET::Raw_mode::new1.c_oflag &= ~(OPOST); /* disable output processing */
-		tcsetattr(0, TCSANOW, &SnabbGET::Raw_mode::new1); // use these new terminal i/o settings now
+		// grab old terminal i/o settings
+		tcgetattr(0, &SnabbGET::Raw_mode::old);
+		// make new settings same as old settings
+		SnabbGET::Raw_mode::new1 = SnabbGET::Raw_mode::old;
+		// disable buffered i/o
+		SnabbGET::Raw_mode::new1.c_lflag &= ~ICANON;
+		// set echo mode
+		SnabbGET::Raw_mode::new1.c_lflag &= ~ECHO;
+		// disable output processing
+		SnabbGET::Raw_mode::new1.c_oflag &= ~(OPOST);
+		// use these new terminal i/o settings now
+		tcsetattr(0, TCSANOW, &SnabbGET::Raw_mode::new1);
 	#endif
 }
 

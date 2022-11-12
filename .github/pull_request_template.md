@@ -2,7 +2,8 @@
 
 ## Why do you want to merge this PR?
 
-<!-- Provide a brief description of the reason for your changes. Include screenshots or videos for visual changes. -->
+<!-- Provide a brief description of the reason for your changes.
+Include screenshots or videos for visual changes. -->
 
 I changed the ... because ...
 

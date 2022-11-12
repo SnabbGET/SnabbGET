@@ -48,7 +48,10 @@ std::string SnabbGET::CMDS::_mk_(std::string cmd[], int cmdLen, std::string)
 				std::cout << "Error creating file!" << std::endl;
 			#endif
 
-			system(("cd " + SnabbGET::currentDir + " && echo \"\" > " + cmd[1]).c_str());
+			system(
+				("cd " + SnabbGET::currentDir + " && echo \"\" > " + cmd[1])
+					.c_str()
+			);
 
 			// Try to open the file again
 			outfile.open(cmd[1].c_str(), std::ios_base::app);

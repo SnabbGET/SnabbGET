@@ -60,7 +60,8 @@ int main()
 
 #else
 
-EXTERN EMSCRIPTEN_KEEPALIVE void RunSnabbGETCommand(/*int argc, char **argv*/)
+EXTERN EMSCRIPTEN_KEEPALIVE void RunSnabbGETCommand(
+	/*int argc, char **argv*/)
 {
 	sget::SnabbGET();
 	sget::rw::Raw_mode(0);
@@ -83,7 +84,8 @@ int main(int argc, char *argv[])
 {
 	sget::SnabbGET();
 	sget::rw::Raw_mode(0);
-	system(""); // I don't kwon why I must put that, but if I don't add that, escape codes don't work on Windows :(
+	system(""); // I don't kwon why I must put that, but if I don't add that,
+				// escape codes don't work on Windows :(
 	if (argc == 1 && !one_line)
 	{
 		//using namespace SnabbGET sget;
@@ -162,7 +164,7 @@ int main(int argc, char *argv[])
 					}
 				}
 				#ifdef __linux__
-					std::cout << input_user_tmp << /*"(" << (int)c << ")" << */"\033[1A\n";
+					std::cout << input_user_tmp << "\033[1A\n";
 				#endif
 			}
 			sget::SCREEN.back() = sget::SCREEN.back() + input_user;
