@@ -9,22 +9,23 @@ all: pre-compile compile
 
 pre_compile:
 	@echo "Pre-generating..."
-	g++ src/core/gen/includes_files.cpp -o "includes" && ./includes
+	g++ src/core/gen/includes_files.cpp -o "includes" -std=c++1z
+	./includes
 
 compile: pre_compile
 	@echo "Generating..."
 ifeq (${DEBUG}, on)
 	g++ -Wall -Wextra -D DEBUG -O3 -g3 src/*.cpp src/core/utils.cpp -o\
-	"${filename}"
+	"${filename}" -std=c++1z
 else
 	g++ -Wall -Wextra -O3 -g3 src/*.cpp src/core/utils.cpp -o\
-	"${filename}"
+	"${filename}" -std=c++1z
 endif
 ifneq (${wasm}, off)
 	em++ -D DEBUG src/*.cpp src/core/utils.cpp -o\
 	"web/${filename}.html" --shell-file\
 	html_template/shell_minimal.html -s NO_EXIT_RUNTIME=1 -s\
-	"EXPORTED_RUNTIME_METHODS=['ccall']"
+	"EXPORTED_RUNTIME_METHODS=['ccall']" -std=c++1z
 endif
 
 run: all

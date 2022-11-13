@@ -24,6 +24,7 @@
 #include <vector>
 #include <iterator>
 #include <sstream>
+#include <algorithm>
 
 /* ┌┬┐╭─╮ ╷
  * ├┼┤│ │╶┼╴
@@ -85,16 +86,15 @@ void SnabbGET::CLI::list(int posX, int posY, std::vector<std::string> txt)
 							[](const auto& a, const auto& b) {
 								return a.size() < b.size();
 							})).length()
-		<< "╯\r\n";
+		<< "╯\r\n\0338";
 	//Result: ╭────╮
 	//        ├aa  │
 	//        ├b   │
 	//        ╰────╯
-	std::cout << "\0338";
 }
 
 void SnabbGET::CLI::table(int posX, int posY,
-	std::vector<std::vector<std::string>> txt, bool with1line
+	std::vector<std::vector<std::string>> txt, bool with1line = false
 )
 {
 	unsigned line = 0;
@@ -178,17 +178,40 @@ void SnabbGET::CLI::table(int posX, int posY,
 
 void SnabbGET::CLI::popup(int posX, int posY, std::string txt)
 {
+	txt = replaceAll(txt, "\t", "        ");
+	std::string tmp; 
+	std::stringstream ss(txt);
+	std::vector<std::string> words;
+
+	while(getline(ss, tmp, '\n'))
+	{
+		words.push_back(tmp);
+	}
+
 	std::cout << "\0337\033[" << posY << ";" << posX << "H╭"
-		<< std::string("─")*txt.length() // Max size of elements in the vector
+		<< std::string("─")*(*std::max_element(words.begin(), words.end(),
+							[](const auto& a, const auto& b) {
+								return a.size() < b.size();
+							})).length() // Max size of elements in the vector
 		<< "╮\r\n";
 	//Result: ╭────╮
-	
-	std::cout << "\033[" << posY+1 << ";" << posX << "H│" << txt << "│\r\n";
+	for (unsigned i = 0; i < words.size(); i++)
+		std::cout << "\033[" << posY+i+1 << ";" << posX << "H│" << words[i]
+			// Add spaces at the end to create a background
+			<< std::string(" ")*((*std::max_element(words.begin(), words.end(),
+								 [](const auto& a, const auto& b) {
+									 return a.size() < b.size();
+								 })).length() -
+								 words[i].length()
+								)
+			 << "│\r\n";
 	//Result: ╭────╮
 	//        │abcd│
-
-	std::cout << "\033[" << posY+2 << ";" << posX << "H╰"
-		<< std::string("─")*(txt.length()-1)
+	std::cout << "\033[" << posY+words.size()+1 << ";" << posX << "H╰"
+		<< std::string("─")*((*std::max_element(words.begin(), words.end(),
+							[](const auto& a, const auto& b) {
+								return a.size() < b.size();
+							})).length()-1)
 		<< "╴⨉\r\n\0338";
 	//Result: ╭────╮
 	//        │abcd│

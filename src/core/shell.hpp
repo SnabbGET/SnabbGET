@@ -313,19 +313,12 @@
 				std::vector<std::vector<std::string>> txt, bool with1line
 			);
 		}
-	}
 
+		// To replace 'SnabbGET::Raw_mode'
+		namespace rw = SnabbGET::Raw_mode;
+	}
 	// To replace 'SnabbGET::'
-	namespace sget
-	{
-		using namespace SnabbGET;
-		// To replace 'SnabbGET::Raw_mode::'
-		namespace rw
-		{
-			using namespace Raw_mode;
-		}
-	}
-
+	namespace sget = SnabbGET;
 
 	// WARNING!!!!! THOSE LINES MUST STAY LIKE THAT!!!
 	//                          ====

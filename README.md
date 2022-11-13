@@ -18,6 +18,8 @@ Graphic and fast terminal in C/C++.
 
 Use the termial version (CLI):
 
+> Warning! You must have C++ 17!
+
 ```bash
 make DEBUG=off
 ./output
