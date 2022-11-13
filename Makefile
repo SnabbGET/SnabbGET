@@ -3,7 +3,7 @@ DEBUG = on
 arg =
 wasm = off
 
-.PHONY: all pre-compile compile execute
+.PHONY: all pre-compile compile gui
 
 all: pre-compile compile
 
@@ -14,12 +14,17 @@ pre_compile:
 compile: pre_compile
 	@echo "Generating..."
 ifeq (${DEBUG}, on)
-	g++ -Wall -Wextra -D DEBUG -g3 src/*.cpp src/core/utils.cpp -o "${filename}"
+	g++ -Wall -Wextra -D DEBUG -O3 -g3 src/*.cpp src/core/utils.cpp -o\
+	"${filename}"
 else
-	g++ -Wall -Wextra -g3 src/*.cpp src/core/utils.cpp -o "${filename}"
+	g++ -Wall -Wextra -O3 -g3 src/*.cpp src/core/utils.cpp -o\
+	"${filename}"
 endif
 ifneq (${wasm}, off)
-	em++ -D DEBUG src/*.cpp src/core/utils.cpp -o "web/${filename}.html" --shell-file html_template/shell_minimal.html -s NO_EXIT_RUNTIME=1 -s "EXPORTED_RUNTIME_METHODS=['ccall']"
+	em++ -D DEBUG src/*.cpp src/core/utils.cpp -o\
+	"web/${filename}.html" --shell-file\
+	html_template/shell_minimal.html -s NO_EXIT_RUNTIME=1 -s\
+	"EXPORTED_RUNTIME_METHODS=['ccall']"
 endif
 
 run: all
@@ -33,3 +38,13 @@ endif
 else
 	@echo "The web page is available on web/${filename}.html"
 endif
+
+gui:
+	@echo "Generating the gui..."
+	cd src/interface && javac gui.java
+	g++ -D _FORJAVAGUI_ src/*.cpp src/core/utils.cpp -o\
+	"src/interface/prompt"
+
+runGui: gui
+	@echo "Running the gui..."
+	cd src/interface && java editor

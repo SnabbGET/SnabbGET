@@ -4,10 +4,10 @@
 <command>			::= <command_name>, {[<params>]};
 <command_name>		::= "cd" | "cls" | "cp" | "exe" |
 						"exit" | "help" | "ls" | "mk" |
-						"mv" | "say";
+						"mv" | "say" | "rm";
 <params>			::= ["--" | "-"], <param_name>;
 <param_name>		::= <string>;
-<for>				::= "for", "[", ((<int>, <bool> (*, int++ *)) |
+<for>				::= "for", "[", ((<int>, <bool> (* , int++ *) ) |
 									 (<list<char>>, ":", "$", <string>)), "]", "do",
 						{<command>, "\n"}, "end";
 <if>				::= "if", "[", <bool>, "]", "then",
@@ -51,6 +51,7 @@ hello!
 <string>			::= {<char>};
 <char>				::= 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' |
 						'/' | '.' | '$' | '&' | ...;
-<int>				::= '0' .. '9' | (<int>, ("+" | "-" | "/" | "*" | "%" | "^"), <int>);
+<int>				::= '0' .. '9' | (<int>, ("+" | "-" | "/" | "*" | "%" | "^"), <int>) | 
+						("(", <int>, ")");
 <list<TYPE>>		::= {<TYPE>};
 <TYPE>				::= <bool> | <string> | <char> | <int>;

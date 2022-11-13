@@ -4,14 +4,14 @@
  * @file src/main.cpp
  * @brief Main file of the project.
  * @author LAPCoder
- * @version 0.0.1
+ * @version 0.1.0
  * 
  * MIT License
  */
 
 /* DEFINES */
 //See shell.hpp
-//#define VERSION "0.0.1"
+//#define VERSION "0.1.0"
 
 /* INCLUDES */
 
@@ -46,7 +46,22 @@
 	#define EMSCRIPTEN_KEEPALIVE
 #endif
 
-EXTERN EMSCRIPTEN_KEEPALIVE void RunSnabbGETCommand(int argc, char **argv)
+#ifdef _FORJAVAGUI_
+
+int main()
+{	
+	sget::SnabbGET();
+	sget::rw::Raw_mode(0);
+	sget::init();
+	std::cout << sget::new_line();
+	sget::read_input("exit");
+	return EXIT_SUCCESS;
+}
+
+#else
+
+EXTERN EMSCRIPTEN_KEEPALIVE void RunSnabbGETCommand(
+	/*int argc, char **argv*/)
 {
 	sget::SnabbGET();
 	sget::rw::Raw_mode(0);
@@ -69,12 +84,15 @@ int main(int argc, char *argv[])
 {
 	sget::SnabbGET();
 	sget::rw::Raw_mode(0);
-	system(""); // I don't kwon why I must put that, but if I don't add that, escape codes don't work on Windows :(
+	system(""); // I don't kwon why I must put that, but if I don't add that,
+				// escape codes don't work on Windows :(
 	if (argc == 1 && !one_line)
 	{
 		//using namespace SnabbGET sget;
 		//using SnabbGET::Raw_mode rw(0);
-		std::cout << sget::init();//<< "\0337\n\0338";
+		sget::addToSCREEN(sget::init());
+		// Printf is faster than std::cout and \n is faster than std::endl
+		printf(sget::FRAME().c_str());
 		while (true)
 		{
 			//getline(std::cin, input_user);
@@ -146,26 +164,33 @@ int main(int argc, char *argv[])
 					}
 				}
 				#ifdef __linux__
-					std::cout << input_user_tmp << /*"(" << (int)c << ")" << */"\033[1A\n";
+					std::cout << input_user_tmp << "\033[1A\n";
 				#endif
 			}
-
-			std::cout << "\r\n" << sget::read_input(input_user);
+			sget::SCREEN.back() = sget::SCREEN.back() + input_user;
+			sget::addToSCREEN(sget::read_input(input_user));
+			sget::addToSCREEN("");
+			printf(sget::FRAME().c_str());
 
 			if (input_user == "exit") 
 			{
-				//sget.~SnabbGET();
+				std::cout << "";
 				return EXIT_SUCCESS;
 				exit(EXIT_SUCCESS);
 			}
-			else std::cout << "\r\n" << sget::new_line();
+			else
+			{
+				sget::addToSCREEN(sget::new_line());
+				printf(sget::FRAME().c_str());
+				std::cout << "";
+			}
 		}
 		return 0;
 	}
 	else if (argc > 1 && !one_line)
 	{
 		sget::SnabbGET(true);
-		sget::rw::Raw_mode(0);
+		//sget::rw::Raw_mode(0);
 		sget::init();
 		std::string arr[MAX_INPUT];
 		for(int b = 0; b < argc - 1 ; b++)
@@ -174,6 +199,8 @@ int main(int argc, char *argv[])
 		}
 		//std::cout << concatArr(arr, argc) << std::endl;
 		std::cout << sget::read_input(concatArr(arr, argc)) << "\r\n";
+		sget::read_input("exit");
+		//sget::rw::pause();
 		return EXIT_SUCCESS;
 	}
 	else // one_line
@@ -187,3 +214,5 @@ int main(int argc, char *argv[])
 		return EXIT_SUCCESS;*/
 	}
 }
+
+#endif

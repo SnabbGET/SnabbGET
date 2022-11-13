@@ -3860,6 +3860,37 @@ var ASM_CONSTS = {
   }
   }
 
+  function ___syscall_rmdir(path) {
+  try {
+  
+      path = SYSCALLS.getStr(path);
+      FS.rmdir(path);
+      return 0;
+    } catch (e) {
+    if (typeof FS == 'undefined' || !(e instanceof FS.ErrnoError)) throw e;
+    return -e.errno;
+  }
+  }
+
+  function ___syscall_unlinkat(dirfd, path, flags) {
+  try {
+  
+      path = SYSCALLS.getStr(path);
+      path = SYSCALLS.calculateAt(dirfd, path);
+      if (flags === 0) {
+        FS.unlink(path);
+      } else if (flags === 512) {
+        FS.rmdir(path);
+      } else {
+        abort('Invalid flags passed to unlinkat');
+      }
+      return 0;
+    } catch (e) {
+    if (typeof FS == 'undefined' || !(e instanceof FS.ErrnoError)) throw e;
+    return -e.errno;
+  }
+  }
+
   function _abort() {
       abort('native code called abort()');
     }
@@ -4688,6 +4719,8 @@ var asmLibraryArg = {
   "__syscall_ioctl": ___syscall_ioctl,
   "__syscall_openat": ___syscall_openat,
   "__syscall_renameat": ___syscall_renameat,
+  "__syscall_rmdir": ___syscall_rmdir,
+  "__syscall_unlinkat": ___syscall_unlinkat,
   "abort": _abort,
   "emscripten_date_now": _emscripten_date_now,
   "emscripten_memcpy_big": _emscripten_memcpy_big,

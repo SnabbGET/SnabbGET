@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # This image come form https://pixabay.com/images/search/background/
 # Thanks to https://dom111.github.io/image-to-ansi/
 

@@ -4,5 +4,6 @@
 
 int main()
 {
-	std::cout << std::regex_match("hello", std::regex("^([a-z]+)$")) << std::endl;
+	std::cout << std::regex_match("hello", std::regex("^([a-z]+)$"))
+		<< std::endl;
 }

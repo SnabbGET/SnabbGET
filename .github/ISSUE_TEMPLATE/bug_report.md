@@ -14,8 +14,8 @@ A clear and concise description of what the bug is.
 Steps to reproduce the behavior:
 
 1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
+2. Click on '...'
+3. Scroll down to '...'
 4. See error
 
 **Expected behavior**
@@ -30,6 +30,8 @@ If applicable, add screenshots to help explain your problem.
 - Browser [e.g. chrome, safari]
 - Version [e.g. 22]
 
+*OR:*
+
 **Smartphone (please complete the following information):**
 
 - Device: [e.g. iPhone6]
@@ -37,7 +39,7 @@ If applicable, add screenshots to help explain your problem.
 - Browser [e.g. stock browser, safari]
 - Version [e.g. 22]
 
-**Version of the shell**: [e.g. 0.0.1]
+**Version of the shell**: [e.g. 0.1.0]
 
 **Additional context**
 Add any other context about the problem here.

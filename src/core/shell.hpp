@@ -4,7 +4,7 @@
  * @file src/core/shell.hpp
  * @brief Header of the main part.
  * @author LAPCoder
- * @version 0.0.1
+ * @version 0.1.0
  * 
  * MIT License
  */
@@ -26,10 +26,12 @@
 	#endif
 	#include <functional>
 	#include <vector>
+	#include <iterator>
+	#include <sstream>
 
 	#include "utils.hpp"
 
-	#define VERSION "0.0.1"
+	#define VERSION "0.1.0"
 	#ifndef MAX_INPUT
 		#define MAX_INPUT 255
 	#endif
@@ -45,19 +47,19 @@
 
 	/**
 	 * @brief The SnabbGET Namespace
-	 * @version 0.0.1
+	 * @version 0.1.0
 	 */
 	namespace SnabbGET
 	{
 	
 		/**
-		 * @brief Construct a new SnabbGET object
+		 * @brief Initialise SnabbGET
 		 * 
 		 * @return Nothing
 		 */
 		void SnabbGET();
 		/**
-		 * @brief Construct a new SnabbGET object
+		 * @brief Initialise SnabbGET
 		 * 
 		 * @param cmd_line Is a command-line? ($ sget say hello)
 		 * @return Nothing
@@ -80,6 +82,14 @@
 		std::string read_input(std::string input_user_t);
 
 		/**
+		 * @brief Use user' settings for the prompt in file
+		 * settings/prompt.sget.txt
+		 *
+		 * @return [std::string] The prompt text
+		 */
+		std::string promptSettings();
+
+		/**
 		 * @brief Print a new line
 		 *
 		 * @return [std::string] The new line text
@@ -87,7 +97,8 @@
 		std::string new_line();
 
 		/**
-		 * @brief Active the raw mode to get a best terminal experience in Linux
+		 * @brief Active the raw mode to get a best terminal
+		 * experience in Linux
 		 * 
 		 * @param echo [OPTIONAL] Set to 0 or see in code
 		 */
@@ -150,6 +161,10 @@
 				PAGE_UP,
 				PAGE_DOWN
 			};
+			
+			#ifdef __linux__
+				static struct termios old, new1;
+			#endif
 		}
 
 		/*void RWpause();
@@ -168,7 +183,7 @@
 		// Time when the shell was started.
 		std::time_t dateOpen;
 		// File with the history.
-		std::ofstream historyFile;
+		std::fstream historyFile;
 
 		// User name and computer name.
 		std::string userName = "User";
@@ -176,6 +191,8 @@
 		std::string currentDir = "/";
 
 		bool CMD_LINE = false;
+
+		std::vector<std::string> SCREEN;
 
 		/**
 		 * @brief Set the user name object in the var
@@ -234,6 +251,7 @@
 				#define CP   7
 				#define MV   8
 				#define MK   9
+				#define RM   10
 			#endif
 
 			std::string _exit_(std::string[], int, std::string);
@@ -246,9 +264,24 @@
 			std::string _cp_  (std::string[], int, std::string);
 			std::string _mv_  (std::string[], int, std::string);
 			std::string _mk_  (std::string[], int, std::string);
+			std::string _rm_  (std::string[], int, std::string);
 			
-			std::vector<std::function<std::string(std::string[], int, std::string)>> cmdLst;
+			std::vector<
+				std::function<
+					std::string(std::string[], int, std::string)
+				>
+			> cmdLst;
+			std::vector<const char*> allCmd;
 		}
+
+		/*std::string*/void addToSCREEN(std::string txt)
+			{SCREEN.emplace_back(txt);}
+
+		/**
+		 * @brief Refresh the screen
+		 * 
+		 */
+		std::string FRAME();
 
 		/**
 		 * @brief Command runner
@@ -266,6 +299,20 @@
 		{
 
 		};
+
+		/**
+		 * @brief The screen changer
+		 * 
+		 */
+		namespace CLI
+		{
+			void list(int posX, int posY, std::vector<std::string> txt);
+			void popup(int posX, int posY, std::string);
+			// For vector: column<list<string>>
+			void table(int posX, int posY, 
+				std::vector<std::vector<std::string>> txt, bool with1line
+			);
+		}
 	}
 
 	// To replace 'SnabbGET::'
@@ -284,6 +331,8 @@
 	//                          ====
 	#include "shell.cpp"
 	#include "./includesAll.hpp"
+	#include "./settings/reader.cpp"
+	#include "./cli/cli.cpp"
 
 #endif // SNABBGET_CORE
 

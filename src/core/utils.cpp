@@ -4,7 +4,7 @@
  * @file src/code/utils.cpp
  * @brief Utils.
  * @author LAPCoder
- * @version 0.0.1
+ * @version 0.1.0
  * 
  * MIT License
  */
@@ -16,13 +16,17 @@
 #include <memory>
 #include <stdexcept>
 #include <array>
+#include <vector>
+#include <iterator>
+#include <sstream>
 
 #include "utils.hpp"
 
 std::string getdate()
 {
 	// get formatted date
-	std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
+	std::chrono::system_clock::time_point now =
+		std::chrono::system_clock::now();
 	std::time_t now_c = std::chrono::system_clock::to_time_t(now);
 	std::string date = std::ctime(&now_c);
 	date.erase(date.end() - 1);
@@ -32,7 +36,8 @@ std::string getdate()
 std::string gettime()
 {
 	// get formatted time
-	std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
+	std::chrono::system_clock::time_point now =
+		std::chrono::system_clock::now();
 	std::time_t now_c = std::chrono::system_clock::to_time_t(now);
 	std::string time = std::ctime(&now_c);
 	time.erase(time.begin(), time.begin() + 13);
@@ -80,10 +85,13 @@ std::string htmlToRgbEsc(std::string htmlColor, int isForeground)
 	std::string blue = htmlColor.substr(5, 2);
 	
 	
-	return "\033[" + (std::string)(isForeground ? "3":"4") + "8;2;" + hexToDec(red) + ";" + hexToDec(green) + ";" + hexToDec(blue) + "m";
+	return "\033[" + (std::string)(isForeground ? "3":"4") +
+		"8;2;" + hexToDec(red) + ";" + hexToDec(green) + ";" +
+		hexToDec(blue) + "m";
 }
 
-std::string exec(const char* cmd) {
+std::string exec(const char* cmd)
+{
 	std::array<char, 128> buffer;
 	std::string result;
 	std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
@@ -107,4 +115,25 @@ std::string concatArr(std::string arr[], int N)
 	tmp.erase(tmp.length() - 1);
 
 	return tmp;
+}
+
+std::string replaceAll(std::string str, const std::string &from,
+						const std::string &to)
+{
+	size_t start_pos = 0;
+	while((start_pos = str.find(from, start_pos)) != std::string::npos)
+	{
+		str.replace(start_pos, from.length(), to);
+		start_pos += to.length(); 
+		// Handles case where 'to' is a substring of 'from'
+	}
+	return str;
+}
+
+std::string join(std::vector<std::string> const &strings, const char *delim)
+{
+    std::stringstream ss;
+    std::copy(strings.begin(), strings.end(),
+        std::ostream_iterator<std::string>(ss, delim));
+    return ss.str();
 }

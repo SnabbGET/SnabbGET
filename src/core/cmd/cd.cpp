@@ -24,7 +24,7 @@
 	 * @param input_user [NOT USED]
 	 * @return [std::string] Command result
 	 */
-	std::string SnabbGET::CMDS::_cd_(std::string cmd[], int cmdLen, std::string)
+	std::string SnabbGET::CMDS::_cd_(std::string cmd[], int cmdLen,std::string)
 	{
 		std::string msg = "cd ";
 		msg += SnabbGET::currentDir;
@@ -56,10 +56,12 @@
 					#endif
 					SnabbGET::currentDir = 
 						((std::string)exec(msg.c_str())) // the result
-							.find_last_of('\n') != std::string::npos ?  // \n is found?
+							.find_last_of('\n') != std::string::npos ? 
+							// \n is found?
 						((std::string)exec(msg.c_str())) //the result
 							.erase( // delete
-								((std::string)exec(msg.c_str())).length() - 1, // length of the result
+								((std::string)exec(msg.c_str())).length() - 1,
+								// length of the result
 								1 // number of char
 							) :
 						((std::string)exec(msg.c_str())); // the result

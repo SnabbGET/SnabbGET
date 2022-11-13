@@ -55,7 +55,8 @@ std::string SnabbGET::CMDS::_exe_(std::string[], int, std::string input_user)
 			return "\r\n\033[92mCommand executed!\033[0m\r\n";
 		#else
 			if (SnabbGET::cmd[1] == "cd")
-				return "WARNING! You had enter a 'cd' command. THE DIRECTORY IS NOT SAVED! Use the SnabbGET command.\r\n";
+				return "WARNING! You had enter a 'cd' command. THE DIRECTORY\
+IS NOT SAVED! Use the SnabbGET command.\r\n";
 			else
 				return "";
 		#endif

@@ -1,0 +1,20 @@
+
+# Here, tou can define YOUR prompt.
+# Symbols:
+# - $$ : $
+# - $u : username
+# - $m : machine name
+# - $d : current dir
+# - $s : DEBUG mode activated? = "[DEBUG] "
+# - [<color>m is supported
+#
+# Defalt prompt:
+[1m[92m$u@$m[39m:[96m$d[93m$s[95m |>
+# bold  green    @    black :  green     gold       rose   |>
+#           user   machine          dir       debug
+# Linux prompt:
+# [1m[92m$u@$m[39m:[94m$d $$
+# Windows prompt:
+# $d>
+# Powershell prompt:
+# PS $d>
