@@ -43,7 +43,7 @@ std::string SnabbGET::CMDS::_ls_(std::string[], int, std::string)
 	if (currDir.find("~") == 0)
 	{
 		#ifdef __WIN32
-			std::string = "%%USERPROFILE%%";
+			std::string r = "%%USERPROFILE%%";
 		#else
 			std::string r = ((std::string)exec("echo ~")) // the result
 								.find_last_of('\n') != std::string::npos ?

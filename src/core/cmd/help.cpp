@@ -55,7 +55,7 @@ Use it the same way as start.\r\n\
 	ls                 - List file and dirs in the current directory\r\n\
 	cp <file> <tofile> - Copy a file or a dir in an other file or a dir\r\n\
 	mv <file> <tofile> - Move (or rename) a file or a dir to an other dir\r\n\
-	mk <file>          - Create a file\r\n\
+	mk [-d] <file>     - Create a file/dir\r\n\
 	rm <file>          - Remove a file\r\n\
 \r\n\
 You don't find the parameters of a commmand? Write '<your command> -?'\r\n";

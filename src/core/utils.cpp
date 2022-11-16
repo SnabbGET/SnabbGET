@@ -52,6 +52,13 @@ Description: \r\n\
 \033[32mPrint documentation in the terminal.\033[0m\r\n\
 \r\n\
 	--web => open documentation of commands in web browser\n";
+	else if (cmd == "mk")
+		return "\
+Description: \r\n\
+\033[32mCreate a file or a directory.\033[0m\r\n\
+\r\n\
+	-d,\r\n\
+	--dir => create a directory instead of a file.\n";
 	else 
 		return "No documentation found for the command '" + cmd + "'.\r\n";
 }
