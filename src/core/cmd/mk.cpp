@@ -36,7 +36,6 @@ std::string SnabbGET::CMDS::_mk_(std::string cmd[], int cmdLen, std::string)
 		std::remove(tmp.begin(), tmp.end(), "--dir");
 		std::remove(tmp.begin(), tmp.end(), "-d");
 		std::filesystem::create_directory(tmp[1]);
-		//std::filesystem::permissions(cmd[1], fs::perms::others_all, fs::perm_options::remove);
 	}
 	else
 	{

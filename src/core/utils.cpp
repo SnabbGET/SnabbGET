@@ -59,8 +59,16 @@ Description: \r\n\
 \r\n\
 	-d,\r\n\
 	--dir => create a directory instead of a file.\n";
+	else if (cmd == "cd")
+		return "\
+Description: \r\n\
+\033[32mChange directory or print the current dir.\033[0m\r\n\
+\r\n\
+	-p,\r\n\
+	--pwd => print current dir. YOU CAN'T CHANGE OF DIR WITH THIS \
+OPTION!\n";
 	else 
-		return "No documentation found for the command '" + cmd + "'.\r\n";
+	 return "No documentation found for the command '" + cmd + "'.\r\n";
 }
 
 bool contain(std::string *lst, unsigned int lstLen, std::string tfind)

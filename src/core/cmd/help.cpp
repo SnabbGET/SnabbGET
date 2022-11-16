@@ -45,7 +45,7 @@ std::string SnabbGET::CMDS::_help_(std::string cmd[], int cmdLen, std::string)
 Commands:\r\n\
 	say,\r\n\
 	echo               - Write something\r\n\
-	cd [<dir>]         - Change Directory\r\n\
+	cd [<dir> | -p]    - Change/Print Directory\r\n\
 	exit               - Exit the shell\r\n\
 	help [--web]       - Show this message\r\n\
 	clear,\r\n\

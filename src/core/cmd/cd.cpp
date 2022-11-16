@@ -27,55 +27,62 @@
 	 */
 	std::string SnabbGET::CMDS::_cd_(std::string cmd[], int cmdLen,std::string)
 	{
-		std::string msg = "cd ";
-		msg += SnabbGET::currentDir;
-		msg += " && cd ";
-		msg += cmd[1];
-		#ifdef DEBUG
-			std::cout << "CMD = " << msg << "\r\n";
-		#endif
-		if (! system(msg.c_str()))
+		if (contain(cmd, cmdLen, "--pwd") || contain(cmd, cmdLen, "-p"))
 		{
-			/*if (cmdLen > 1)
-				__snabbget.currentDir = cmd[1];
-			else
-				__snabbget.currentDir = "~";*/
-
-			#ifdef _WIN32
-
-				std::filesystem::current_path(currentDir.c_str());
-			#elif __linux__
-				if (cmdLen > 1)
-				{
-					msg = "cd ";
-					msg += SnabbGET::currentDir;
-					msg += " && cd ";
-					msg += cmd[1];
-					msg += " && pwd";
-					#ifdef DEBUG
-						std::cout << "CMD = " << msg << "\r\n";
-					#endif
-					SnabbGET::currentDir = 
-						((std::string)exec(msg.c_str())) // the result
-							.find_last_of('\n') != std::string::npos ? 
-							// \n is found?
-						((std::string)exec(msg.c_str())) //the result
-							.erase( // delete
-								((std::string)exec(msg.c_str())).length() - 1,
-								// length of the result
-								1 // number of char
-							) :
-						((std::string)exec(msg.c_str())); // the result
-				}
-				else
-					SnabbGET::currentDir = "~";
-				setenv("PWD", SnabbGET::currentDir.c_str(), 1);
-			#endif
-			SnabbGET::set_current_dir();
 			return SnabbGET::currentDir;
 		}
 		else
-			return "\rError";
+		{
+			std::string msg = "cd ";
+			msg += SnabbGET::currentDir;
+			msg += " && cd ";
+			msg += cmd[1];
+			#ifdef DEBUG
+				std::cout << "CMD = " << msg << "\r\n";
+			#endif
+			if (! system(msg.c_str()))
+			{
+				/*if (cmdLen > 1)
+					__snabbget.currentDir = cmd[1];
+				else
+					__snabbget.currentDir = "~";*/
+
+				#ifdef _WIN32
+
+					std::filesystem::current_path(currentDir.c_str());
+				#elif __linux__
+					if (cmdLen > 1)
+					{
+						msg = "cd ";
+						msg += SnabbGET::currentDir;
+						msg += " && cd ";
+						msg += cmd[1];
+						msg += " && pwd";
+						#ifdef DEBUG
+							std::cout << "CMD = " << msg << "\r\n";
+						#endif
+						SnabbGET::currentDir = 
+							((std::string)exec(msg.c_str())) // the result
+								.find_last_of('\n') != std::string::npos ? 
+								// \n is found?
+							((std::string)exec(msg.c_str())) //the result
+								.erase( // delete
+									((std::string)exec(msg.c_str())).length() - 1,
+									// length of the result
+									1 // number of char
+								) :
+							((std::string)exec(msg.c_str())); // the result
+					}
+					else
+						SnabbGET::currentDir = "~";
+					setenv("PWD", SnabbGET::currentDir.c_str(), 1);
+				#endif
+				SnabbGET::set_current_dir();
+				return SnabbGET::currentDir;
+			}
+			else
+				return "\rError";
+		}
 	}
 
 #endif
