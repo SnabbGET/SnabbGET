@@ -35,13 +35,11 @@ std::string getdate()
 
 std::string gettime()
 {
-	// get formatted time
-	std::chrono::system_clock::time_point now =
-		std::chrono::system_clock::now();
-	std::time_t now_c = std::chrono::system_clock::to_time_t(now);
-	std::string time = std::ctime(&now_c);
-	time.erase(time.begin(), time.begin() + 13);
-	return time;
+	std::time_t t = std::time(0);
+	std::tm *now = std::localtime(&t);
+	return std::string(std::to_string(now->tm_hour) + ":" + 
+					   std::to_string(now->tm_min) + ":" + 
+					   std::to_string(now->tm_sec));
 }
 
 std::string help_params(std::string cmd)

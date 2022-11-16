@@ -29,7 +29,7 @@ std::string SnabbGET::CMDS::_exe_(std::string[], int, std::string input_user)
 		//std::cout << "ok\r\n";
 		SnabbGET::Raw_mode::pause();
 		//std::cout << "ok\r\n";
-		std::string msg = "cd ";
+		std::string msg = "cd ", msg2;
 		//std::cout << "ok\r\n";
 		#ifdef _WIN32
 			if (SnabbGET::currentDir.substr(0, 1) == "~")
@@ -45,7 +45,7 @@ std::string SnabbGET::CMDS::_exe_(std::string[], int, std::string input_user)
 		//std::cout << "ok\r\n";
 		msg += input_user.substr(4);
 		//std::cout << "ok\r\n";
-		system(msg.c_str());
+		msg2 = exec(msg.c_str());
 		//std::cout << "ok\r\n";
 		SnabbGET::Raw_mode::resume();
 		//std::cout << "ok\r\n";
@@ -58,7 +58,7 @@ std::string SnabbGET::CMDS::_exe_(std::string[], int, std::string input_user)
 				return "WARNING! You had enter a 'cd' command. THE DIRECTORY\
 IS NOT SAVED! Use the SnabbGET command.\r\n";
 			else
-				return "";
+				return msg2;
 		#endif
 	}
 	catch (std::bad_function_call& e)
