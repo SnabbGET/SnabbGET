@@ -10,6 +10,7 @@
 #include <cstring>
 #include <unistd.h>
 #include <algorithm>
+#include <filesystem>
 
 #ifndef _CD_
 
@@ -42,7 +43,7 @@
 
 			#ifdef _WIN32
 
-				setcwd(currentDir.c_str());
+				std::filesystem::current_path(currentDir.c_str());
 			#elif __linux__
 				if (cmdLen > 1)
 				{

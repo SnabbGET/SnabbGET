@@ -11,7 +11,6 @@
 #include <cstring>
 #include <unistd.h>
 #include <algorithm>
-#include <dirent.h>
 #include <filesystem>
 
 //#include "../shell.hpp"
@@ -24,7 +23,7 @@ std::string h(std::uintmax_t size)
 	for (; mantissa >= 1024.; mantissa /= 1024., ++i) { }
 	short a = std::round(std::ceil(mantissa * 10.) / 10.);
 	//mantissa += "BKMGTPE"[i];
-	return std::to_string(a) + "BKMGTPE"[i];
+	return std::to_string(a) + "oKMGTPE"[i] + (i > 1 ? 'o':' ');
 }
 
 /**
@@ -85,8 +84,7 @@ std::string SnabbGET::CMDS::_ls_(std::string[], int, std::string)
 	{
 		std::filesystem::file_size(entry, ec);
 		if (!ec)
-			msg += std::string("\t\t\t\t\t") + h(entry.file_size()) +
-				"\033[1F\033[1E";
+			msg += std::string("\t\t\t\t\t") +h(entry.file_size())+"\r";
 		msg += (entry.is_directory() ? "\033[38;5;75m":
 					(entry.is_regular_file() ? "\033[0m":
 					(entry.is_other() ? "\033[38;5;118m":
