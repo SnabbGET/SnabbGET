@@ -27,7 +27,7 @@ std::string SnabbGET::CMDS::_exe_(std::string[], int, std::string input_user)
 	try
 	{
 		//std::cout << "ok\r\n";
-		SnabbGET::Raw_mode::pause();
+		//SnabbGET::Raw_mode::pause();
 		//std::cout << "ok\r\n";
 		std::string msg = "cd ", msg2;
 		//std::cout << "ok\r\n";
@@ -47,15 +47,16 @@ std::string SnabbGET::CMDS::_exe_(std::string[], int, std::string input_user)
 		//std::cout << "ok\r\n";
 		msg2 = exec(msg.c_str());
 		//std::cout << "ok\r\n";
-		SnabbGET::Raw_mode::resume();
+		//SnabbGET::Raw_mode::resume();
 		//std::cout << "ok\r\n";
-		// DEBUG: Success command execution message
 
+		// DEBUG: Success command execution message
 		#ifdef DEBUG
-			return "\r\n\033[92mCommand executed!\033[0m\r\n";
+			return replaceAll(msg2, "\n", "\r\n") +
+				"\r\n\033[92mCommand executed!\033[0m\r\n";
 		#else
 			if (SnabbGET::cmd[1] == "cd")
-				return "WARNING! You had enter a 'cd' command. THE DIRECTORY\
+				return "WARNING! You had enter a 'cd' command. THE DIRECTORY \
 IS NOT SAVED! Use the SnabbGET command.\r\n";
 			else
 				return msg2;
