@@ -42,6 +42,7 @@
 		for (; n_ > 0; --n_, ++a_)\
 			*a_ = (T) { 0 };\
 	} while (0)
+	#define PATH (std::getenv("PATH") != NULL ? std::getenv("PATH"):"")
 
 	#define SNABBGET_CORE
 

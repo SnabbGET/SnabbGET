@@ -53,12 +53,12 @@ std::string SnabbGET::CMDS::_exe_(std::string[], int, std::string input_user)
 		// DEBUG: Success command execution message
 		#ifdef DEBUG
 			return replaceAll(msg2, "\n", "\r\n") +
-				"\r\n\033[92mCommand executed!\033[0m\r\n";
+				"\r\n\033[92mCommand executed!\033[0m";
 		#else
-			if (SnabbGET::cmd[1] == "cd")
+			/*if (SnabbGET::cmd[1] == "cd")
 				return "WARNING! You had enter a 'cd' command. THE DIRECTORY \
 IS NOT SAVED! Use the SnabbGET command.\r\n";
-			else
+			else*/
 				return msg2;
 		#endif
 	}

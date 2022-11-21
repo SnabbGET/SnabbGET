@@ -103,7 +103,7 @@ std::string htmlToRgbEsc(std::string htmlColor, int isForeground)
 		hexToDec(blue) + "m";
 }
 
-std::string exec(const char* cmd)
+std::string exec(const char *cmd)
 {
 	std::array<char, 128> buffer;
 	std::string result;
@@ -149,4 +149,28 @@ std::string join(std::vector<std::string> const &strings, const char *delim)
     std::copy(strings.begin(), strings.end(),
         std::ostream_iterator<std::string>(ss, delim));
     return ss.str();
+}
+
+std::vector<std::string> split(const std::string &s, const char &token)
+{
+	std::vector<std::string>result;
+	std::string str = s;
+	while (str.size())
+	{
+		// F*ck the unsigned
+		int index = str.find(token);
+		if (index!=std::string::npos)
+		{
+			result.push_back(str.substr(0,index));
+			str = str.substr(index+1);
+			if (str.size()==0)
+				result.push_back(str);
+		}
+		else
+		{
+			result.push_back(str);
+			break;
+		}
+	}
+	return result;
 }
