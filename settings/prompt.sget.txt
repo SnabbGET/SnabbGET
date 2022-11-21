@@ -4,13 +4,15 @@
 # - $u : username
 # - $m : machine name
 # - $d : current dir
-# - $s : DEBUG mode activated? = " [DEBUG] "
+# - $t : current time
+# - $D : current date
+# - $s : DEBUG mode activated? = "[DEBUG] "
 # - \033[<color>m is supported
 #
 # Defalt prompt:
-\033[1m\033[92m$u@$m\033[39m:\033[96m$d\033[93m$s\033[95m |>
-# bold  green    @    black :  green     gold       rose  |>
-#           user   machine          dir       debug
+\033[1m\033[92m$u@$m\033[39m:\033[96m$d\033[39m#\033[38;5;208m$t\033[93m$s\033[95m |>
+# bold  green    @    black :  green    black  #  orange         gold     rose     |>
+#           user   machine          dir                      time     debug
 # Linux prompt:
 # \033[1m\033[92m$u@$m\033[39m:\033[94m$d $$
 # Windows prompt:

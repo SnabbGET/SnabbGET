@@ -73,7 +73,7 @@ int main()
 		std::vector<std::string>({""}),
 		std::vector<std::string>({"haha"})
 	});
-	std::string txt3("hello i am a string    ");
+	std::string txt3("hello i am a string   \n g");
 	get_pos(&posY, &posX);
 	posY++;
 	//std::cout << "          "<<(posY-txt.size()-3 > 1) ? posY-txt.size()-3:0;

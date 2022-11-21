@@ -70,6 +70,7 @@
 		"bitset": "cpp",
 		"regex": "cpp",
 		"codecvt": "cpp",
-		"iomanip": "cpp"
+		"iomanip": "cpp",
+		"filesystem": "cpp"
 	}
 }

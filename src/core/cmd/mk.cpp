@@ -13,6 +13,7 @@
 #include <cstdio>
 #include <cstring>
 #include <cerrno>
+#include <vector>
 
 //#include "../shell.hpp"
 
@@ -28,45 +29,55 @@ std::string SnabbGET::CMDS::_mk_(std::string cmd[], int cmdLen, std::string)
 {
 	if (cmdLen < 2)
 		return "Error: you must give the new file";
-	
-	std::ofstream outfile(cmd[1].c_str());
-	outfile.close();
-	outfile.open(cmd[1].c_str(), std::ios_base::app);
 
-	// Check the file
-	if (!outfile.is_open())
+	if (contain(cmd, cmdLen, "--dir") || contain(cmd, cmdLen, "-d"))
 	{
-		#ifdef DEBUG
-			std::cout << "Error opening file!" << std::endl;
-		#endif
+		std::vector<std::string> tmp(cmd, cmd + cmdLen);
+		std::remove(tmp.begin(), tmp.end(), "--dir");
+		std::remove(tmp.begin(), tmp.end(), "-d");
+		std::filesystem::create_directory(tmp[1]);
+	}
+	else
+	{
+		std::ofstream outfile(cmd[1].c_str());
+		outfile.close();
+		outfile.open(cmd[1].c_str(), std::ios_base::app);
 
-		// Try to create the file
-		outfile.open(cmd[1].c_str(), std::ios_base::out);
+		// Check the file
 		if (!outfile.is_open())
 		{
 			#ifdef DEBUG
-				std::cout << "Error creating file!" << std::endl;
+				std::cout << "Error opening file!" << std::endl;
 			#endif
 
-			system(
-				("cd " + SnabbGET::currentDir + " && echo \"\" > " + cmd[1])
-					.c_str()
-			);
-
-			// Try to open the file again
-			outfile.open(cmd[1].c_str(), std::ios_base::app);
+			// Try to create the file
+			outfile.open(cmd[1].c_str(), std::ios_base::out);
 			if (!outfile.is_open())
 			{
 				#ifdef DEBUG
-					std::cout << "Error opening file!" << std::endl;
+					std::cout << "Error creating file!" << std::endl;
 				#endif
-				
-				return "Error: can't make this file";
-			}
 
+				system(
+					("cd " + SnabbGET::currentDir + " && echo \"\" > " + cmd[1])
+						.c_str()
+				);
+
+				// Try to open the file again
+				outfile.open(cmd[1].c_str(), std::ios_base::app);
+				if (!outfile.is_open())
+				{
+					#ifdef DEBUG
+						std::cout << "Error opening file!" << std::endl;
+					#endif
+					
+					return "Error: can't make this file";
+				}
+
+			}
 		}
+		outfile.close();
 	}
-	outfile.close();
 	
 	return "Make succeful!";
 }

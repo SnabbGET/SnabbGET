@@ -4,15 +4,27 @@
 #include <string>
 #include <chrono>
 #include <ctime>
+#include <cmath>
 #include <fstream>
 #include <cstdlib>
 #include <climits>
 #include <cstring>
 #include <unistd.h>
 #include <algorithm>
-#include <dirent.h>
+#include <filesystem>
 
 //#include "../shell.hpp"
+
+
+std::string h(std::uintmax_t size)
+{
+	int i{};
+	double mantissa = size;
+	for (; mantissa >= 1024.; mantissa /= 1024., ++i) { }
+	short a = std::round(std::ceil(mantissa * 10.) / 10.);
+	//mantissa += "BKMGTPE"[i];
+	return std::to_string(a) + "oKMGTPE"[i] + (i > 1 ? 'o':' ');
+}
 
 /**
  * @brief Ls command
@@ -25,15 +37,13 @@
 std::string SnabbGET::CMDS::_ls_(std::string[], int, std::string)
 {
 	std::string msg = "";
-	DIR *dir;
-	struct dirent *diread;
 	std::vector<char *> files;
 
 	std::string currDir = SnabbGET::currentDir;
 	if (currDir.find("~") == 0)
 	{
 		#ifdef __WIN32
-			std::string = "%%USERPROFILE%%";
+			std::string r = "%%USERPROFILE%%";
 		#else
 			std::string r = ((std::string)exec("echo ~")) // the result
 								.find_last_of('\n') != std::string::npos ?
@@ -54,7 +64,7 @@ std::string SnabbGET::CMDS::_ls_(std::string[], int, std::string)
 		std::cout << currDir << "\r\n";
 	#endif
 
-	if ((dir = opendir(currDir.c_str())) != nullptr)
+	/*if ((dir = opendir(currDir.c_str())) != nullptr)
 	{
 		while ((diread = readdir(dir)) != nullptr)
 		{
@@ -67,12 +77,28 @@ std::string SnabbGET::CMDS::_ls_(std::string[], int, std::string)
 	{
 		perror("opendir");
 		return "\rError: can't list this dir";
-	}
+	}*/
 
-	for (auto file : files)
+	std::error_code ec;
+	for (const auto &entry:std::filesystem::directory_iterator(currDir))
 	{
-		msg += file;
-		msg += "\r\n";
+		std::filesystem::file_size(entry, ec);
+		if (!ec)
+			msg += std::string("\t\t\t\t\t") +h(entry.file_size())+"\r";
+		msg += (entry.is_directory() ? "\033[38;5;75m":
+					(entry.is_regular_file() ? "\033[0m":
+					(entry.is_other() ? "\033[38;5;118m":
+					(entry.is_socket() ? "\033[38;5;193m":
+					(entry.is_block_file() ? "\033[38;5;220m":
+					(entry.is_character_file() ? "\033[38;5;161m":
+					(entry.is_fifo() ? "\033[38;5;99":"\033[38;5;203m"))
+					))))) + 
+			std::string(replaceAll(
+				replaceAll(
+					replaceAll(entry.path(), currDir, ""),
+					"/", ""
+				), "\\", ""
+			)) + std::string("\033[0m\r\n");
 	}
 	return msg;
 }

@@ -5,6 +5,28 @@
 
 //#include "../utils.cpp"
 
+const char *txt = "# Here, you can define YOUR prompt.\n\
+# Symbols:\n\
+# - $$ : $\n\
+# - $u : username\n\
+# - $m : machine name\n\
+# - $d : current dir\n\
+# - $t : current time\n\
+# - $D : current date\n\
+# - $s : DEBUG mode activated? = \"[DEBUG] \"\n\
+# - \\033[<color>m is supported\n\
+#\n\
+# Defalt prompt:\n\
+\\033[1m\\033[92m$u@$m\\033[39m:\\033[96m$d\\033[38;5;208m#\\033[31m$t\\033[93m$s\\033[95m |>\n\
+# bold  green    @    black :  green    black  #  orange         gold     rose     |>\n\
+#           user   machine          dir                      time     debug\n\
+# Linux prompt:\n\
+# \\033[1m\\033[92m$u@$m\\033[39m:\\033[94m$d $$\n\
+# Windows prompt:\n\
+# $d>\n\
+# Powershell prompt:\n\
+# PS $d>\n"; // Sorry for the max line len...
+
 static inline void replaceAll2(std::string &str, const std::string &from,
 	const std::string &to
 )
@@ -54,50 +76,14 @@ std::string SnabbGET::promptSettings()
 			}
 			else
 			{
-				promptFile << "# Here, tou can define YOUR prompt.\n\
-# Symbols:\n\
-# - $$ : $\n\
-# - $u : username\n\
-# - $m : machine name\n\
-# - $d : current dir\n\
-# - $s : DEBUG mode activated? = \"[DEBUG] \"\n\
-# - \033[<color>m is supported\n\
-#\n\
-# Defalt prompt:\n\
-\033[1m\033[92m$u@$m\033[39m:\033[96m$d\033[93m$s\033[95m |>\n\
-# bold  green    @    black :  green     gold       rose   |>\n\
-#           user   machine          dir       debug\n\
-# Linux prompt:\n\
-# \033[1m\033[92m$u@$m\033[39m:\033[94m$d $$\n\
-# Windows prompt:\n\
-# $d>\n\
-# Powershell prompt:\n\
-# PS $d>";
+				promptFile << &*txt;
 				promptFile.close();
 				promptFile.open("../../settings/prompt.sget.txt");
 			}
 		}
 		else
 		{
-			promptFile << "# Here, tou can define YOUR prompt.\n\
-# Symbols:\n\
-# - $$ : $\n\
-# - $u : username\n\
-# - $m : machine name\n\
-# - $d : current dir\n\
-# - $s : DEBUG mode activated? = \"[DEBUG] \"\n\
-# - \033[<color>m is supported\n\
-#\n\
-# Defalt prompt:\n\
-\033[1m\033[92m$u@$m\033[39m:\033[96m$d\033[93m$s\033[95m |>\n\
-# bold  green    @    black :  green     gold       rose   |>\n\
-#           user   machine          dir       debug\n\
-# Linux prompt:\n\
-# \033[1m\033[92m$u@$m\033[39m:\033[94m$d $$\n\
-# Windows prompt:\n\
-# $d>\n\
-# Powershell prompt:\n\
-# PS $d>";
+			promptFile << &*txt;
 			promptFile.close();
 			promptFile.open("../../settings/prompt.sget.txt");
 		}
@@ -126,6 +112,8 @@ std::string SnabbGET::promptSettings()
 	replaceAll2(tmp, "$m", computerName);
 	replaceAll2(tmp, "$d", currentDir);
 	replaceAll2(tmp, "$s", tmp3);
+	replaceAll2(tmp, "$t", gettime());
+	replaceAll2(tmp, "$D", getdate());
 	replaceAll2(tmp, "œùƒ", "$");
 	tmp += "\033[0m ";
 

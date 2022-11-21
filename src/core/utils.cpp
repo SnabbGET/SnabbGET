@@ -35,13 +35,11 @@ std::string getdate()
 
 std::string gettime()
 {
-	// get formatted time
-	std::chrono::system_clock::time_point now =
-		std::chrono::system_clock::now();
-	std::time_t now_c = std::chrono::system_clock::to_time_t(now);
-	std::string time = std::ctime(&now_c);
-	time.erase(time.begin(), time.begin() + 13);
-	return time;
+	std::time_t t = std::time(0);
+	std::tm *now = std::localtime(&t);
+	return std::string(std::to_string(now->tm_hour) + ":" + 
+					   std::to_string(now->tm_min) + ":" + 
+					   std::to_string(now->tm_sec));
 }
 
 std::string help_params(std::string cmd)
@@ -52,8 +50,23 @@ Description: \r\n\
 \033[32mPrint documentation in the terminal.\033[0m\r\n\
 \r\n\
 	--web => open documentation of commands in web browser\n";
+	else if (cmd == "mk")
+		return "\
+Description: \r\n\
+\033[32mCreate a file or a directory.\033[0m\r\n\
+\r\n\
+	-d,\r\n\
+	--dir => create a directory instead of a file.\n";
+	else if (cmd == "cd")
+		return "\
+Description: \r\n\
+\033[32mChange directory or print the current dir.\033[0m\r\n\
+\r\n\
+	-p,\r\n\
+	--pwd => print current dir. YOU CAN'T CHANGE OF DIR WITH THIS \
+OPTION!\n";
 	else 
-		return "No documentation found for the command '" + cmd + "'.\r\n";
+	 return "No documentation found for the command '" + cmd + "'.\r\n";
 }
 
 bool contain(std::string *lst, unsigned int lstLen, std::string tfind)
@@ -90,7 +103,7 @@ std::string htmlToRgbEsc(std::string htmlColor, int isForeground)
 		hexToDec(blue) + "m";
 }
 
-std::string exec(const char* cmd)
+std::string exec(const char *cmd)
 {
 	std::array<char, 128> buffer;
 	std::string result;
@@ -136,4 +149,28 @@ std::string join(std::vector<std::string> const &strings, const char *delim)
     std::copy(strings.begin(), strings.end(),
         std::ostream_iterator<std::string>(ss, delim));
     return ss.str();
+}
+
+std::vector<std::string> split(const std::string &s, const char &token)
+{
+	std::vector<std::string>result;
+	std::string str = s;
+	while (str.size())
+	{
+		// F*ck the unsigned
+		int index = str.find(token);
+		if (index!=std::string::npos)
+		{
+			result.push_back(str.substr(0,index));
+			str = str.substr(index+1);
+			if (str.size()==0)
+				result.push_back(str);
+		}
+		else
+		{
+			result.push_back(str);
+			break;
+		}
+	}
+	return result;
 }

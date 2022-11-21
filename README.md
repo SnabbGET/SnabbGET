@@ -38,6 +38,8 @@ SnabbGET is cross-platform, a single language (SnabbScript) for *all* OS.
 
 Use the termial version (CLI):
 
+> Warning! You must have C++ 17!
+
 ```bash
 make DEBUG=off
 ./output

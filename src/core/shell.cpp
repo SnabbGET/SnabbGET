@@ -255,37 +255,49 @@ std::string SnabbGET::read_input(std::string input_user_t)
 	// Rm
 	else if (cmd[0] == "rm")
 		return runCmd(RM,  cmd, cmdLen, input_user);
-	/*{
-		Raw_mode::pause();
-		std::string msg = "cd ";
-		#ifdef _WIN32
-			if (currentDir.substr(0, 1) == "~")
+
+	else if (*(cmd[0].begin()) == '.' || *(cmd[0].begin()) == '/')
+	{
+		std::ifstream f;
+		f.open(cmd[0]);
+		if (!f)
+			return "File not found!";
+		else
+		{
+			std::string r[0];
+			return runCmd(EXE, r, 0, "exe " + input_user);
+		}
+	}
+
+	// Check PATH
+	else
+	{
+		try
+		{
+			// F*ck the for
+			for (std::string a : split(PATH, ':'))
 			{
-				msg += "&& cd ";
-				msg += currentDir.substr(2);
+				std::ifstream f;
+				f.open(a + "/" + cmd[0]);
+				if (!f)
+					std::cout << "\r\nFile not found!";
+				else
+				{
+					std::string r[0];
+					return runCmd(EXE, r, 0, std::string("exe " + input_user));
+				}
 			}
-		#else
-			msg += currentDir;
-		#endif
-		msg += " && ";
-		msg += input_user.substr(4);
-		system(msg.c_str());
-		Raw_mode::resume();
-		// DEBUG: Success command execution message
+		}
+		catch (std::out_of_range &e)
+		{
+			return std::string("Error: out of range: ") + e.what();
+		}
 
-		#ifdef DEBUG
-			return "\r\n\033[92mCommand executed!\033[0m\r\n";
-		#else
-			if (cmd[1] == "cd")
-				return "WARNING! You had enter a 'cd' command. THE DIRECTORY\
-IS NOT SAVED! Use the SnabbGET command.\r\n";
-			else
-				return "";
-		#endif
-	}*/
-
-	// Not found
-	else return "Command not found!\r\n";
+		//std::cout << split(PATH, ":");
+	
+		// Not found
+		return "Command not found!";
+	}
 }
 
 std::string SnabbGET::new_line()
