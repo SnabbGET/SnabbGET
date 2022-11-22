@@ -43,7 +43,7 @@ endif
 gui:
 	@echo "Generating the gui..."
 	cd src/interface && javac gui.java
-	g++ -D _FORJAVAGUI_ src/*.cpp src/core/utils.cpp -o\
+	g++ -D _FORJAVAGUI_ src/*.cpp src/core/utils.cpp -std=c++17 -o\
 	"src/interface/prompt"
 
 runGui: gui

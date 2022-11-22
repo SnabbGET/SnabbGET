@@ -2,10 +2,9 @@
  * @file cli.cpp
  * @author LAPCoder
  * @brief All CLI shapes (lists, ...)
- * @version 0.1.0
+ * @version 0.1.1
  * 
  * @copyright MIT License
- * 
  */
 
 

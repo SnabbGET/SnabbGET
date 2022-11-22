@@ -4,7 +4,7 @@
  * @file src/core/shell.hpp
  * @brief Header of the main part.
  * @author LAPCoder
- * @version 0.1.0
+ * @version 0.1.1
  * 
  * MIT License
  */

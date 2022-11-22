@@ -4,14 +4,14 @@
  * @file src/main.cpp
  * @brief Main file of the project.
  * @author LAPCoder
- * @version 0.1.0
+ * @version 0.1.1
  * 
  * MIT License
  */
 
 /* DEFINES */
 //See shell.hpp
-//#define VERSION "0.1.0"
+//#define VERSION "0.1.1"
 
 /* INCLUDES */
 
@@ -77,8 +77,7 @@ EXTERN EMSCRIPTEN_KEEPALIVE void RunSnabbGETCommand(
 
 /* Start */
 
-std::string input_user;
-std::string input_user_tmp;
+std::string input_user, input_user_tmp;
 
 int main(int argc, char *argv[])
 {
@@ -97,22 +96,28 @@ int main(int argc, char *argv[])
 		{
 			//getline(std::cin, input_user);
 			// Raw mode: BIG SH*T
-			int c = '\0';
-			input_user = "";
-			int right_count = 0;
+			int c = '\0', right_count = 0, chars_count = 0;
+	// chars_count: Not really char count, but the number of chars left to read
 
-			// Not really char count, but the number of chars left to read
-			int chars_count = 0;
+			input_user = "";
 
 			// Use the Raw mode to read the input from the user
 			// and hide escape sequences (e.g. ^[[A).
-			while (1)
+			while (true)
 			{
+				printf(sget::FRAME().c_str());
+				// std::cout is faster than printf for concat (<< vs. "%", )
+				std::cout << "\n\n\033[9999;0H\033[1A──────────────────────\r\n"
+					<< sget::new_line().c_str()	<< input_user
+					#ifdef __linux__
+					<< "\033[1A\n"
+					#endif
+					;
 				input_user_tmp = "";
 				read(0, &c, 1);
 				if (c == '\n') break;
-				if (((32  <= c) && 
-					(126 >= c)) || 
+				if (((32  <= c) &&
+					(126 >= c)) ||
 					((161 <= c) &&
 					(255 >= c)) ||
 					c == sget::rw::TAB)
@@ -121,11 +126,12 @@ int main(int argc, char *argv[])
 					input_user_tmp = (char)c;
 					chars_count++;
 				}
+				// TODO: Make auto-close.
 				if (c == sget::rw::BACKSPACE)
 				{
 					if (input_user.length() > 0)
 					{
-						input_user.erase(input_user.length() - 1);
+						input_user = input_user.erase(input_user.length() - 1);
 						chars_count--;
 					}
 					input_user_tmp = "\033[D \033[D";
@@ -164,12 +170,12 @@ int main(int argc, char *argv[])
 					}
 				}
 				#ifdef __linux__
-					std::cout << input_user_tmp << "\033[1A\n";
+					//std::cout << input_user_tmp << "\033[1A\n";
 				#endif
 			}
-			sget::SCREEN.back() = sget::SCREEN.back() + input_user;
+			sget::addToSCREEN(sget::new_line());
+			sget::SCREEN.back() += input_user;
 			sget::addToSCREEN(sget::read_input(input_user));
-			sget::addToSCREEN("");
 			printf(sget::FRAME().c_str());
 
 			if (input_user == "exit") 
@@ -180,9 +186,8 @@ int main(int argc, char *argv[])
 			}
 			else
 			{
-				sget::addToSCREEN(sget::new_line());
-				printf(sget::FRAME().c_str());
-				std::cout << "";
+				//printf(sget::FRAME().c_str());
+				//std::cout << "";
 			}
 		}
 		return 0;

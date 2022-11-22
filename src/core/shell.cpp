@@ -37,7 +37,7 @@
  * @file src/core/core.cpp
  * @brief Main part of the project.
  * @author LAPCoder
- * @version 0.1.0
+ * @version 0.1.1
  * 
  * MIT License
  */
@@ -95,9 +95,9 @@ Version: ";
 	msg += "\r\n\
 Copyright (c) SnabbGET\r\n\
 Under the  MIT License\r\n\
-----------------------\r\n";
+──────────────────────\r\n";
 	msg += "\033[1A\r\n";
-	msg += new_line();
+	//msg += new_line();
 	return msg;
 }
 
@@ -196,7 +196,7 @@ std::string SnabbGET::read_input(std::string input_user_t)
 		historyFile.close();
 	}
 
-	if (cmdLen == 0) return "";
+	if (cmdLen == 0) return "\033[1A";
 
 /*  ######  #####  ##   ## ##   ##   ###   ##   ## #####    ######
  * ###     ### ### ### ### ### ###  ## ##  ###  ## ##   ## ##
@@ -279,8 +279,8 @@ std::string SnabbGET::read_input(std::string input_user_t)
 			{
 				std::ifstream f;
 				f.open(a + "/" + cmd[0]);
-				if (!f)
-					std::cout << "\r\nFile not found!";
+				if (!f){}
+					//std::cout << "\r\nFile not found!";
 				else
 				{
 					std::string r[0];

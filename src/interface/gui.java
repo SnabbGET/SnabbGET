@@ -102,7 +102,7 @@ class editor extends JFrame implements ActionListener {
 		f.add(p);
 		f.add(t);
 		f.setSize(500, 500);
-		//f.show();
+		f.show();
 
 
 		// Add a window listener for close button
@@ -278,7 +278,7 @@ class editor extends JFrame implements ActionListener {
 				if (exitVal == 0) {
 					// System.out.println("Success!");
 					System.out.println(output);
-					System.exit(0);
+					//System.exit(0);
 				}
 				else {
 					// abnormal...
