@@ -307,11 +307,11 @@
 		 */
 		namespace CLI
 		{
-			void list(int posX, int posY, std::vector<std::string> txt);
-			void popup(int posX, int posY, std::string);
+			void list(int posX, int posY, const std::vector<std::string> &txt);
+			void popup(int posX, int posY, const std::string&);
 			// For vector: column<list<string>>
 			void table(int posX, int posY, 
-				std::vector<std::vector<std::string>> txt, bool with1line
+				const std::vector<std::vector<std::string>> &txt, bool with1line
 			);
 		}
 

@@ -24,6 +24,8 @@
 	#include <string>
 	#include <chrono>
 	#include <cstdio>
+	#include <vector>
+	#include <sstream>
 	#define std_def
 	#define print(x, ...) std::cout << x // For a friend :D
 #endif
@@ -58,7 +60,7 @@ int main()
 	return EXIT_SUCCESS;
 }
 
-#else
+#else 
 
 EXTERN EMSCRIPTEN_KEEPALIVE void RunSnabbGETCommand(
 	/*int argc, char **argv*/)
@@ -77,7 +79,9 @@ EXTERN EMSCRIPTEN_KEEPALIVE void RunSnabbGETCommand(
 
 /* Start */
 
-std::string input_user, input_user_tmp;
+//std::string input_user;
+std::vector<char> input;
+long pos;
 
 int main(int argc, char *argv[])
 {
@@ -96,24 +100,28 @@ int main(int argc, char *argv[])
 		{
 			//getline(std::cin, input_user);
 			// Raw mode: BIG SH*T
-			int c = '\0', right_count = 0, chars_count = 0;
+
+			int c = '\0', right_count = 0;
 	// chars_count: Not really char count, but the number of chars left to read
 
-			input_user = "";
+			//input_user = "";
+			input.clear();
+			pos = 0;
 
 			// Use the Raw mode to read the input from the user
 			// and hide escape sequences (e.g. ^[[A).
 			while (true)
 			{
 				printf(sget::FRAME().c_str());
+				std::string in(input.begin(),input.end());
 				// std::cout is faster than printf for concat (<< vs. "%", )
 				std::cout << "\n\n\033[9999;0H\033[1A──────────────────────\r\n"
-					<< sget::new_line().c_str()	<< input_user
+					<< sget::new_line().c_str() << "\0337" << in << "\0338"
+					<< std::string("\033[C")*pos
 					#ifdef __linux__
 					<< "\033[1A\n"
 					#endif
 					;
-				input_user_tmp = "";
 				read(0, &c, 1);
 				if (c == '\n') break;
 				if (((32  <= c) &&
@@ -122,28 +130,37 @@ int main(int argc, char *argv[])
 					(255 >= c)) ||
 					c == sget::rw::TAB)
 				{
-					input_user += (char)c;
-					input_user_tmp = (char)c;
-					chars_count++;
+					input.emplace(input.begin() + pos, (char)c);
+					pos++;
+				}
+				if (c == '(')
+				{
+					input.emplace(input.begin() + pos, ')');
+					right_count++;
+				}
+				if (c == '[')
+				{
+					input.emplace(input.begin() + pos, ']');
+					right_count++;
+				}
+				if (c == '{')
+				{
+					input.emplace(input.begin() + pos, '}');
+					right_count++;
+				}
+				if (c == '"' || c == '\'' || c == '`')
+				{
+					input.emplace(input.begin() + pos, (char)c);
+					right_count++;
 				}
 				// TODO: Make auto-close.
 				if (c == sget::rw::BACKSPACE)
 				{
-					if (input_user.length() > 0)
+					if (pos > 0)
 					{
-						input_user = input_user.erase(input_user.length() - 1);
-						chars_count--;
+						input.erase(input.end()-1);
+						pos--;
 					}
-					input_user_tmp = "\033[D \033[D";
-				}
-				if (c == sget::rw::DEL_KEY)
-				{
-					if (input_user.length() > 0 && right_count > 0)
-					{
-						input_user.erase(input_user.length() - 1);
-						right_count--;
-					}
-					input_user_tmp = "\033[D \033[D";
 				}
 				if ((int)c == sget::rw::ESC) // ESC like \[ \033 \x1b
 				{
@@ -155,17 +172,15 @@ int main(int argc, char *argv[])
 						//if (c == 'B') input_user += "DOWN";
 						if (c == 'C' && right_count > 0)
 						{
-							input_user_tmp = "\033[C";
-							input_user += "\033[C";
+							//printf("\033[C");
 							right_count--;
-							chars_count++;
+							pos++;
 						}
-						if (c == 'D' && chars_count > 0)
+						if (c == 'D' && pos > 0)
 						{
-							input_user_tmp = "\033[D";
-							input_user += "\033[D";
+							//printf("\033[D");
 							right_count++;
-							chars_count--;
+							pos--;
 						}
 					}
 				}
@@ -174,11 +189,12 @@ int main(int argc, char *argv[])
 				#endif
 			}
 			sget::addToSCREEN(sget::new_line());
-			sget::SCREEN.back() += input_user;
-			sget::addToSCREEN(sget::read_input(input_user));
+			std::string in(input.begin(),input.end());
+			sget::SCREEN.back() += in;
+			sget::addToSCREEN(sget::read_input(in));
 			printf(sget::FRAME().c_str());
 
-			if (input_user == "exit") 
+			if (in == "exit") 
 			{
 				std::cout << "";
 				return EXIT_SUCCESS;
