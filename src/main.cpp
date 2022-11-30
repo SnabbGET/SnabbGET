@@ -80,7 +80,7 @@ EXTERN EMSCRIPTEN_KEEPALIVE void RunSnabbGETCommand(
 /* Start */
 
 //std::string input_user;
-std::vector<char> input;
+std::vector<char16_t> input;
 long pos;
 
 int main(int argc, char *argv[])
@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
 				// std::cout is faster than printf for concat (<< vs. "%", )
 				std::cout << "\n\n\033[9999;0H\033[1A──────────────────────\r\n"
 					<< sget::new_line().c_str() << "\0337" << in << "\0338"
-					<< std::string("\033[C")*pos
+					<< std::string("\033[C")*pos // TODO: accents & end of line
 					#ifdef __linux__
 					<< "\033[1A\n"
 					#endif
@@ -189,7 +189,7 @@ int main(int argc, char *argv[])
 				#endif
 			}
 			sget::addToSCREEN(sget::new_line());
-			std::string in(input.begin(),input.end());
+			std::string in(input.begin(), input.end());
 			sget::SCREEN.back() += in;
 			sget::addToSCREEN(sget::read_input(in));
 			printf(sget::FRAME().c_str());
