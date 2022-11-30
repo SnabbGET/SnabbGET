@@ -87,6 +87,9 @@ int main(int argc, char *argv[])
 {
 	sget::SnabbGET();
 	sget::rw::Raw_mode(0);
+	sget::io::io.outFunct = &std::printf;
+	sget::io::io.inFunct = &std::scanf;
+	
 	system(""); // I don't kwon why I must put that, but if I don't add that,
 				// escape codes don't work on Windows :(
 	if (argc == 1 && !one_line)
