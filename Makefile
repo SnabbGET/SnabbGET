@@ -15,16 +15,16 @@ pre_compile:
 compile: pre_compile
 	@echo "Generating..."
 ifeq (${DEBUG}, on)
-	g++ -Wall -Wextra -D DEBUG -O3 -g3 src/*.cpp src/core/utils.cpp -o\
+	g++ -Wall -Wextra -D DEBUG -O3 -g3 src/*.cpp src/core/utils.cpp -o \
 	"${filename}" -std=c++1z
 else
-	g++ -Wall -Wextra -O3 -g3 src/*.cpp src/core/utils.cpp -o\
+	g++ -Wall -Wextra -O3 -g3 src/*.cpp src/core/utils.cpp -o \
 	"${filename}" -std=c++1z
 endif
 ifneq (${wasm}, off)
-	em++ -D DEBUG src/*.cpp src/core/utils.cpp -o\
+	em++ -D DEBUG src/*.cpp src/core/utils.cpp -o \
 	"web/${filename}.html" --shell-file\
-	html_template/shell_minimal.html -s NO_EXIT_RUNTIME=1 -s\
+	html_template/shell_minimal.html -s NO_EXIT_RUNTIME=1 -s \
 	"EXPORTED_RUNTIME_METHODS=['ccall']" -std=c++1z
 endif
 
@@ -43,7 +43,7 @@ endif
 gui:
 	@echo "Generating the gui..."
 	cd src/interface && javac gui.java
-	g++ -D _FORJAVAGUI_ src/*.cpp src/core/utils.cpp -std=c++17 -o\
+	g++ -D _FORJAVAGUI_ src/*.cpp src/core/utils.cpp -std=c++1z -o \
 	"src/interface/prompt"
 
 runGui: gui

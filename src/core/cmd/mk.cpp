@@ -14,6 +14,7 @@
 #include <cstring>
 #include <cerrno>
 #include <vector>
+#include <filesystem>
 
 //#include "../shell.hpp"
 
