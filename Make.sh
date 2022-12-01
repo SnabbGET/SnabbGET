@@ -1,4 +1,5 @@
-g++ src/core/gen/includes_files.cpp -o "includes"
+g++ src/core/gen/includes_files.cpp -o "includes" -std=c++1z
 ./includes
-g++ -Wall -Wextra -D DEBUG -g3 src/*.cpp src/core/utils.cpp -o "output"
+g++ -Wall -Wextra -D DEBUG -O3 -g3 src/*.cpp src/core/utils.cpp -o \
+"output" -std=c++1z
 ./output
