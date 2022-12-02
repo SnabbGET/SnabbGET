@@ -23,7 +23,7 @@ else
 endif
 ifneq (${wasm}, off)
 	em++ -D DEBUG src/*.cpp src/core/utils.cpp -o \
-	"web/${filename}.html" --shell-file\
+	"web/${filename}.html" --shell-file \
 	html_template/shell_minimal.html -s NO_EXIT_RUNTIME=1 -s \
 	"EXPORTED_RUNTIME_METHODS=['ccall']" -std=c++1z
 endif
