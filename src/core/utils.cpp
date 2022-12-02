@@ -4,7 +4,7 @@
  * @file src/code/utils.cpp
  * @brief Utils.
  * @author LAPCoder
- * @version 0.1.0
+ * @version 0.1.1
  * 
  * MIT License
  */

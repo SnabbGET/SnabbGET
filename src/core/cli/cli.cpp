@@ -2,10 +2,9 @@
  * @file cli.cpp
  * @author LAPCoder
  * @brief All CLI shapes (lists, ...)
- * @version 0.1.0
+ * @version 0.1.1
  * 
  * @copyright MIT License
- * 
  */
 
 
@@ -31,12 +30,12 @@
  * └┴┘╰─╯ ╵
  */
 
-std::string operator*(std::string str, int n)
+std::string operator*(const std::string &str, const int &n)
 {
 	std::ostringstream os;
-    for(int i = 0; i < n; i++)
-        os << str;
-    return os.str();
+	for(int i = 0; i < n; i++)
+		os << str;
+	return os.str();
 }
 
 // Use me to avoid Segment fault!
@@ -59,7 +58,7 @@ std::vector<std::string> getElemFromArr(
 	return std::vector<std::string>({""}); // Segment fault
 }
 
-void SnabbGET::CLI::list(int posX, int posY, std::vector<std::string> txt)
+void SnabbGET::CLI::list(int posX, int posY, const std::vector<std::string> &txt)
 {
 	std::cout << "\0337\033[" << posY << ";" << posX << "H╭"
 		<< std::string("─")*(*std::max_element(txt.begin(), txt.end(),
@@ -94,7 +93,7 @@ void SnabbGET::CLI::list(int posX, int posY, std::vector<std::string> txt)
 }
 
 void SnabbGET::CLI::table(int posX, int posY,
-	std::vector<std::vector<std::string>> txt, bool with1line = false
+	const std::vector<std::vector<std::string>> &txt, bool with1line = false
 )
 {
 	unsigned line = 0;
@@ -176,10 +175,9 @@ void SnabbGET::CLI::table(int posX, int posY,
 	//        ╰──┴──┴───╯
 }
 
-void SnabbGET::CLI::popup(int posX, int posY, std::string txt)
+void SnabbGET::CLI::popup(int posX, int posY, const std::string &txt)
 {
-	txt = replaceAll(txt, "\t", "        ");
-	std::string tmp; 
+	std::string tmp, txt2 = replaceAll(txt, "\t", "        ");
 	std::stringstream ss(txt);
 	std::vector<std::string> words;
 

@@ -1,19 +1,20 @@
-
-# Here, tou can define YOUR prompt.
+# Here, you can define YOUR prompt.
 # Symbols:
 # - $$ : $
 # - $u : username
 # - $m : machine name
 # - $d : current dir
+# - $t : current time
+# - $D : current date
 # - $s : DEBUG mode activated? = "[DEBUG] "
-# - [<color>m is supported
+# - \033[<color>m is supported
 #
 # Defalt prompt:
-[1m[92m$u@$m[39m:[96m$d[93m$s[95m |>
-# bold  green    @    black :  green     gold       rose   |>
-#           user   machine          dir       debug
+\033[1m\033[92m$u@$m\033[39m:\033[96m$d\033[38;5;208m#\033[31m$t\033[93m$s\033[95m |>
+# bold  green    @    black :  green    black  #  orange         gold     rose     |>
+#           user   machine          dir                      time     debug
 # Linux prompt:
-# [1m[92m$u@$m[39m:[94m$d $$
+# \033[1m\033[92m$u@$m\033[39m:\033[94m$d $$
 # Windows prompt:
 # $d>
 # Powershell prompt:
