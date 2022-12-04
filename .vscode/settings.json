@@ -71,6 +71,7 @@
 		"regex": "cpp",
 		"codecvt": "cpp",
 		"iomanip": "cpp",
-		"filesystem": "cpp"
+		"filesystem": "cpp",
+		"set": "cpp"
 	}
 }

@@ -4,7 +4,7 @@
  * @file src/core/shell.hpp
  * @brief Header of the main part.
  * @author LAPCoder
- * @version 0.1.1
+ * @version 0.2.0
  * 
  * MIT License
  */
@@ -156,6 +156,15 @@
 		 */
 		void get_command(std::string input_user_t);
 
+		/**
+		 * @brief When use readline() function, the keys will do actions
+		 * 
+		 * @param count
+		 * @param key
+		 * @return Exit code (0 is OK)
+		 */
+		int rlKeysFuncs(int count, int key);
+
 		std::string cmd[MAX_INPUT];
 		unsigned int cmdLen = 0;
 
@@ -174,21 +183,15 @@
 		 * @param echo [OPTIONAL] Set to 0 or see in code
 		 */
 		namespace Raw_mode
-		{
-			/**
-			 * @brief Construct a new Raw_mode object
-			 * 
-			 * @return Nothing
-			 */
-			void Raw_mode();
-			
+		{			
 			/**
 			 * @brief Construct a new Raw_mode object
 			 * 
 			 * @param echo [OPTIONAL] Set to 0 or see in code
+			 * @param enlabed [OPTIONAL]
 			 * @return Nothing
 			 */
-			void Raw_mode(int echo);
+			void Raw_mode(int echo = 0, bool enlabed = true);
 
 			/**
 			 * @brief Stop the raw mode
@@ -236,6 +239,7 @@
 			#ifdef __linux__
 				static struct termios old, new1;
 			#endif
+			bool on = true;
 		}
 
 		/*  ####  #    # #####
@@ -294,7 +298,7 @@
 			std::vector<const char*> allCmd;
 		}
 
-		/*std::string*/void addToSCREEN(std::string txt)
+		void addToSCREEN(std::string txt)
 			{SCREEN.emplace_back(txt);}
 
 		/**
@@ -367,7 +371,7 @@
 					int (* inFunct)(const char *, ...) = &std::scanf;
 					// Constructor with the funtion in param
 					newIo(int (o)(const char *, ...),
-						int (i)(const char *, ...)) { outFunct = o; inFunct = i; }
+						int (i)(const char *, ...)) {outFunct = o; inFunct = i;}
 					// Destructor
 					~newIo() {}
 			};
@@ -386,7 +390,8 @@
 				exp.outFunct(arg);
 				return exp;
 			}
-			inline newIo &operator<<(newIo &exp, stdEndl arg) // std::endl is a pointer
+			inline newIo &operator<<(newIo &exp, stdEndl arg)
+			// std::endl is a pointer
 			{
 				exp.outFunct(endl.c_str());
 				return exp;
@@ -400,7 +405,7 @@
 			template<class T> inline newIo &operator>>(newIo &exp, T &arg)
 			{
 				std::string r = "%c";
-					if (typeid(T) == typeid(int)) r = "%d";
+					 if (typeid(T) == typeid(int)) r = "%d";
 				else if (typeid(T) == typeid(char)) r = "%c";
 				else if (typeid(T) == typeid(signed char)) r = "%c";
 				else if (typeid(T) == typeid(unsigned char)) r = "%c";

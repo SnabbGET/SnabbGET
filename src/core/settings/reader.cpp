@@ -117,9 +117,9 @@ std::string SnabbGET::promptSettings()
 	replaceAll2(tmp, "œùƒ", "$");
 	tmp += "\033[0m ";
 
-	#ifdef __linux__
+	/*#ifdef __linux__
 		tmp += "\033[1A\n";
-	#endif
+	#endif*/
 	return tmp;
 }
 /*

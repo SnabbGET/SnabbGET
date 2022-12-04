@@ -37,7 +37,7 @@
  * @file src/core/core.cpp
  * @brief Main part of the project.
  * @author LAPCoder
- * @version 0.1.1
+ * @version 0.2.0
  * 
  * MIT License
  */
@@ -47,6 +47,7 @@
 #include <chrono>
 #include <ctime>
 #include <fstream>
+#include <cstdio>
 #include <cstdlib>
 #include <climits>
 #include <cstring>
@@ -63,6 +64,9 @@
 	#include <Lmcons.h>
 #endif
 
+#include "../include/readline/readline.h"
+#include  "../include/readline/history.h"
+
 /* ####### ##   ## ##   ##  ###### ####### #######  #####  ##   ##  ######
  * ##      ##   ## ###  ## ###       ###     ###   ### ### ###  ## ##
  * ##      ##   ## #### ## ##        ###     ###   ##   ## #### ##   ##
@@ -75,12 +79,32 @@ void SnabbGET::SnabbGET()
 {
 	dateOpen = std::time(0);
 	init();
+
+	rl_command_func_t rlKeysFuncs;
+	rl_bind_key ('"', rlKeysFuncs);
+	rl_bind_key ('\'',rlKeysFuncs);
+	rl_bind_key ('(', rlKeysFuncs);
+	rl_bind_key ('[',rlKeysFuncs);
+	rl_bind_key ('{', rlKeysFuncs);
+	rl_bind_key ('`',rlKeysFuncs);
+	/*rl_bind_key (27, rlKeysFuncs); //ascii code for ESC
+	rl_bind_keyseq ("\\C-a", rlKeysFuncs);*/
 }
 
 void SnabbGET::SnabbGET(bool cmd_line)
 {
 	SnabbGET();
 	CMD_LINE = cmd_line;
+}
+
+int SnabbGET::rlKeysFuncs(int count, int key)
+{
+	rl_insert_text(key == '(' ? "()" :
+				  (key == '"' ? "\"\"":
+				  (key == '[' ? "[]":
+				  (key == '\''? "''":
+				  (key == '{' ? "{}": "``")))));
+	return 0;
 }
 
 std::string SnabbGET::init()
@@ -96,7 +120,7 @@ Version: ";
 Copyright (c) SnabbGET\r\n\
 Under the  MIT License\r\n\
 ──────────────────────\r\n";
-	msg += "\033[1A\r\n";
+	//msg += "\033[1A\r\n";
 	//msg += new_line();
 	return msg;
 }
@@ -150,7 +174,7 @@ std::string SnabbGET::read_input(std::string input_user_t)
 	#endif
 
 	//std::cout << &cmd << std::endl;
-	if (! one_line)
+	/*if (! one_line)
 	{
 		historyFile.open("dist/.history.txt", std::ios_base::app);
 
@@ -194,7 +218,7 @@ std::string SnabbGET::read_input(std::string input_user_t)
 		historyFile << input_user;
 		historyFile << "\r\n";
 		historyFile.close();
-	}
+	}*/
 
 	if (cmdLen == 0) return "\033[1A";
 
@@ -234,7 +258,7 @@ std::string SnabbGET::read_input(std::string input_user_t)
 	else if (cmd[0] == "exe" && cmdLen > 1)
 		return runCmd(EXE,  cmd, cmdLen, input_user);
 	else if (cmd[0] == "exe" && cmdLen == 1)
-		return "You must enter a command!\r\n";
+		return "You must enter a command!";
 
 	// Ls
 	else if (cmd[0] == "ls")
@@ -426,43 +450,29 @@ void SnabbGET::set_current_dir()
  * ##   ##  ## ##
  */
 
-void SnabbGET::Raw_mode::Raw_mode(int echo)
+void SnabbGET::Raw_mode::Raw_mode(int echo, bool enlabed)
 {
+	on = enlabed;
 	#ifdef __linux__
 		// grab old terminal i/o settings
 		tcgetattr(0, &SnabbGET::Raw_mode::old);
 		// make new settings same as old settings
 		SnabbGET::Raw_mode::new1 = SnabbGET::Raw_mode::old;
-		// disable buffered i/o
-		SnabbGET::Raw_mode::new1.c_lflag &= ~ICANON;
-		// set echo mode
-		SnabbGET::Raw_mode::new1.c_lflag &= echo ? ECHO : ~ECHO;
-		// disable output processing
-		SnabbGET::Raw_mode::new1.c_oflag &= ~(OPOST);
-		// use these new terminal i/o settings now
-		tcsetattr(0, TCSANOW, &SnabbGET::Raw_mode::new1);
+		if (on)
+		{
+			// disable buffered i/o
+			//SnabbGET::Raw_mode::new1.c_lflag &= ~ICANON;
+			// set echo mode
+			//SnabbGET::Raw_mode::new1.c_lflag &= echo ? ECHO : ~ECHO;
+			// disable output processing
+			//SnabbGET::Raw_mode::new1.c_oflag &= ~(OPOST);
+			// use these new terminal i/o settings now
+			tcsetattr(0, TCSANOW, &SnabbGET::Raw_mode::new1);
+		}
 	#endif
 	if (echo) {}
 	// /o o\ ?
 	// \---/  Hum...
-}
-
-void SnabbGET::Raw_mode::Raw_mode()
-{
-	#ifdef __linux__
-		// grab old terminal i/o settings
-		tcgetattr(0, &SnabbGET::Raw_mode::old);
-		// make new settings same as old settings
-		SnabbGET::Raw_mode::new1 = SnabbGET::Raw_mode::old;
-		// disable buffered i/o
-		SnabbGET::Raw_mode::new1.c_lflag &= ~ICANON;
-		// set echo mode
-		SnabbGET::Raw_mode::new1.c_lflag &= ~ECHO;
-		// disable output processing
-		SnabbGET::Raw_mode::new1.c_oflag &= ~(OPOST);
-		// use these new terminal i/o settings now
-		tcsetattr(0, TCSANOW, &SnabbGET::Raw_mode::new1);
-	#endif
 }
 
 void SnabbGET::Raw_mode::pause()
