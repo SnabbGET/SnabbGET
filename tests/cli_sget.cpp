@@ -13,8 +13,8 @@
 #include "../src/core/shell.hpp"
 //#include "interface/gui.cpp"
 
-int get_pos(int *y, int *x) {
-
+int get_pos(int *y, int *x)
+{
 	char buf[30] = {0};
 	int ret, i, pow;
 	char ch;

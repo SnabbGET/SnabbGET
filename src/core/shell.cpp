@@ -89,6 +89,8 @@ void SnabbGET::SnabbGET()
 	rl_bind_key('{', rlKeysFuncs);
 	rl_bind_key('`', rlKeysFuncs);
 	rl_bind_key('\t', [](int, int)->int {
+		printf("%s", sget::FRAME().c_str());
+		rl_forced_update_display();
 		std::vector<std::string> tmp = {};
 		std::copy_if(
 			CMDS::allCmd.begin(),
@@ -102,8 +104,15 @@ void SnabbGET::SnabbGET()
 						tmp.end());
 			}
 		);
+		int posX, posY;
+		get_pos(&posY, &posX);
 		if (tmp.size() > 0)
-			CLI::list(1,1/*posX,(posY-txt.size()-3>1)?posY-txt.size()-3:*/,tmp);
+		{
+			if (tmp.size()+3 <= (long unsigned)posY)
+				CLI::list(posX, posY-tmp.size() - 2, tmp);
+			else
+				CLI::list(posX, posY+1, tmp);
+		}
 		else
 		{
 			std::copy_if(
@@ -115,7 +124,10 @@ void SnabbGET::SnabbGET()
 							tmp.end();
 				}
 			);
-			CLI::list(1,1/*posX,(posY-txt.size()-3>1)?posY-txt.size()-3:*/,tmp);
+			if (tmp.size()+3 <= (long unsigned)posY)
+				CLI::list(posX, posY-tmp.size() - 2, tmp);
+			else
+				CLI::list(posX, posY+1, tmp);
 		}
 		if (tmp.size() == 1)
 			rl_insert_text((tmp[0].substr(strlen(rl_line_buffer))+" ").c_str());

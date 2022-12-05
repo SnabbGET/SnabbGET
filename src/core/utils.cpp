@@ -19,6 +19,12 @@
 #include <vector>
 #include <iterator>
 #include <sstream>
+#ifdef __WIN32
+	#include <windows.h>
+#else
+	#include <termios.h>
+	#include <unistd.h>
+#endif
 
 #include "utils.hpp"
 
@@ -159,11 +165,11 @@ std::vector<std::string> split(const std::string &s, const char &token)
 	{
 		// F*ck the unsigned
 		int index = str.find(token);
-		if (index!=std::string::npos)
+		if (index != (long long)std::string::npos)
 		{
 			result.push_back(str.substr(0,index));
 			str = str.substr(index+1);
-			if (str.size()==0)
+			if (str.size() == 0)
 				result.push_back(str);
 		}
 		else
@@ -173,4 +179,64 @@ std::vector<std::string> split(const std::string &s, const char &token)
 		}
 	}
 	return result;
+}
+
+int get_pos(int *y, int *x)
+{
+	#ifdef __WIN32
+		CONSOLE_SCREEN_BUFFER_INFO cbsi;
+		HANDLE hConsoleOutput;
+		if (GetConsoleScreenBufferInfo(hConsoleOutput, &cbsi))
+		{
+			*x = cbsi.dwCursorPosition.X;
+			*y = cbsi.dwCursorPosition.Y;
+		}
+		else
+		{
+			// The function failed. Call GetLastError() for details.
+			return 1;
+		}
+	#else
+		char buf[30] = {0};
+		int ret, i, pow;
+		char ch;
+		*y = 0; *x = 0;
+
+		struct termios term, restore;
+
+		tcgetattr(0, &term);
+		tcgetattr(0, &restore);
+		term.c_lflag &= ~(ICANON|ECHO);
+		tcsetattr(0, TCSANOW, &term);
+
+		write(1, "\033[6n", 4);
+
+		for (i = 0, ch = 0; ch != 'R'; i++)
+		{
+			ret = read(0, &ch, 1);
+			if (!ret) {
+				tcsetattr(0, TCSANOW, &restore);
+				fprintf(stderr, "get_pos: Error reading response!\r\n");
+				return 1;
+			}
+			buf[i] = ch;
+			//printf("buf[%d]: \t%c \t%d\r\n", i, ch, ch);
+		}
+
+		if (i < 2)
+		{
+			tcsetattr(0, TCSANOW, &restore);
+			printf("i < 2\r\n");
+			return 1;
+		}
+
+		for (i -= 2, pow = 1; buf[i] != ';'; i--, pow *= 10)
+			*x = *x + ( buf[i] - '0' ) * pow;
+
+		for (i--, pow = 1; buf[i] != '['; i--, pow *= 10)
+			*y = *y + ( buf[i] - '0' ) * pow;
+
+		tcsetattr(0, TCSANOW, &restore);
+	#endif
+	return 0;
 }

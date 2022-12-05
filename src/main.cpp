@@ -214,7 +214,7 @@ int main(int argc, char *argv[])
 			sget::addToSCREEN(sget::read_input(std::string(line)));
 			printf((sget::FRAME()).c_str());
 
-			if (strcmp(line, "exit") == 0) 
+			if (strcmp(line, "exit") == 0 || strcmp(line, "exit ") == 0) 
 			{
 				std::cout << "";
 				return EXIT_SUCCESS;

@@ -85,14 +85,14 @@ std::string SnabbGET::CMDS::_ls_(std::string[], int, std::string)
 		std::filesystem::file_size(entry, ec);
 		if (!ec)
 			msg += std::string("\t\t\t\t\t") +h(entry.file_size())+"\r";
+			// TODO: use std::setw()
 		msg += (entry.is_directory() ? "\033[38;5;75m":
-					(entry.is_regular_file() ? "\033[0m":
-					(entry.is_other() ? "\033[38;5;118m":
-					(entry.is_socket() ? "\033[38;5;193m":
-					(entry.is_block_file() ? "\033[38;5;220m":
-					(entry.is_character_file() ? "\033[38;5;161m":
-					(entry.is_fifo() ? "\033[38;5;99":"\033[38;5;203m"))
-					))))) + 
+				(entry.is_regular_file() ? "\033[0m":
+				(entry.is_other() ? "\033[38;5;118m":
+				(entry.is_socket() ? "\033[38;5;193m":
+				(entry.is_block_file() ? "\033[38;5;220m":
+				(entry.is_character_file() ? "\033[38;5;161m":
+				(entry.is_fifo() ? "\033[38;5;99":"\033[38;5;203m"))))))) + 
 			std::string(replaceAll(
 				replaceAll(
 					replaceAll(entry.path(), currDir, ""),
