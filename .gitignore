@@ -58,3 +58,5 @@ dkms.conf
 
 # History files
 dist/
+
+.swp

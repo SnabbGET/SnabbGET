@@ -31,7 +31,7 @@
 
 	#include "utils.hpp"
 
-	#define VERSION "0.1.0"
+	#define VERSION "0.2.0"
 	#ifndef MAX_INPUT
 		#define MAX_INPUT 255
 	#endif
@@ -48,7 +48,6 @@
 
 	/**
 	 * @brief The SnabbGET Namespace
-	 * @version 0.1.0
 	 */
 	namespace SnabbGET
 	{
@@ -387,10 +386,10 @@
 
 			template<class T> inline newIo &operator<<(newIo &exp, T &arg)
 			{
-				exp.outFunct(arg);
+				exp.outFunct(arg); // TODO: test with int
 				return exp;
 			}
-			inline newIo &operator<<(newIo &exp, stdEndl arg)
+			inline newIo &operator<<(newIo &exp, stdEndl)
 			// std::endl is a pointer
 			{
 				exp.outFunct(endl.c_str());

@@ -1,6 +1,3 @@
-#include "../src/core/shell.hpp"
-//#include "interface/gui.cpp"
-
 #ifndef std_def
 	#include <iostream>
 	#include <cstdio>
@@ -8,9 +5,13 @@
 	#include <chrono>
 	#include <cstdio>
 	#include <termios.h>
+	#include <filesystem>
 	#define std_def
 	#define print(x, ...) std::cout << x // For a friend :D
 #endif
+
+#include "../src/core/shell.hpp"
+//#include "interface/gui.cpp"
 
 int get_pos(int *y, int *x) {
 
@@ -60,7 +61,7 @@ int get_pos(int *y, int *x) {
 int main()
 {
 	sget::SnabbGET(true);
-	sget::rw::Raw_mode(0);
+	sget::rw::Raw_mode(0, false);
 	system("");
 	sget::init();
 	int posX, posY;
@@ -77,11 +78,11 @@ int main()
 	get_pos(&posY, &posX);
 	posY++;
 	//std::cout << "          "<<(posY-txt.size()-3 > 1) ? posY-txt.size()-3:0;
-	//sget::CLI::list(posX,(posY-txt.size()-3 > 1) ? posY-txt.size()-3:0, txt);
+	sget::CLI::list(/*posX,(posY-txt.size()-3 > 1) ? posY-txt.size()-3:0, txt*/1,1, txt);
 	//sget::CLI::table(6, 3, txt2, true);
-	sget::CLI::popup(5, 3, txt3);
+	//sget::CLI::popup(5, 3, txt3);
 	std::cin >> a;
 	sget::read_input("exit");
-	sget::rw::pause();
+	//sget::rw::pause();
 	return EXIT_SUCCESS;
 }
