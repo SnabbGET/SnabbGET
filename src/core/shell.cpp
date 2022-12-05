@@ -58,6 +58,7 @@
 	#include <termios.h>
 #endif
 #include <functional>
+#include <vector>
 
 #ifdef _WIN32
 	#include <windows.h>
@@ -69,8 +70,8 @@
 
 /* ####### ##   ## ##   ##  ###### ####### #######  #####  ##   ##  ######
  * ##      ##   ## ###  ## ###       ###     ###   ### ### ###  ## ##
- * ##      ##   ## #### ## ##        ###     ###   ##   ## #### ##   ##
- * ####### ##   ## ## #### ##        ###     ###   ##   ## ## ####    ##
+ * ##      ##   ## #### ## ##        ###     ###   ##   ## #### ##  ###
+ * ####### ##   ## ## #### ##        ###     ###   ##   ## ## ####    ###
  * ##      ### ### ##  ### ###       ###     ###   ### ### ##  ###      ##
  * ##       #####  ##   ##  ######   ###   #######  #####  ##   ## ######
  */
@@ -81,12 +82,45 @@ void SnabbGET::SnabbGET()
 	init();
 
 	rl_command_func_t rlKeysFuncs;
-	rl_bind_key ('"', rlKeysFuncs);
-	rl_bind_key ('\'',rlKeysFuncs);
-	rl_bind_key ('(', rlKeysFuncs);
-	rl_bind_key ('[',rlKeysFuncs);
-	rl_bind_key ('{', rlKeysFuncs);
-	rl_bind_key ('`',rlKeysFuncs);
+	rl_bind_key('"', rlKeysFuncs);
+	rl_bind_key('\'',rlKeysFuncs);
+	rl_bind_key('(', rlKeysFuncs);
+	rl_bind_key('[', rlKeysFuncs);
+	rl_bind_key('{', rlKeysFuncs);
+	rl_bind_key('`', rlKeysFuncs);
+	rl_bind_key('\t', [](int, int)->int {
+		std::vector<std::string> tmp = {};
+		std::copy_if(
+			CMDS::allCmd.begin(),
+			CMDS::allCmd.end(),
+			std::back_inserter(tmp),
+			[&tmp](const char *i)->bool {
+				return
+					(std::string(i).substr(0, strlen(rl_line_buffer)) ==
+						rl_line_buffer) &&
+					(std::find(tmp.begin(), tmp.end(), std::string(i)) ==
+						tmp.end());
+			}
+		);
+		if (tmp.size() > 0)
+			CLI::list(1,1/*posX,(posY-txt.size()-3>1)?posY-txt.size()-3:*/,tmp);
+		else
+		{
+			std::copy_if(
+				CMDS::allCmd.begin(),
+				CMDS::allCmd.end(),
+				std::back_inserter(tmp),
+				[&tmp](const char *i)->bool {
+					return std::find(tmp.begin(), tmp.end(), std::string(i)) ==
+							tmp.end();
+				}
+			);
+			CLI::list(1,1/*posX,(posY-txt.size()-3>1)?posY-txt.size()-3:*/,tmp);
+		}
+		if (tmp.size() == 1)
+			rl_insert_text((tmp[0].substr(strlen(rl_line_buffer))+" ").c_str());
+		return 0;
+	});
 	/*rl_bind_key (27, rlKeysFuncs); //ascii code for ESC
 	rl_bind_keyseq ("\\C-a", rlKeysFuncs);*/
 }
@@ -97,13 +131,14 @@ void SnabbGET::SnabbGET(bool cmd_line)
 	CMD_LINE = cmd_line;
 }
 
-int SnabbGET::rlKeysFuncs(int count, int key)
+int SnabbGET::rlKeysFuncs(int, int key)
 {
 	rl_insert_text(key == '(' ? "()" :
 				  (key == '"' ? "\"\"":
 				  (key == '[' ? "[]":
 				  (key == '\''? "''":
 				  (key == '{' ? "{}": "``")))));
+	rl_point--;
 	return 0;
 }
 
@@ -119,7 +154,7 @@ Version: ";
 	msg += "\r\n\
 Copyright (c) SnabbGET\r\n\
 Under the  MIT License\r\n\
-──────────────────────\r\n";
+──────────────────────";
 	//msg += "\033[1A\r\n";
 	//msg += new_line();
 	return msg;
