@@ -59,6 +59,7 @@
 #endif
 #include <functional>
 #include <vector>
+#include <thread>
 
 #ifdef _WIN32
 	#include <windows.h>
@@ -78,6 +79,12 @@
 
 void SnabbGET::SnabbGET()
 {
+	#if __cplusplus < 201703L
+		printf("\033[J\033[2J\033[3J\033[H\033[41m\033[1m"
+			   "<ERROR>: THIS C++ VERSION IS UNSUPPORTED BY SNABBGET\033[0m\r\n");
+		std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+	#endif
+
 	dateOpen = std::time(0);
 	init();
 

@@ -1,5 +1,6 @@
 // Main file
-
+#ifndef __SGET_UTILS
+#define __SGET_UTILS
 /**
  * @file src/code/utils.cpp
  * @brief Utils.
@@ -117,7 +118,9 @@ std::string exec(const char *cmd)
 	if (!pipe) {
 		throw std::runtime_error("popen() failed!");
 	}
-	while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+	while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr)
+	{
+		std::cout << buffer.data();
 		result += buffer.data();
 	}
 	return result;
@@ -240,3 +243,5 @@ int get_pos(int *y, int *x)
 	#endif
 	return 0;
 }
+
+#endif // __SGET_UTILS

@@ -20,6 +20,7 @@ std::string replaceAll(std::string str, const std::string &from,
 
 int main()
 {
+	#if __cplusplus >= 201703L
 	std::vector<char *> files;
 
 	std::ofstream fileOut;
@@ -39,4 +40,7 @@ int main()
 	std::cout << std::endl;
 
 	return EXIT_SUCCESS;
+	#else
+	return EXIT_FAILURE;
+	#endif
 }

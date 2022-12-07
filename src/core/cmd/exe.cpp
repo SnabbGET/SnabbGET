@@ -45,8 +45,8 @@ std::string SnabbGET::CMDS::_exe_(std::string[], int, std::string input_user)
 		//std::cout << "ok\r\n";
 		msg += input_user.substr(4);
 		//std::cout << "ok\r\n";
-		SnabbGET::io::io << "\033[J\033[2J\033[3J\033[0;0H";
 		msg2 = exec(msg.c_str());
+		printf("%s", sget::FRAME().c_str());
 		//std::cout << "ok\r\n";
 		SnabbGET::Raw_mode::resume();
 		//std::cout << "ok\r\n";
