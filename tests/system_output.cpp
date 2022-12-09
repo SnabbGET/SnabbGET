@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include <string>
 #include <array>
-
+/*
 std::string exec(const char* cmd) {
 	std::array<char, 128> buffer;
 	std::string result;
@@ -16,7 +16,7 @@ std::string exec(const char* cmd) {
 		result += buffer.data();
 	}
 	return result;
-}
+}*/
 
 int main()
 {

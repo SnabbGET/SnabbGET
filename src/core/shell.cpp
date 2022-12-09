@@ -509,7 +509,11 @@ void SnabbGET::set_current_dir()
  * ##   ##  ## ##
  */
 
-void SnabbGET::Raw_mode::Raw_mode(int echo, bool enlabed)
+void SnabbGET::Raw_mode::Raw_mode(int
+	#ifdef __linux__
+		echo
+	#endif
+	, bool enlabed)
 {
 	on = enlabed;
 	#ifdef __linux__
@@ -530,7 +534,6 @@ void SnabbGET::Raw_mode::Raw_mode(int echo, bool enlabed)
 			tcsetattr(0, TCSANOW, &SnabbGET::Raw_mode::new1);
 		}
 	#endif
-	if (echo) {}
 	// /o o\ ?
 	// \---/  Hum...
 }
