@@ -8,10 +8,11 @@ Schema:
 ```mermaid
 flowchart LR
 
-A{Main} ===> |Text, commands results| B
-B(GUI)  ===> |Buttons, inputs...| A
-A       ---> |Errors| D(std)
-C[Core] <==> |All| A
+A{Main} ==> |Text, commands results| B
+B(GUI) ===> |Buttons, inputs...| A
+A       --> |Errors| D(std)
+C[Core]<==> |All| A
+B       ==> |If CLI mode| D
 ```
 
 The `Main` part
@@ -27,14 +28,19 @@ SnabbGET --|> Raw_mode
 SnabbGET --|> CLI
 SnabbGET --|> SYNTAX
 SnabbGET --|> CMDS
+SnabbGET --|> io
+io --|> newIo
 SnabbGET : SnabbGET()
 SnabbGET : init()
 SnabbGET : read_input()
 SnabbGET : new_line()
+SnabbGET : FRAME()
+SnabbGET : addToSCREEN()
 SnabbGET : one_line
 SnabbGET : userName
 SnabbGET : computerName
 SnabbGET : currentDir
+SnabbGET : SCREEN
 Raw_mode : Raw_mode()
 Raw_mode : pause()
 Raw_mode : resume()
@@ -50,6 +56,15 @@ CLI : popup()
 CLI : list()
 CLI : table()
 SYNTAX : 🦺 In dev
+newIo : newIo(o, i)
+newIo : outFunct
+newIo : inFunct
+io : endl
+io : io
+io : typedef stdCoutTpe
+io : typedef stdEndl
+io : operator<<()
+io : operator>>()
 ```
 
 For the moment, the GUI is `std` (CLI).
