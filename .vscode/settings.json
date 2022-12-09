@@ -73,5 +73,6 @@
 		"iomanip": "cpp",
 		"filesystem": "cpp",
 		"set": "cpp"
-	}
+	},
+	"python.analysis.typeCheckingMode": "basic"
 }
