@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
 				// std::cout is faster than printf for concat (<< vs. "%", )
 				std::cout << "\n\n\033[9999;0H\033[1A──────────────────────\r\n"
 					<< sget::new_line().c_str() << "\0337" << in << "\0338"
-					<< std::string("\033[C")*pos // TODO: accents & end of line
+					<< std::string("\033[C")*pos
 					#ifdef __linux__
 					<< "\033[1A\n"
 					#endif
@@ -206,6 +206,7 @@ int main(int argc, char *argv[])
 				#endif
 			}*/
 			line = readline(("\r\n" + sget::new_line()).c_str());
+			//sget::rw::Raw_mode(0, true);
 			//if (!line) break;
 			if (*line && line) add_history(line);
 

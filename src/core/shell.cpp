@@ -95,6 +95,11 @@ void SnabbGET::SnabbGET()
 	rl_bind_key('[', rlKeysFuncs);
 	rl_bind_key('{', rlKeysFuncs);
 	rl_bind_key('`', rlKeysFuncs);
+	rl_bind_key(4, [](int, int)->int {
+		printf(SnabbGET::read_input("exit").c_str());
+		exit(EXIT_SUCCESS);
+		return 0;
+	});
 	rl_bind_key('\t', [](int, int)->int {
 		printf("%s", sget::FRAME().c_str());
 		rl_forced_update_display();
@@ -520,6 +525,7 @@ void SnabbGET::Raw_mode::Raw_mode(int echo, bool enlabed)
 			//SnabbGET::Raw_mode::new1.c_lflag &= echo ? ECHO : ~ECHO;
 			// disable output processing
 			//SnabbGET::Raw_mode::new1.c_oflag &= ~(OPOST);
+			SnabbGET::Raw_mode::new1.c_lflag &= ~ISIG;
 			// use these new terminal i/o settings now
 			tcsetattr(0, TCSANOW, &SnabbGET::Raw_mode::new1);
 		}
