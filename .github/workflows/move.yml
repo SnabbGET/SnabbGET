@@ -19,7 +19,7 @@ jobs:
           #git commit --allow-empty -m "Initial commit"
           #git push -u origin $TARGET_BRANCH
           #git switch main
-          files=$(find $SRC_FOLDER_PATH -type f) # get the file list
+          files=$(find $SRC_FOLDER_PATH -type f) || files="" # get the file list
           git fetch                         # fetch branches
           git checkout $TARGET_BRANCH       # checkout to your branch
           git checkout ${GITHUB_REF##*/} -- $files # copy files from the source branch
