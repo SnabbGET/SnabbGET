@@ -1,0 +1,32 @@
+name: Copy folder to other branch
+
+on: [push]
+
+jobs:
+  copy:
+    name: Copy folder
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: copy
+        env:
+          SRC_FOLDER_PATH: 'web'
+          TARGET_BRANCH: 'web'
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git switch --orphan $TARGET_BRANCH
+          git commit --allow-empty -m "Initial commit"
+          git push -u origin $TARGET_BRANCH
+          git switch main
+          files=$(find $SRC_FOLDER_PATH -type f) # get the file list
+          git fetch                         # fetch branches
+          git checkout $TARGET_BRANCH       # checkout to your branch
+          git checkout ${GITHUB_REF##*/} -- $files # copy files from the source branch
+          git add -A
+          git diff-index --quiet HEAD ||  git commit -am "deploy files"  # commit to the repository (ignore if no modification)
+          git push origin $TARGET_BRANCH # push to remote branch
+          git switch main
+          git rm -r --cached web
+          git commit -m "Removed folder from repository"
+          git push origin main
