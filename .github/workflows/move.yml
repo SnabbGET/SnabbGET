@@ -15,10 +15,10 @@ jobs:
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          git switch --orphan $TARGET_BRANCH
-          git commit --allow-empty -m "Initial commit"
-          git push -u origin $TARGET_BRANCH
-          git switch main
+          #git switch --orphan $TARGET_BRANCH
+          #git commit --allow-empty -m "Initial commit"
+          #git push -u origin $TARGET_BRANCH
+          #git switch main
           files=$(find $SRC_FOLDER_PATH -type f) # get the file list
           git fetch                         # fetch branches
           git checkout $TARGET_BRANCH       # checkout to your branch
