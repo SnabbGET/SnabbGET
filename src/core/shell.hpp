@@ -319,9 +319,7 @@
 		 * @brief The syntax analyser
 		 */
 		class SYNTAX
-		{
-
-		};
+		{};
 
 		/*  ####  #      #####
 		 * #    # #        #

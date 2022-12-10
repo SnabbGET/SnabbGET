@@ -24,6 +24,8 @@
 [![Gluten](https://forthebadge.com/images/badges/gluten-free.svg)](https://forthebadge.com)
 [![Contains](https://user-images.githubusercontent.com/97749743/202749038-e8e5be0e-0253-41ce-a077-364479331bbd.svg)](https://forthebadge.com)
 
+[![CodeFactor](https://www.codefactor.io/repository/github/snabbget/snabbget/badge)](https://www.codefactor.io/repository/github/snabbget/snabbget)
+
 ---
 
 ## What is SnabbGET?

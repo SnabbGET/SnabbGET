@@ -1,4 +1,4 @@
-// Java Program to create a text editor using java
+// Java Program to create a text gui using java
 import java.awt.*;
 import javax.swing.*;
 import java.io.*;
@@ -6,7 +6,7 @@ import java.awt.event.*;
 import javax.swing.plaf.metal.*;
 import javax.swing.text.*;
 
-class editor extends JFrame implements ActionListener {
+class gui extends JFrame implements ActionListener {
 	// Text component
 	/* JTextArea */JTextField t;
 	JTextField p;
@@ -15,10 +15,10 @@ class editor extends JFrame implements ActionListener {
 	JFrame f;
 
 	// Constructor
-	editor()
+	gui()
 	{
 		// Create a frame
-		f = new JFrame("editor");
+		f = new JFrame("gui");
 
 		try {
 			// Set metal look and feel
@@ -28,6 +28,7 @@ class editor extends JFrame implements ActionListener {
 			MetalLookAndFeel.setCurrentTheme(new OceanTheme());
 		}
 		catch (Exception e) {
+			System.out.println("Error");
 		}
 		// Text component
 		t = new JTextField();//JTextArea();
@@ -301,6 +302,6 @@ class editor extends JFrame implements ActionListener {
 
 	// Main class
 	public static void main(String args[]) {
-		editor e = new editor();
+		gui e = new gui();
 	}
 }

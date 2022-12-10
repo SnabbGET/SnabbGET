@@ -75,7 +75,6 @@ std::string SnabbGET::CMDS::_mk_(std::string cmd[], int cmdLen, std::string)
 						
 						return "Error: can't make this file";
 					}
-
 				}
 			}
 			outfile.close();

@@ -31,7 +31,6 @@ int main()
 	fileOut << "#pragma once\n";
 	for (const auto & entry : std::filesystem::directory_iterator("./src/core/cmd/"))
 	{
-		
 		fileOut << "#include \"./cmd" << std::string(
 				replaceAll(entry.path(), "./src/core/cmd", "")
 			) << "\"\n";
