@@ -13,8 +13,8 @@ jobs:
           SRC_FOLDER_PATH: 'web'
           TARGET_BRANCH: 'web'
         run: |
-          git config --global user.name 'GitHub Action'
-          git config --global user.email 'action@github.com'
+          git config --global user.name 'LAPCoder'
+          git config --global user.email '97749743+LAPCoder@users.noreply.github.com'
           #git switch --orphan $TARGET_BRANCH
           #git commit --allow-empty -m "Initial commit"
           #git push -u origin $TARGET_BRANCH
