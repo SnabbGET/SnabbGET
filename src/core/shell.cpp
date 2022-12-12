@@ -66,8 +66,10 @@
 	#include <Lmcons.h>
 #endif
 
-#include "../include/readline/readline.h"
-#include  "../include/readline/history.h"
+#define READLINE_LIBRARY
+
+#include "../../include/readline/readline.h"
+#include  "../../include/readline/history.h"
 
 /* ####### ##   ## ##   ##  ###### ####### #######  #####  ##   ##  ######
  * ##      ##   ## ###  ## ###       ###     ###   ### ### ###  ## ##
@@ -510,9 +512,9 @@ void SnabbGET::set_current_dir()
  */
 
 void SnabbGET::Raw_mode::Raw_mode(int
-	#ifdef __linux__
+	/*#ifdef __linux__
 		echo
-	#endif
+	#endif*/
 	, bool enlabed)
 {
 	on = enlabed;
