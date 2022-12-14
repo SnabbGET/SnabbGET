@@ -77,7 +77,7 @@ std::string SnabbGET::CMDS::_ls_(std::string[], int, std::string)
 		else
 		{
 			perror("opendir");
-			return "\rError: can't list this dir";
+			return "\rErro r: can't list this dir";
 		}*/
 
 		std::error_code ec;
@@ -103,6 +103,7 @@ std::string SnabbGET::CMDS::_ls_(std::string[], int, std::string)
 		}
 		return msg;
 	#else
-		return "Bad C++ version";
+		THROW_ERR(err::BAD_VERSION);
+		return "";
 	#endif
 }

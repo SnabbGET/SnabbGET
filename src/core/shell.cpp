@@ -82,8 +82,12 @@
 void SnabbGET::SnabbGET()
 {
 	#if __cplusplus < 201703L
-		printf("\033[J\033[2J\033[3J\033[H\033[41m\033[1m"
-			 "<ERROR>: THIS C++ VERSION IS UNSUPPORTED BY SNABBGET\033[0m\r\n");
+		/*printf("\033[J\033[2J\033[3J\033[H\033[41m\033[1m"
+			 "<ERRO R>: THIS C++ VERSION IS UNSUPPORTED BY SNABBGET\033[0m\r\n");
+			 */
+
+		THROW_ERR(err::BAD_VERSION);
+		
 		std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 	#endif
 
@@ -243,7 +247,7 @@ std::string SnabbGET::read_input(std::string input_user_t)
 		if (!historyFile.is_open())
 		{
 			#ifdef DEBUG
-				std::cout << "Error opening history file!" << std::endl;
+				std::cout << "Erro r opening history file!" << std::endl;
 			#endif
 
 			// Try to create the file
@@ -251,7 +255,7 @@ std::string SnabbGET::read_input(std::string input_user_t)
 			if (!historyFile.is_open())
 			{
 				#ifdef DEBUG
-					std::cout << "Error creating history file!" << std::endl;
+					std::cout << "Erro r creating history file!" << std::endl;
 				#endif
 
 				// Use system() to create the file
@@ -263,7 +267,7 @@ std::string SnabbGET::read_input(std::string input_user_t)
 				if (!historyFile.is_open())
 				{
 					#ifdef DEBUG
-						std::cout << "Error opening history file!" <<std::endl;
+						std::cout << "Erro r opening history file!" <<std::endl;
 					#endif
 					
 					exit(EXIT_FAILURE);
@@ -375,7 +379,7 @@ std::string SnabbGET::read_input(std::string input_user_t)
 		}
 		catch (std::out_of_range &e)
 		{
-			return std::string("Error: out of range: ") + e.what();
+			THROW_ERR_MSG(err::VAR_OUT_OF_RANGE, (char*)e.what());
 		}
 
 		//std::cout << split(PATH, ":");
@@ -422,7 +426,8 @@ void SnabbGET::set_user_name()
 		else
 		{
 			#ifdef DEBUG
-				std::cout << "Error getting user name on Windows!" <<std::endl;
+			//std::cout << "Erro r getting user name on Windows!" <<std::endl;
+				THROW_ERR_MSG(err::GET_PATH_USR, (char*)"On Windows;");
 			#endif
 		}
 
@@ -431,13 +436,15 @@ void SnabbGET::set_user_name()
 		if (userName == "")
 		{
 			#ifdef DEBUG
-				std::cout << "Error getting user name on Linux!" << std::endl;
+				//std::cout << "Erro r getting user name on Linux!" << std::endl;
+				THROW_ERR_MSG(err::GET_PATH_USR, (char*)"On Linux;");
 			#endif
 		}
 
 	#else 
 		#ifdef DEBUG
-			std::cout << "Get user name is not avilable for MacOS."<<std::endl;
+		//std::cout << "Get user name is not avilable for MacOS."<<std::endl;
+			THROW_ERR_MSG(err::GET_PATH_USR, (char*)"Not available on MacOS;");
 		#endif
 		userName = "user";
 	#endif
@@ -452,7 +459,8 @@ void SnabbGET::set_machine_name()
 		if (computerName == "")
 		{
 			#ifdef DEBUG
-				std::cout<<"Error getting machine name on Windows!"<<std::endl;
+			//std::cout<<"Erro r getting machine name on Windows!"<<std::endl;
+				THROW_ERR_MSG(err::GET_PATH_CMPUT, (char*)"On Windows;");
 			#endif
 		}
 	#elif __linux__
@@ -460,20 +468,22 @@ void SnabbGET::set_machine_name()
 		if (gethostname(hostname, HOST_NAME_MAX) == 1)
 		{
 			#ifdef DEBUG
-				std::cout << "Error getting machine name on Linux!"<<std::endl;
+			//std::cout << "Erro r getting machine name on Linux!"<<std::endl;
+				THROW_ERR_MSG(err::GET_PATH_CMPUT, (char*)"On Linux;");
 			#endif
 		}
 		else computerName = hostname;
 	#else
 		#ifdef DEBUG
-			std::cout  << "Get machine name is not avilable for MacOS."
-				<< std::endl;
+			//std::cout  << "Get machine name is not avilable for MacOS."
+				//<< std::endl;
+		   THROW_ERR_MSG(err::GET_PATH_CMPUT, (char*)"Not available on MacOS;");
 		#endif
 	#endif
 }
 
 void SnabbGET::set_current_dir()
-{ //USE PWD COMMAND
+{
 	currentDir = "/";
 	#ifdef _WIN32
 		currentDir = getcwd(NULL, 0);
@@ -496,7 +506,8 @@ void SnabbGET::set_current_dir()
 		#endif
 	#else
 		#ifdef DEBUG
-			std::cout<<"Get current dir is not avilable for MacOS."<<std::endl;
+		//std::cout<<"Get current dir is not avilable for MacOS."<<std::endl;
+			THROW_ERR_MSG(err::GET_PATH_PWS, (char*)"Not available on MacOS;");
 		#endif
 	#endif
 }

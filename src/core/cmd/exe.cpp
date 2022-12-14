@@ -65,6 +65,7 @@ IS NOT SAVED! Use the SnabbGET command.\r\n";
 	}
 	catch (std::bad_function_call& e)
 	{
+		THROW_ERR(err::UNKNOW);
 		return "ERROR in EXE command";
 	}
 }

@@ -30,7 +30,10 @@ std::string SnabbGET::CMDS::_mk_(std::string cmd[], int cmdLen, std::string)
 {
 	#if __cplusplus >= 201703L
 		if (cmdLen < 2)
-			return "Error: you must give the new file";
+		{
+			THROW_ERR_MSG(err::BAD_INPUT, (char*)"You must give the new file;");
+			return "Failed";
+		}
 
 		if (contain(cmd, cmdLen, "--dir") || contain(cmd, cmdLen, "-d"))
 		{
@@ -49,7 +52,8 @@ std::string SnabbGET::CMDS::_mk_(std::string cmd[], int cmdLen, std::string)
 			if (!outfile.is_open())
 			{
 				#ifdef DEBUG
-					std::cout << "Error opening file!" << std::endl;
+					//std::cout << "Erro r opening file!" << std::endl;
+					THROW_ERR(err::ERR_OPEN_FILE);
 				#endif
 
 				// Try to create the file
@@ -57,7 +61,8 @@ std::string SnabbGET::CMDS::_mk_(std::string cmd[], int cmdLen, std::string)
 				if (!outfile.is_open())
 				{
 					#ifdef DEBUG
-						std::cout << "Error creating file!" << std::endl;
+						//std::cout << "Erro r creating file!" << std::endl;
+						THROW_ERR(err::ERR_CREATE_FILE);
 					#endif
 
 					system(
@@ -70,10 +75,12 @@ std::string SnabbGET::CMDS::_mk_(std::string cmd[], int cmdLen, std::string)
 					if (!outfile.is_open())
 					{
 						#ifdef DEBUG
-							std::cout << "Error opening file!" << std::endl;
+							//std::cout << "Erro r opening file!" << std::endl;
+							THROW_ERR(err::ERR_OPEN_FILE);
 						#endif
 						
-						return "Error: can't make this file";
+						THROW_ERR(err::ERR_CREATE_FILE);
+						return "Can't make this file";
 					}
 				}
 			}
@@ -82,6 +89,7 @@ std::string SnabbGET::CMDS::_mk_(std::string cmd[], int cmdLen, std::string)
 		
 		return "Make succeful!";
 	#else
-		return "Bad C++ version";
+		THROW_ERR(err::BAD_VERSION);
+		return "";
 	#endif
 }

@@ -82,10 +82,14 @@
 					return SnabbGET::currentDir;
 				}
 				else
-					return "\rError";
+				{
+					THROW_ERR_MSG(err::BAD_INPUT, (char*)"Can't CD here;");
+					return "\rFailed";
+				}
 			}
 		#else
-			return "Bad C++ version";
+			THROW_ERR(err::BAD_VERSION);
+			return "";
 		#endif
 	}
 

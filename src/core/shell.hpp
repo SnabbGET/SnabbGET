@@ -35,6 +35,7 @@
 	#ifndef MAX_INPUT
 		#define MAX_INPUT 255
 	#endif
+	#define MAX_SCREEN_ELEMENTS 100
 
 	#define ZERO_ANY(T, a, n) do{\
 		T *a_ = (a);\
@@ -298,7 +299,11 @@
 		}
 
 		void addToSCREEN(std::string txt)
-			{SCREEN.emplace_back(txt);}
+		{
+			SCREEN.emplace_back(txt);
+			if (SCREEN.size() > MAX_SCREEN_ELEMENTS)
+				SCREEN.erase(SCREEN.begin());
+		}
 
 		/**
 		 * @brief Refresh the screen
@@ -433,6 +438,7 @@
 
 	// WARNING!!!!! THOSE LINES MUST STAY LIKE THAT!!!
 	//                          ====
+	#include "other/errors.cpp"
 	#include "shell.cpp"
 	#include "./includesAll.hpp"
 	#include "./settings/reader.cpp"
