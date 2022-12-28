@@ -28,19 +28,22 @@
 
 ## What is SnabbGET?
 
-SnabbGET is a guified terminal to be intuitive for beginners and easy to use for all devs.
+SnabbGET is a 'guified' terminal built with love for all beginners learning how to use a terminal. _It's not meant for professional uses._
 
-The idea of creating a terminal like that came out because we tought that it's pretty easy to be lost using a terminal, as a beginner.
-And we are mainly lost because we use commands, parameters...
-With our terminal, you won't be able to be lost! We will do our best to do the most beginner-friendly & easy to use terminal.
+The idea of creating this kind of terminal came out because we tought that it's pretty easy to be confused using a terminal, as a beginner.
+This terminal makes everything easier with an user interface! We will do our best to do the most beginner-friendly & easy to use terminal.
 
-SnabbGET is cross-platform, a single language (SnabbScript) for *all* OS.
+We'll focus on OS such as Windows and Linux. No MacOS for the moment, sorry :(
 
-## Compile
+## Compiling
 
-Use the termial version (CLI):
+Compiling the terminal edition (CLI) :
 
-> Warning! You must have C++ 17!
+### Tools required
+
+-> Version of C++ used : C++17
+
+-> Any Linux architecture but a 64 bits arch. is required for Windows (MacOS not available)
 
 ### Makefile
 
@@ -56,20 +59,4 @@ make
 make run
 ```
 
-To use the GUI version (in dev), you must have a JDK installed:
-
-```sh
-make runGui
-```
-
-### Linux
-
-```sh
-./Make.sh
-```
-
-### Windows
-
-```bat
-./Make.bat
-```
+_More informaitons about the GUI version will be given soon_
