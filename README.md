@@ -37,13 +37,19 @@ We'll focus on OS such as Windows and Linux. No MacOS for the moment, sorry :(
 
 ## Compiling
 
-Compiling the terminal edition (CLI) :
+Compiling the terminal edition (CLI):
 
 ### Tools required
 
--> Version of C++ used : C++17
+> * Version of C++ used : C++17
+> * Any Linux architecture but a 64 bits arch. is required for Windows (MacOS not available)
+> * `make` (Required only for the first use, we work on that.)
 
--> Any Linux architecture but a 64 bits arch. is required for Windows (MacOS not available)
+### First use
+
+```sh
+make runGui
+```
 
 ### Makefile
 
