@@ -43,13 +43,13 @@ Compiling the terminal edition (CLI):
 
 > * Version of C++ used : C++17
 > * Any Linux architecture but a 64 bits arch. is required for Windows (MacOS not available)
-> * `make` (Required only for the first use, we work on that.)
+<!-- > * `make` (Required only for the first use, we work on that.)
 
 ### First use
 
 ```sh
 make runGui
-```
+```-->
 
 ### Makefile
 
