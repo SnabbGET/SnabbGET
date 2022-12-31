@@ -16,13 +16,15 @@
 [![Open](https://forthebadge.com/images/badges/open-source.svg)](https://forthebadge.com)
 [![Uses](https://forthebadge.com/images/badges/uses-badges.svg)](https://forthebadge.com)
 <a href="src/core/shell.cpp">
-	<img title="v0.1.1" height="35" src="https://img.shields.io/badge/Version-0.1.0-9cf?style=for-the-badge" />
+	<img title="v0.2.0" height="35" src="https://img.shields.io/badge/Version-0.2.0-9cf?style=for-the-badge" />
 </a>
 <a href="https://forthebadge.com">
 	<img title="forthebadge" height="35" src="https://forthebadge.com/images/badges/works-on-my-machine.svg" />
 </a>
 [![Gluten](https://forthebadge.com/images/badges/gluten-free.svg)](https://forthebadge.com)
 [![Contains](https://user-images.githubusercontent.com/97749743/202749038-e8e5be0e-0253-41ce-a077-364479331bbd.svg)](https://forthebadge.com)
+
+[![CodeFactor](https://www.codefactor.io/repository/github/snabbget/snabbget/badge)](https://www.codefactor.io/repository/github/snabbget/snabbget)
 
 ---
 
@@ -43,17 +45,20 @@ Compiling the terminal edition (CLI):
 
 > * Version of C++ used : C++17
 > * Any Linux architecture but a 64 bits arch. is required for Windows (MacOS not available)
-<!-- > * `make` (Required only for the first use, we work on that.)
+> * `make` (Required only for the first use, we work on that.)
 
 ### First use
 
 ```sh
-make runGui
-```-->
+make libs # Not tested on Windows
+```
 
 ### Makefile
 
 ```sh
+#make libs # First use
+# The ./configure shouldn't work on Windows (not tested.) (see in Makefile)
+
 make DEBUG=off
 ./output #.exe
 ```

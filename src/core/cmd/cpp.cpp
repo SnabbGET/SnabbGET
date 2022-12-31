@@ -26,7 +26,11 @@
 std::string SnabbGET::CMDS::_cp_(std::string cmd[], int cmdLen, std::string)
 {
 	if (cmdLen < 3)
-		return "Error: you must give the source file and the destination file";
+	{
+		THROW_ERR_MSG(err::BAD_INPUT,
+			(char*)"You must give the source file and the destination file;");
+		return "Failed";
+	}
 
 	std::ifstream src(cmd[1], std::ios::binary);
 	std::ofstream dst(cmd[2], std::ios::binary);
@@ -36,7 +40,10 @@ std::string SnabbGET::CMDS::_cp_(std::string cmd[], int cmdLen, std::string)
 	#endif
 
 	if (!src.is_open() || !dst.is_open())
-		return "Error: can't copy this file";
+	{
+		THROW_ERR(err::ERR_OPEN_FILE);
+		return "Can't copy this file";
+	}
 
 	dst << src.rdbuf();
 

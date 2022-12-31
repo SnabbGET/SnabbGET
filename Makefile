@@ -3,7 +3,7 @@ DEBUG = on
 arg =
 wasm = off
 
-.PHONY: all pre-compile compile gui
+.PHONY: all pre-compile compile gui libs
 
 all: pre-compile compile
 
@@ -16,17 +16,24 @@ compile: pre_compile
 	@echo "Generating..."
 ifeq (${DEBUG}, on)
 	g++ -Wall -Wextra -D DEBUG -O3 -g3 src/*.cpp src/core/utils.cpp -o \
-	"${filename}" -std=c++1z
+	"${filename}" -std=c++1z -L./libs/readline-8.2 -lreadline \
+	-lhistory -ltinfo
 else
 	g++ -Wall -Wextra -O3 -g3 src/*.cpp src/core/utils.cpp -o \
-	"${filename}" -std=c++1z
+	"${filename}" -std=c++1z -L./libs/readline-8.2 -lreadline \
+	-lhistory -ltinfo
 endif
 ifneq (${wasm}, off)
 	em++ -D DEBUG src/*.cpp src/core/utils.cpp -o \
 	"web/${filename}.html" --shell-file \
 	html_template/shell_minimal.html -s NO_EXIT_RUNTIME=1 -s \
-	"EXPORTED_RUNTIME_METHODS=['ccall']" -std=c++1z
+	"EXPORTED_RUNTIME_METHODS=['ccall']" -std=c++1z \
+	-L./libs/readline-8.2 -lreadline -lhistory -ltinfo
 endif
+
+# Install libs
+libs: # TODO: Windows       |---------v
+	cd libs/readline-8.2 && ./configure && make
 
 run: all
 	@echo "Starting..."

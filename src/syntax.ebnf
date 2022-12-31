@@ -20,7 +20,7 @@
 (*Ex:
 #list1 = ["hello", "i am", "a list"]
 $var1 = 1337
-for [#list1 : $tmp] do
+for [$tmp : #list1] do
 	say $tmp
 end
 
@@ -53,5 +53,5 @@ hello!
 						'/' | '.' | '$' | '&' | ...;
 <int>				::= '0' .. '9' | (<int>, ("+" | "-" | "/" | "*" | "%" | "^"), <int>) | 
 						("(", <int>, ")");
-<list<TYPE>>		::= {<TYPE>};
+<list<TYPE>>		::= {<TYPE>, ","};
 <TYPE>				::= <bool> | <string> | <char> | <int>;

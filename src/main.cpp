@@ -4,20 +4,22 @@
  * @file src/main.cpp
  * @brief Main file of the project.
  * @author LAPCoder
- * @version 0.1.1
+ * @version 0.2.0
  * 
  * MIT License
  */
 
 /* DEFINES */
 // See shell.hpp
-//#define VERSION "0.1.1"
+//#define VERSION "0.2.0"
 
 /* INCLUDES */
 
 #include "core/shell.hpp"
 //#include "interface/gui.cpp"
-
+#ifndef READLINE_LIBRARY
+	#define READLINE_LIBRARY
+#endif
 #ifndef std_def
 	#include <iostream>
 	#include <cstdio>
@@ -28,6 +30,12 @@
 	#include <sstream>
 	#define std_def
 	#define print(x, ...) std::cout << x // For a friend :D
+
+	#include "../include/readline/readline.h"
+	#include  "../include/readline/history.h"
+#endif
+#ifdef HAVE_LOCALE_H
+	#include <locale.h>
 #endif
 
 // WebAssembly
@@ -80,16 +88,20 @@ EXTERN EMSCRIPTEN_KEEPALIVE void RunSnabbGETCommand(
 /* Start */
 
 //std::string input_user;
-std::vector<char16_t> input;
-long pos;
+//std::vector<char16_t> input;
+//long pos;
 
 int main(int argc, char *argv[])
 {
 	sget::SnabbGET();
-	sget::rw::Raw_mode(0);
+	sget::rw::Raw_mode(0, false);
 	sget::io::io.outFunct = &std::printf;
 	sget::io::io.inFunct = &std::scanf;
 	
+	#ifdef HAVE_SETLOCALE
+		setlocale(LC_ALL, "");
+	#endif
+
 	system(""); // I don't kwon why I must put that, but if I don't add that,
 				// escape codes don't work on Windows :(
 	if (argc == 1 && !one_line)
@@ -98,14 +110,17 @@ int main(int argc, char *argv[])
 		//using SnabbGET::Raw_mode rw(0);
 		sget::addToSCREEN(sget::init());
 		// Printf is faster than std::cout and \n is faster than std::endl
-		printf(sget::FRAME().c_str());
+		printf("%s", sget::FRAME().c_str());
+		char *line;
+
 		while (true)
 		{
+			/*
 			//getline(std::cin, input_user);
 			// Raw mode: BIG SH*T
 
 			int c = '\0', right_count = 0;
-	// chars_count: Not really char count, but the number of chars left to read
+		//chars_count:Not really char count,but the number of chars left to read
 
 			//input_user = "";
 			input.clear();
@@ -120,7 +135,7 @@ int main(int argc, char *argv[])
 				// std::cout is faster than printf for concat (<< vs. "%", )
 				std::cout << "\n\n\033[9999;0H\033[1A──────────────────────\r\n"
 					<< sget::new_line().c_str() << "\0337" << in << "\0338"
-					<< std::string("\033[C")*pos // TODO: accents & end of line
+					<< std::string("\033[C")*pos
 					#ifdef __linux__
 					<< "\033[1A\n"
 					#endif
@@ -156,7 +171,6 @@ int main(int argc, char *argv[])
 					input.emplace(input.begin() + pos, (char)c);
 					right_count++;
 				}
-				// TODO: Make auto-close.
 				if (c == sget::rw::BACKSPACE)
 				{
 					if (pos > 0)
@@ -190,14 +204,18 @@ int main(int argc, char *argv[])
 				#ifdef __linux__
 					//std::cout << input_user_tmp << "\033[1A\n";
 				#endif
-			}
-			sget::addToSCREEN(sget::new_line());
-			std::string in(input.begin(), input.end());
-			sget::SCREEN.back() += in;
-			sget::addToSCREEN(sget::read_input(in));
-			printf(sget::FRAME().c_str());
+			}*/
+			line = readline(("\r\n" + sget::new_line()).c_str());
+			//sget::rw::Raw_mode(0, true);
+			//if (!line) break;
+			if (*line && line) add_history(line);
 
-			if (in == "exit") 
+			sget::addToSCREEN(sget::new_line());
+			sget::SCREEN.back() += std::string(line);
+			sget::addToSCREEN(sget::read_input(std::string(line)));
+			printf((sget::FRAME()).c_str());
+
+			if (strcmp(line, "exit") == 0 || strcmp(line, "exit ") == 0) 
 			{
 				std::cout << "";
 				return EXIT_SUCCESS;
@@ -208,6 +226,8 @@ int main(int argc, char *argv[])
 				//printf(sget::FRAME().c_str());
 				//std::cout << "";
 			}
+
+			free(line);
 		}
 		return 0;
 	}

@@ -28,57 +28,68 @@
  */
 std::string SnabbGET::CMDS::_mk_(std::string cmd[], int cmdLen, std::string)
 {
-	if (cmdLen < 2)
-		return "Error: you must give the new file";
-
-	if (contain(cmd, cmdLen, "--dir") || contain(cmd, cmdLen, "-d"))
-	{
-		std::vector<std::string> tmp(cmd, cmd + cmdLen);
-		std::remove(tmp.begin(), tmp.end(), "--dir");
-		std::remove(tmp.begin(), tmp.end(), "-d");
-		std::filesystem::create_directory(tmp[1]);
-	}
-	else
-	{
-		std::ofstream outfile(cmd[1].c_str());
-		outfile.close();
-		outfile.open(cmd[1].c_str(), std::ios_base::app);
-
-		// Check the file
-		if (!outfile.is_open())
+	#if __cplusplus >= 201703L
+		if (cmdLen < 2)
 		{
-			#ifdef DEBUG
-				std::cout << "Error opening file!" << std::endl;
-			#endif
+			THROW_ERR_MSG(err::BAD_INPUT, (char*)"You must give the new file;");
+			return "Failed";
+		}
 
-			// Try to create the file
-			outfile.open(cmd[1].c_str(), std::ios_base::out);
+		if (contain(cmd, cmdLen, "--dir") || contain(cmd, cmdLen, "-d"))
+		{
+			std::vector<std::string> tmp(cmd, cmd + cmdLen);
+			std::remove(tmp.begin(), tmp.end(), "--dir");
+			std::remove(tmp.begin(), tmp.end(), "-d");
+			std::filesystem::create_directory(tmp[1]);
+		}
+		else
+		{
+			std::ofstream outfile(cmd[1].c_str());
+			outfile.close();
+			outfile.open(cmd[1].c_str(), std::ios_base::app);
+
+			// Check the file
 			if (!outfile.is_open())
 			{
 				#ifdef DEBUG
-					std::cout << "Error creating file!" << std::endl;
+					//std::cout << "Erro r opening file!" << std::endl;
+					THROW_ERR(err::ERR_OPEN_FILE);
 				#endif
 
-				system(
-					("cd " + SnabbGET::currentDir + " && echo \"\" > " + cmd[1])
-						.c_str()
-				);
-
-				// Try to open the file again
-				outfile.open(cmd[1].c_str(), std::ios_base::app);
+				// Try to create the file
+				outfile.open(cmd[1].c_str(), std::ios_base::out);
 				if (!outfile.is_open())
 				{
 					#ifdef DEBUG
-						std::cout << "Error opening file!" << std::endl;
+						//std::cout << "Erro r creating file!" << std::endl;
+						THROW_ERR(err::ERR_CREATE_FILE);
 					#endif
-					
-					return "Error: can't make this file";
-				}
 
+					system(
+					("cd " + SnabbGET::currentDir + " && echo \"\" > " + cmd[1])
+						.c_str()
+					);
+
+					// Try to open the file again
+					outfile.open(cmd[1].c_str(), std::ios_base::app);
+					if (!outfile.is_open())
+					{
+						#ifdef DEBUG
+							//std::cout << "Erro r opening file!" << std::endl;
+							THROW_ERR(err::ERR_OPEN_FILE);
+						#endif
+						
+						THROW_ERR(err::ERR_CREATE_FILE);
+						return "Can't make this file";
+					}
+				}
 			}
+			outfile.close();
 		}
-		outfile.close();
-	}
-	
-	return "Make succeful!";
+		
+		return "Make succeful!";
+	#else
+		THROW_ERR(err::BAD_VERSION);
+		return "";
+	#endif
 }

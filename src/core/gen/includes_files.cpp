@@ -20,6 +20,7 @@ std::string replaceAll(std::string str, const std::string &from,
 
 int main()
 {
+	#if __cplusplus >= 201703L
 	std::vector<char *> files;
 
 	std::ofstream fileOut;
@@ -30,13 +31,19 @@ int main()
 	fileOut << "#pragma once\n";
 	for (const auto & entry : std::filesystem::directory_iterator("./src/core/cmd/"))
 	{
-		
 		fileOut << "#include \"./cmd" << std::string(
-				replaceAll(entry.path(), "./src/core/cmd", "")
+				#ifdef _WIN32
+					replaceAll(to_string(entry.path()), "./src/core/cmd", "")
+				#else
+					replaceAll(entry.path(), "./src/core/cmd", "")
+				#endif
 			) << "\"\n";
 		std::cout << entry.path() << " | ";
 	}
 	std::cout << std::endl;
 
 	return EXIT_SUCCESS;
+	#else
+	return EXIT_FAILURE;
+	#endif
 }

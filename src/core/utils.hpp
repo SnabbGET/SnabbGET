@@ -7,6 +7,11 @@
 #include <sstream>
 #include <iostream>
 #include <vector>
+#ifdef __WIN32
+	#include <windows.h>
+#else
+	#include <termios.h>
+#endif
 
 std::string getdate();
 std::string gettime();
@@ -20,6 +25,7 @@ std::string replaceAll(std::string str, const std::string &from,
 						const std::string &to);
 std::string join(std::vector<std::string> const &strings, const char *delim);
 std::vector<std::string> split(const std::string &str, const char &token);
+int get_pos(int *y, int *x);
 
 #ifdef FILEENUMERR
 	#include "utils.cpp"

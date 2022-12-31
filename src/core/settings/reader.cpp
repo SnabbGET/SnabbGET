@@ -49,7 +49,8 @@ std::string SnabbGET::promptSettings()
 	if (!promptFile.is_open())
 	{
 		#ifdef DEBUG
-			std::cout << "Error opening prompt file!" << std::endl;
+			//std::cout << "Erro r opening prompt file!" << std::endl;
+			THROW_ERR(err::ERR_CREATE_FILE);
 		#endif
 
 		// Try to create the file
@@ -57,7 +58,8 @@ std::string SnabbGET::promptSettings()
 		if (!promptFile.is_open())
 		{
 			#ifdef DEBUG
-				std::cout << "Error creating prompt file!" << std::endl;
+				//std::cout << "Erro r creating prompt file!" << std::endl;
+				THROW_ERR(err::ERR_CREATE_FILE);
 			#endif
 
 			// Use system() to create the file
@@ -69,7 +71,8 @@ std::string SnabbGET::promptSettings()
 			if (!promptFile.is_open())
 			{
 				#ifdef DEBUG
-					std::cout << "Error opening settings file!" << std::endl;
+					//std::cout << "Erro r opening settings file!" << std::endl;
+					THROW_ERR(err::ERR_OPEN_FILE);
 				#endif
 				
 				exit(EXIT_FAILURE);
@@ -117,9 +120,9 @@ std::string SnabbGET::promptSettings()
 	replaceAll2(tmp, "œùƒ", "$");
 	tmp += "\033[0m ";
 
-	#ifdef __linux__
+	/*#ifdef __linux__
 		tmp += "\033[1A\n";
-	#endif
+	#endif*/
 	return tmp;
 }
 /*

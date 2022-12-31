@@ -2,7 +2,7 @@
  * @file cli.cpp
  * @author LAPCoder
  * @brief All CLI shapes (lists, ...)
- * @version 0.1.1
+ * @version 0.2.0
  * 
  * @copyright MIT License
  */
@@ -65,7 +65,7 @@ void SnabbGET::CLI::list(int posX, int posY, const std::vector<std::string> &txt
 							[](const auto& a, const auto& b) {
 								return a.size() < b.size();
 							})).length() // Max size of elements in the vector
-		<< "╮\r\n";
+		<< "╮";
 	//Result: ╭────╮
 	for (unsigned i = 0; i < txt.size(); i++)
 		std::cout << "\033[" << posY+i+1 << ";" << posX << "H├" << txt[i]
@@ -76,7 +76,7 @@ void SnabbGET::CLI::list(int posX, int posY, const std::vector<std::string> &txt
 								 })).length() -
 								 txt[i].length()
 								)
-			 << "│\r\n";
+			 << "│";
 	//Result: ╭────╮
 	//        ├a   │
 	//        ├b   │
@@ -85,7 +85,7 @@ void SnabbGET::CLI::list(int posX, int posY, const std::vector<std::string> &txt
 							[](const auto& a, const auto& b) {
 								return a.size() < b.size();
 							})).length()
-		<< "╯\r\n\0338";
+		<< "╯\0338";
 	//Result: ╭────╮
 	//        ├aa  │
 	//        ├b   │
@@ -191,7 +191,7 @@ void SnabbGET::CLI::popup(int posX, int posY, const std::string &txt)
 							[](const auto& a, const auto& b) {
 								return a.size() < b.size();
 							})).length() // Max size of elements in the vector
-		<< "╮\r\n";
+		<< "╮";
 	//Result: ╭────╮
 	for (unsigned i = 0; i < words.size(); i++)
 		std::cout << "\033[" << posY+i+1 << ";" << posX << "H│" << words[i]
@@ -202,7 +202,7 @@ void SnabbGET::CLI::popup(int posX, int posY, const std::string &txt)
 								 })).length() -
 								 words[i].length()
 								)
-			 << "│\r\n";
+			 << "│";
 	//Result: ╭────╮
 	//        │abcd│
 	std::cout << "\033[" << posY+words.size()+1 << ";" << posX << "H╰"
@@ -210,7 +210,7 @@ void SnabbGET::CLI::popup(int posX, int posY, const std::string &txt)
 							[](const auto& a, const auto& b) {
 								return a.size() < b.size();
 							})).length()-1)
-		<< "╴⨉\r\n\0338";
+		<< "╴⨉\0338";
 	//Result: ╭────╮
 	//        │abcd│
 	//        ╰───╴⨉
