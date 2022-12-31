@@ -32,7 +32,11 @@ int main()
 	for (const auto & entry : std::filesystem::directory_iterator("./src/core/cmd/"))
 	{
 		fileOut << "#include \"./cmd" << std::string(
-				replaceAll(entry.path(), "./src/core/cmd", "")
+				#ifdef _WIN32
+					replaceAll(to_string(entry.path()), "./src/core/cmd", "")
+				#else
+					replaceAll(entry.path(), "./src/core/cmd", "")
+				#endif
 			) << "\"\n";
 		std::cout << entry.path() << " | ";
 	}
