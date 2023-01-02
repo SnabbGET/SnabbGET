@@ -97,6 +97,7 @@ int main(int argc, char *argv[])
 	sget::rw::Raw_mode(0, false);
 	sget::io::io.outFunct = &std::printf;
 	sget::io::io.inFunct = &std::scanf;
+	// To use: io << "foo"; io >> bar;
 	
 	#ifdef HAVE_SETLOCALE
 		setlocale(LC_ALL, "");
@@ -215,7 +216,7 @@ int main(int argc, char *argv[])
 			sget::addToSCREEN(sget::read_input(std::string(line)));
 			printf((sget::FRAME()).c_str());
 
-			if (strcmp(line, "exit") == 0 || strcmp(line, "exit ") == 0) 
+			if (strstr(line, "exit") != NULL) 
 			{
 				std::cout << "";
 				return EXIT_SUCCESS;

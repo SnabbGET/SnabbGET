@@ -18,6 +18,7 @@ namespace SnabbGET::err
 		ERR_OPEN_FILE	= 0x00200,
 		ERR_CREATE_FILE	= 0x00201,
 		ERR_DELETE_FILE	= 0x00202,
+		ERR_FIND_FILE	= 0x00203,
 		// Vars section =   xx3xx
 		VAR_OUT_OF_RANGE= 0x00300,
 		// PATH var sect=   xx4xx
@@ -57,6 +58,8 @@ namespace SnabbGET::err
 				__SM("ERROR: Create a file", m); break;
 			case ERR_DELETE_FILE:
 				__SM("ERROR: Delete a file", m); break;
+			case ERR_FIND_FILE:
+				__SM("ERROR: No such file or directory", m); break;
 			case VAR_OUT_OF_RANGE:
 				__SM("ERROR: Out of range", m); break;
 			case GET_PATH_USR:

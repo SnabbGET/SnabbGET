@@ -50,9 +50,10 @@ Commands:\r\n\
 	help [--web]       - Show this message\r\n\
 	clear,\r\n\
 	cls                - Clear the screen\r\n\
-	exe <command>      - Execute a command of your OS (eg. gcc, ls, dir...).\
-Use it the same way as start.\r\n\
-	ls                 - List file and dirs in the current directory\r\n\
+	exe <command>      - Execute a command of your OS (eg. gcc, ls, dir...). \
+Use it the same way as start. You shouldclear the screen after a full-screen \
+command like Vim, Emacs, Nano or Htop.\r\n\
+	ls [<dir>]         - List file and dirs in the current directory\r\n\
 	cp <file> <tofile> - Copy a file or a dir in an other file or a dir\r\n\
 	mv <file> <tofile> - Move (or rename) a file or a dir to an other dir\r\n\
 	mk [-d] <file>     - Create a file/dir\r\n\

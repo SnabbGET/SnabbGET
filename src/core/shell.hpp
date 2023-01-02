@@ -167,6 +167,8 @@
 
 		std::string cmd[MAX_INPUT];
 		unsigned int cmdLen = 0;
+		unsigned short tabOpen = 1;
+		char *oldLine = (char*)"";
 
 		/* #####  #    #
 		 * #    # # /\ #
@@ -295,7 +297,7 @@
 					std::string(std::string[], int, std::string)
 				>
 			> cmdLst;
-			std::vector<const char*> allCmd;
+			std::vector<std::vector<const char*>> allCmd;
 		}
 
 		void addToSCREEN(std::string txt)

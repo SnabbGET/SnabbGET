@@ -29,9 +29,9 @@ std::string h(std::uintmax_t size)
 /**
  * @brief Ls command
  * 
- * @param cmd [NOT USED]
+ * @param cmd The user command in array
  * @param cmdLen [NOT USED]
- * @param input_user [NOT USED]
+ * @param input_user The user input
  * @return [std::string] Command result
  */
 std::string SnabbGET::CMDS::_ls_(std::string[], int, std::string)
@@ -40,7 +40,10 @@ std::string SnabbGET::CMDS::_ls_(std::string[], int, std::string)
 		std::string msg = "";
 		std::vector<char *> files;
 
-		std::string currDir = SnabbGET::currentDir;
+		std::string currDir;
+		if (input_user.length() < cmd[0].length()+1)
+			currDir = SnabbGET::currentDir;
+		else currDir = input_user.substr(cmd[0].length()+1);
 		if (currDir.find("~") == 0)
 		{
 			#ifdef __WIN32
@@ -81,25 +84,34 @@ std::string SnabbGET::CMDS::_ls_(std::string[], int, std::string)
 		}*/
 
 		std::error_code ec;
-		for (const auto &entry:std::filesystem::directory_iterator(currDir))
+		try
 		{
-			std::filesystem::file_size(entry, ec);
-			if (!ec)
-				msg += std::string("\t\t\t\t\t") +h(entry.file_size())+"\r";
-				// TODO: use std::setw()
-			msg += (entry.is_directory() ? "\033[38;5;75m":
-					(entry.is_regular_file() ? "\033[0m":
-					(entry.is_other() ? "\033[38;5;118m":
-					(entry.is_socket() ? "\033[38;5;193m":
-					(entry.is_block_file() ? "\033[38;5;220m":
-					(entry.is_character_file() ? "\033[38;5;161m":
-					(entry.is_fifo() ? "\033[38;5;99":"\033[38;5;203m"))))))) + 
-				std::string(replaceAll(
-					replaceAll(
-						replaceAll(entry.path(), currDir, ""),
-						"/", ""
-					), "\\", ""
-				)) + std::string("\033[0m\r\n");
+			for (const auto &entry:std::filesystem::directory_iterator(currDir))
+			{
+				std::filesystem::file_size(entry, ec);
+				if (!ec)
+					msg += std::string("\t\t\t\t\t") +h(entry.file_size())+"\r";
+					// TODO: use std::setw()
+				msg += (entry.is_directory() ? "\033[38;5;75m":
+						(entry.is_regular_file() ? "\033[0m":
+						(entry.is_other() ? "\033[38;5;118m":
+						(entry.is_socket() ? "\033[38;5;193m":
+						(entry.is_block_file() ? "\033[38;5;220m":
+						(entry.is_character_file() ? "\033[38;5;161m":
+						(entry.is_fifo() ? "\033[38;5;99":"\033[38;5;203m"
+						))))))) + 
+					std::string(replaceAll(
+						replaceAll(
+							replaceAll(entry.path(), currDir, ""),
+							"/", ""
+						), "\\", ""
+					)) + std::string("\033[0m\r\n");
+			}
+		}
+		catch (std::filesystem::filesystem_error &e2)
+		{
+			THROW_ERR_MSG(err::ERR_FIND_FILE,
+				(char*)(std::string("(") + e2.what() + ')').c_str());
 		}
 		return msg;
 	#else
