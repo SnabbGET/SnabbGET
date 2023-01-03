@@ -171,7 +171,7 @@ void SnabbGET::SnabbGET()
 					.c_str());
 			}
 		}
-		oldLine = (char *) malloc(strlen(rl_line_buffer));
+		oldLine = (char *) malloc(strlen(rl_line_buffer)+1);
 		strcpy(oldLine, rl_line_buffer);
 		return 0;
 	});
