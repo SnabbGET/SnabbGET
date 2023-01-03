@@ -23,5 +23,6 @@
 std::string SnabbGET::CMDS::_exit_(std::string[], int, std::string)
 {
 	SnabbGET::Raw_mode::pause();
+	free(oldLine);
 	return "Bye!\n"; // Auto exit! (see in main.cpp)
 }
