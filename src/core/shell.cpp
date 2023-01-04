@@ -91,6 +91,10 @@ void SnabbGET::SnabbGET()
 		std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 	#endif
 
+	atexit([&](void){
+
+	});
+
 	dateOpen = std::time(0);
 	init();
 
@@ -102,6 +106,11 @@ void SnabbGET::SnabbGET()
 	rl_bind_key('{', rlKeysFuncs);
 	rl_bind_key('`', rlKeysFuncs);
 	rl_bind_key(4, [](int, int)->int {
+		printf("\n%s", SnabbGET::read_input("exit").c_str());
+		exit(EXIT_SUCCESS);
+		return 0;
+	});
+	rl_bind_key(3, [](int, int)->int {
 		printf("\n%s", SnabbGET::read_input("exit").c_str());
 		exit(EXIT_SUCCESS);
 		return 0;
