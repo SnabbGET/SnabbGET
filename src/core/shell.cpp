@@ -91,8 +91,9 @@ void SnabbGET::SnabbGET()
 		std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 	#endif
 
-	atexit([&](void)->void*{
-
+	atexit((void(*)())[](){
+		SCREEN.clear();
+		free(oldLine);
 	});
 
 	dateOpen = std::time(0);

@@ -208,8 +208,14 @@ int main(int argc, char *argv[])
 			}*/
 			line = readline(("\r\n" + sget::new_line()).c_str());
 			//sget::rw::Raw_mode(0, true);
-			//if (!line) break;
-			if (*line && line) add_history(line);
+			try
+			{
+				if (*line)
+					add_history(line);
+				//if (!line) break;
+			}
+			catch (std::logic_error &e)
+			{}
 
 			sget::addToSCREEN(sget::new_line());
 			sget::SCREEN.back() += std::string(line);
