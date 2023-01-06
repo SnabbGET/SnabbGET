@@ -28,7 +28,7 @@
 
 ## What is SnabbGET?
 
-SnabbGET is a 'guified' terminal built with love for all beginners learning how to use a terminal. _It's not meant for professional uses._
+SnabbGET is a 'guified' terminal built with love ❤ for all beginners learning how to use a terminal. _It's not meant for professional uses._
 
 The idea of creating this kind of terminal came out because we tought that it's pretty easy to be confused using a terminal, as a beginner.
 This terminal makes everything easier with an user interface! We will do our best to do the most beginner-friendly & easy to use terminal.
@@ -54,9 +54,6 @@ make libs # Not tested on Windows
 ### Makefile
 
 ```sh
-#make libs # First use
-# The ./configure shouldn't work on Windows (not tested.) (see in Makefile)
-
 make DEBUG=off
 ./output #.exe
 ```
