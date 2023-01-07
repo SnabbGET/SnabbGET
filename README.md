@@ -10,7 +10,7 @@
 
 ---
 
-<p align="justify">
+<p align="center">
 	<a href="https://forthebadge.com"><img title="Powered" height="35" src="https://forthebadge.com/images/badges/powered-by-electricity.svg" /></a>
 	<a href="https://forthebadge.com"><img title="Build" height="35" src="https://forthebadge.com/images/badges/built-by-developers.svg" /></a>
 	<a href="https://forthebadge.com"><img title="Made" height="35" src="https://forthebadge.com/images/badges/made-with-c-plus-plus.svg" /></a>
@@ -66,3 +66,17 @@ make run
 ```
 
 _More informaitons about the GUI version will be given soon_
+
+## FAQ & Links
+
+You have questions about SnabbGET?
+
+[Open an issue](https://github.com/SnabbGET/SnabbGET/issues/new/choose),
+[ask us for information](https://github.com/SnabbGET/SnabbGET/discussions/categories/q-a) or
+[see our project](https://github.com/orgs/SnabbGET/projects/1/views/1?query=is%3Aopen+sort%3Aupdated-desc).
+
+You can also open [a PR](https://github.com/SnabbGET/SnabbGET/pulls) to contribute to this project.
+
+## License
+
+SnabbGET is under the MIT License.
