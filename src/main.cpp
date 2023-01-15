@@ -210,9 +210,9 @@ int main(int argc, char *argv[])
 			//sget::rw::Raw_mode(0, true);
 			try
 			{
+				if (!line) break;
 				if (*line)
 					add_history(line);
-				//if (!line) break;
 			}
 			catch (std::logic_error &e)
 			{}
@@ -220,7 +220,7 @@ int main(int argc, char *argv[])
 			sget::addToSCREEN(sget::new_line());
 			sget::SCREEN.back() += std::string(line);
 			sget::addToSCREEN(sget::read_input(std::string(line)));
-			printf((sget::FRAME()).c_str());
+			printf("%s", (sget::FRAME()).c_str());
 
 			if (strstr(line, "exit") != NULL) 
 			{
