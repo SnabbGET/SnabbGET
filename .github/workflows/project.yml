@@ -19,5 +19,5 @@ jobs:
           project_number: 1
           content_id: ${{ github.event.issue.node_id || github.event.pull_request.node_id }}
           # ${{ github.event.client_payload.command.resource.id }}
-          field: 0..10
-          value: -1
+          field: Type
+          value: CLI 👨‍💻
