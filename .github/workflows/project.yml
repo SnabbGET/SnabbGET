@@ -17,7 +17,7 @@ jobs:
           organization: SnabbGET
           project_number: 1
           operation: read
-          content_id: ${{ github.event.client_payload.command.resource.id }}
+          content_id: 23#${{ github.event.client_payload.command.resource.id }}
       - name: Output status
         run: |
           echo "Current status value: ${{ steps.read_status.outputs.field_read_value }}"
