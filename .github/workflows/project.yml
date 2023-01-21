@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Update status
         id: update_status
-        uses: github/update-project-action@v2
+        uses: github/update-project-action@main
         with:
           github_token: ${{ secrets.STATUS_UPDATE_TOKEN }}
           organization: SnabbGET
