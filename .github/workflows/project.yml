@@ -21,3 +21,4 @@ jobs:
           # ${{ github.event.client_payload.command.resource.id }}
           field: Type
           value: CLI 👨‍💻
+          operation: update
