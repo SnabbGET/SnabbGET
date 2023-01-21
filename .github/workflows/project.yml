@@ -1,10 +1,10 @@
 name: Update status on project board
 on:
-  #repository_dispatch:
-  #  types: [status_update]
-  issues:
-    types:
-      - closed
+  repository_dispatch:
+    types: [status_update]
+  #issues:
+  #  types:
+  #    - closed
 jobs:
   update_project:
     runs-on: ubuntu-latest
@@ -17,7 +17,7 @@ jobs:
           organization: SnabbGET
           project_number: 1
           operation: read
-          content_id: 23#${{ github.event.client_payload.command.resource.id }}
+          content_id: ${{ github.event.client_payload.command.resource.id }}
       - name: Output status
         run: |
           echo "Current status value: ${{ steps.read_status.outputs.field_read_value }}"
