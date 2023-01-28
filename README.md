@@ -28,6 +28,14 @@
 
 ## What is SnabbGET?
 
+<p align="center">
+	<a href="https://snabbget.github.io/more/"><img src="https://user-images.githubusercontent.com/97749743/215259179-b06d1422-fd8b-4cd1-914c-d4f0a2ee2340.png" alt="SnabbGET demo image" width="80%" /></a>
+</p>
+
+<p align="right">
+	<sup>Made with <a href="https://asciinema.org/">Asciinema</a></sup>
+</p>
+
 SnabbGET is a 'guified' terminal built with love ❤ for all beginners learning how to use a terminal. _It's not meant for professional uses._
 
 The idea of creating this kind of terminal came out because we tought that it's pretty easy to be confused using a terminal, as a beginner.
@@ -41,9 +49,10 @@ Compiling the terminal edition (CLI):
 
 ### Tools required
 
-> * Version of C++ used : C++17
-> * Any Linux architecture but a 64 bits arch. is required for Windows (MacOS not available)
+> * Version of C++ used : C++17.
+> * Any Linux architecture but a 64 bits arch. is required for Windows (MacOS not available).
 > * `make` (Required only for the first use, we work on that.)
+> * The `Makefile` use `g++` and `gdb` to compile and debug.
 
 ### First use
 
