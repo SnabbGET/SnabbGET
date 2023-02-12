@@ -36,7 +36,7 @@
 	<sup>Made with <a href="https://asciinema.org/">Asciinema</a></sup>
 </p>
 
-SnabbGET is a 'guified' terminal built with love ❤ for all beginners learning how to use a terminal. _It's not meant for professional uses._
+SnabbGET is a 'guified' terminal built with love ❤ for all beginners learning how to use a terminal. <!--_It's not meant for professional uses._-->
 
 The idea of creating this kind of terminal came out because we tought that it's pretty easy to be confused using a terminal, as a beginner.
 This terminal makes everything easier with an user interface! We will do our best to do the most beginner-friendly & easy to use terminal.
@@ -81,11 +81,12 @@ _More informaitons about the GUI version will be given soon_
 You have questions about SnabbGET?
 
 [Open an issue](https://github.com/SnabbGET/SnabbGET/issues/new/choose),
-[ask us for information](https://github.com/SnabbGET/SnabbGET/discussions/categories/q-a) or
+[ask us for information](https://github.com/SnabbGET/SnabbGET/discussions/categories/q-a),
+[see the wiki](https://github.com/SnabbGET/SnabbGET/wiki) or
 [see our project](https://github.com/orgs/SnabbGET/projects/1/views/1?query=is%3Aopen+sort%3Aupdated-desc).
 
 You can also open [a PR](https://github.com/SnabbGET/SnabbGET/pulls) to contribute to this project.
 
 ## License
 
-SnabbGET is under the MIT License.
+SnabbGET is under the [MIT License](https://github.com/SnabbGET/SnabbGET/blob/main/LICENSE.txt).
