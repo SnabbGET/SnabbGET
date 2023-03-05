@@ -494,7 +494,7 @@ void SnabbGET::set_current_dir()
 	#else
 		#ifdef DEBUG
 		//std::cout<<"Get current dir is not avilable for MacOS."<<std::endl;
-			THROW_ERR_MSG(err::GET_PATH_PWS, (char*)"Not available on MacOS;");
+			THROW_ERR_MSG(err::GET_PATH_PWD, (char*)"Not available on MacOS;");
 		#endif
 	#endif
 }

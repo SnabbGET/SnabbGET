@@ -28,7 +28,7 @@ ifneq (${wasm}, off)
 	"web/${filename}.html" --shell-file \
 	html_template/shell_minimal.html -s NO_EXIT_RUNTIME=1 -s \
 	"EXPORTED_RUNTIME_METHODS=['ccall']" -std=c++1z \
-	-L./libs/readline-8.2 -lreadline -lhistory -ltinfo
+	-L./libs/readline-8.2 -lreadline -lhistory
 endif
 
 # Install libs
