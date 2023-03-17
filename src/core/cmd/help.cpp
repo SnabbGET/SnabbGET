@@ -58,6 +58,7 @@ command like Vim, Emacs, Nano or Htop.\r\n\
 	mv <file> <tofile> - Move (or rename) a file or a dir to an other dir\r\n\
 	mk [-d] <file>     - Create a file/dir\r\n\
 	rm <file>          - Remove a file\r\n\
+	calc <expression>  - Calcutate an mathematical expression (using exprtk).\r\n\
 \r\n\
 You don't find the parameters of a commmand? Write '<your command> -?'\r\n";
 }

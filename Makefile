@@ -33,7 +33,10 @@ endif
 
 # Install libs
 libs: # TODO: Windows       |---------v
-	cd libs/readline-8.2 && ./configure && make
+	cd libs/readline-8.2 && ./configure && make && cd ../../
+#	cd libs/exprtk-master && g++ exprtk.hpp -pedantic-errors -Wall -Wextra \
+#	-Werror -Wno-long-long -O3 && cd ../../
+#	cp libs/exprtk-master/exprtk.hpp.gch include/exprtk/
 
 run: all
 	@echo "Starting..."

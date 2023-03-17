@@ -278,6 +278,7 @@
 				#define MV   8
 				#define MK   9
 				#define RM   10
+				#define CALC 11
 			#endif
 
 			std::string _exit_(std::string[], int, std::string);
@@ -291,6 +292,7 @@
 			std::string _mv_  (std::string[], int, std::string);
 			std::string _mk_  (std::string[], int, std::string);
 			std::string _rm_  (std::string[], int, std::string);
+			std::string _calc_(std::string[], int, std::string);
 			
 			std::vector<
 				std::function<

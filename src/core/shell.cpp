@@ -332,6 +332,10 @@ std::string SnabbGET::read_input(std::string input_user_t)
 	else if (cmd[0] == "rm")
 		return runCmd(RM,  cmd, cmdLen, input_user);
 
+	// Calc
+	else if (cmd[0] == "calc")
+		return runCmd(CALC,cmd, cmdLen, input_user);
+
 	else if (*(cmd[0].begin()) == '.' || *(cmd[0].begin()) == '/')
 	{
 		std::ifstream f;
@@ -563,6 +567,7 @@ void SnabbGET::CMDS::CMDS()
 	cmdLst.emplace_back( _mv_ );
 	cmdLst.emplace_back( _mk_ );
 	cmdLst.emplace_back( _rm_ );
+	cmdLst.emplace_back(_calc_);
 
 	typedef std::vector<const char*> a;
 	allCmd.emplace_back((a){"exit", ""});
@@ -576,4 +581,5 @@ void SnabbGET::CMDS::CMDS()
 	allCmd.emplace_back((a){ "mv" , "src dst"});
 	allCmd.emplace_back((a){ "mk" , "[-d] file"});
 	allCmd.emplace_back((a){ "rm" , "file"});
+	allCmd.emplace_back((a){"calc", "expression"});
 }

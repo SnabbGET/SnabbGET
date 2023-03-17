@@ -1,0 +1,37 @@
+version: 2.1
+jobs:
+
+  build_gcc_09:
+    docker:
+      - image: gcc:9
+    steps:
+      - checkout
+      - run: c++ --version
+      - run: make all -j 2
+      - run: ./exprtk_test
+
+  build_gcc_10:
+    docker:
+      - image: gcc:10
+    steps:
+      - checkout
+      - run: c++ --version
+      - run: make all -j 2
+      - run: ./exprtk_test
+
+  build_gcc_latest:
+    docker:
+      - image: gcc:latest
+    steps:
+      - checkout
+      - run: c++ --version
+      - run: make all -j 2
+      - run: ./exprtk_test
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build_gcc_09
+      - build_gcc_10
+      - build_gcc_latest
