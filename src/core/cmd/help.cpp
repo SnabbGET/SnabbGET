@@ -51,7 +51,7 @@ Commands:\r\n\
 	clear,\r\n\
 	cls                - Clear the screen\r\n\
 	exe <command>      - Execute a command of your OS (eg. gcc, ls, dir...). \
-Use it the same way as start. You shouldclear the screen after a full-screen \
+Use it the same way as start. You should clear the screen after a full-screen \
 command like Vim, Emacs, Nano or Htop.\r\n\
 	ls [<dir>]         - List file and dirs in the current directory\r\n\
 	cp <file> <tofile> - Copy a file or a dir in an other file or a dir\r\n\
