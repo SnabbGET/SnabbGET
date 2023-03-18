@@ -91,6 +91,11 @@ void SnabbGET::SnabbGET()
 		std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 	#endif
 
+	atexit((void(*)())[](){
+		SCREEN.clear();
+		free(oldLine);
+	});
+
 	dateOpen = std::time(0);
 	init();
 
@@ -102,53 +107,82 @@ void SnabbGET::SnabbGET()
 	rl_bind_key('{', rlKeysFuncs);
 	rl_bind_key('`', rlKeysFuncs);
 	rl_bind_key(4, [](int, int)->int {
-		printf(SnabbGET::read_input("exit").c_str());
+		printf("\n%s", SnabbGET::read_input("exit").c_str());
+		exit(EXIT_SUCCESS);
+		return 0;
+	});
+	rl_bind_key(3, [](int, int)->int {
+		printf("\n%s", SnabbGET::read_input("exit").c_str());
 		exit(EXIT_SUCCESS);
 		return 0;
 	});
 	rl_bind_key('\t', [](int, int)->int {
 		printf("%s", sget::FRAME().c_str());
+		//printf("\n%s | %s", rl_line_buffer, oldLine);
 		rl_forced_update_display();
-		std::vector<std::string> tmp = {};
-		std::copy_if(
-			CMDS::allCmd.begin(),
-			CMDS::allCmd.end(),
-			std::back_inserter(tmp),
-			[&tmp](const char *i)->bool {
-				return
-					(std::string(i).substr(0, strlen(rl_line_buffer)) ==
-						rl_line_buffer) &&
-					(std::find(tmp.begin(), tmp.end(), std::string(i)) ==
-						tmp.end());
+		if (strcmp(rl_line_buffer, oldLine) == 0)
+		{
+			tabOpen++;
+			tabOpen %= 3;
+		}
+		if (tabOpen != 1)
+		{
+			std::vector<std::string> tmp;
+			for (auto i : CMDS::allCmd)
+			{
+				std::string s;
+				if (tabOpen == 2)
+					s = std::string(i[0]);
+				else
+					s = std::string(i[0]) + " " + std::string(i[1]);
+				if ((s.substr(0, strlen(rl_line_buffer)) == rl_line_buffer) &&
+					(std::find(tmp.begin(), tmp.end(), s)) == tmp.end())
+					tmp.emplace_back(s);
 			}
-		);
-		int posX, posY;
-		get_pos(&posY, &posX);
-		if (tmp.size() > 0)
-		{
-			if (tmp.size()+3 <= (long unsigned)posY)
-				CLI::list(posX, posY-tmp.size() - 2, tmp);
+			int posX, posY;
+			get_pos(&posY, &posX);
+			if (tmp.size() > 0)
+			{
+				if (tmp.size()+3 <= (long unsigned)posY)
+					CLI::list(posX, posY-tmp.size() - 2, tmp);
+				else
+					CLI::list(posX, posY+1, tmp);
+			}
 			else
-				CLI::list(posX, posY+1, tmp);
-		}
-		else
-		{
-			std::copy_if(
-				CMDS::allCmd.begin(),
-				CMDS::allCmd.end(),
-				std::back_inserter(tmp),
-				[&tmp](const char *i)->bool {
-					return std::find(tmp.begin(), tmp.end(), std::string(i)) ==
-							tmp.end();
+			{
+				for (auto i : CMDS::allCmd)
+				{
+					std::string s;
+					if (tabOpen == 2)
+						s = std::string(i[0]);
+					else
+						s = std::string(i[0]) + " " + std::string(i[1]);
+					if (std::find(tmp.begin(), tmp.end(), std::string(s))
+						== tmp.end())
+						tmp.emplace_back(s);
 				}
-			);
-			if (tmp.size()+3 <= (long unsigned)posY)
-				CLI::list(posX, posY-tmp.size() - 2, tmp);
-			else
-				CLI::list(posX, posY+1, tmp);
+				if (tmp.size()+3 <= (long unsigned)posY)
+					CLI::list(posX, posY-tmp.size() - 2, tmp);
+				else
+					CLI::list(posX, posY+1, tmp);
+			}
+			if (tmp.size() == 1)
+			{
+				std::vector<std::string> tmp2;
+				for (auto i : CMDS::allCmd)
+				{
+					std::string s = std::string(i[0]);
+					if ((s.substr(0, strlen(rl_line_buffer)) == rl_line_buffer) &&
+						(std::find(tmp2.begin(), tmp2.end(), s)) == tmp2.end())
+						tmp2.emplace_back(s);
+
+				}
+				rl_insert_text((tmp2[0].substr(strlen(rl_line_buffer)) + " ")
+					.c_str());
+			}
 		}
-		if (tmp.size() == 1)
-			rl_insert_text((tmp[0].substr(strlen(rl_line_buffer))+" ").c_str());
+		oldLine = (char *) malloc(strlen(rl_line_buffer)+1);
+		strcpy(oldLine, rl_line_buffer);
 		return 0;
 	});
 	/*rl_bind_key (27, rlKeysFuncs); //ascii code for ESC
@@ -168,7 +202,7 @@ int SnabbGET::rlKeysFuncs(int, int key)
 				  (key == '[' ? "[]":
 				  (key == '\''? "''":
 				  (key == '{' ? "{}": "``")))));
-	rl_point--;
+	rl_point--; // TODO: Optimize
 	return 0;
 }
 
@@ -238,53 +272,6 @@ std::string SnabbGET::read_input(std::string input_user_t)
 			<< "\r\n" << "CmdLen: " << cmdLen << "\r\n";*/
 	#endif
 
-	//std::cout << &cmd << std::endl;
-	/*if (! one_line)
-	{
-		historyFile.open("dist/.history.txt", std::ios_base::app);
-
-		// Check the file
-		if (!historyFile.is_open())
-		{
-			#ifdef DEBUG
-				std::cout << "Erro r opening history file!" << std::endl;
-			#endif
-
-			// Try to create the file
-			historyFile.open("dist/.history.txt", std::ios_base::out);
-			if (!historyFile.is_open())
-			{
-				#ifdef DEBUG
-					std::cout << "Erro r creating history file!" << std::endl;
-				#endif
-
-				// Use system() to create the file
-				system("mkdir dist");
-				system("echo \"\" > dist/.history.txt");
-
-				// Try to open the file again
-				historyFile.open("dist/.history.txt", std::ios_base::app);
-				if (!historyFile.is_open())
-				{
-					#ifdef DEBUG
-						std::cout << "Erro r opening history file!" <<std::endl;
-					#endif
-					
-					exit(EXIT_FAILURE);
-				}
-
-			}
-			else
-			{
-				historyFile.close();
-				historyFile.open("dist/.history.txt", std::ios_base::app);
-			}
-		}
-		historyFile << input_user;
-		historyFile << "\r\n";
-		historyFile.close();
-	}*/
-
 	if (cmdLen == 0) return "\033[1A";
 
 /*  ######  #####  ##   ## ##   ##   ###   ##   ## #####    ######
@@ -344,6 +331,10 @@ std::string SnabbGET::read_input(std::string input_user_t)
 	// Rm
 	else if (cmd[0] == "rm")
 		return runCmd(RM,  cmd, cmdLen, input_user);
+
+	// Calc
+	else if (cmd[0] == "calc")
+		return runCmd(CALC,cmd, cmdLen, input_user);
 
 	else if (*(cmd[0].begin()) == '.' || *(cmd[0].begin()) == '/')
 	{
@@ -507,7 +498,7 @@ void SnabbGET::set_current_dir()
 	#else
 		#ifdef DEBUG
 		//std::cout<<"Get current dir is not avilable for MacOS."<<std::endl;
-			THROW_ERR_MSG(err::GET_PATH_PWS, (char*)"Not available on MacOS;");
+			THROW_ERR_MSG(err::GET_PATH_PWD, (char*)"Not available on MacOS;");
 		#endif
 	#endif
 }
@@ -547,8 +538,6 @@ void SnabbGET::Raw_mode::Raw_mode(int
 			tcsetattr(0, TCSANOW, &SnabbGET::Raw_mode::new1);
 		}
 	#endif
-	// /o o\ ?
-	// \---/  Hum...
 }
 
 void SnabbGET::Raw_mode::pause()
@@ -578,16 +567,19 @@ void SnabbGET::CMDS::CMDS()
 	cmdLst.emplace_back( _mv_ );
 	cmdLst.emplace_back( _mk_ );
 	cmdLst.emplace_back( _rm_ );
+	cmdLst.emplace_back(_calc_);
 
-	allCmd.emplace_back("exit");
-	allCmd.emplace_back("help");
-	allCmd.emplace_back("cls" );
-	allCmd.emplace_back("say" );
-	allCmd.emplace_back( "cd" );
-	allCmd.emplace_back("exe" );
-	allCmd.emplace_back( "ls" );
-	allCmd.emplace_back( "cp" );
-	allCmd.emplace_back( "mv" );
-	allCmd.emplace_back( "mk" );
-	allCmd.emplace_back( "rm" );
+	typedef std::vector<const char*> a;
+	allCmd.emplace_back((a){"exit", ""});
+	allCmd.emplace_back((a){"help", "[--web]"});
+	allCmd.emplace_back((a){"cls" , ""});
+	allCmd.emplace_back((a){"say" , "/ echo [txt]"});
+	allCmd.emplace_back((a){ "cd" , "[-p]"});
+	allCmd.emplace_back((a){"exe" , "cmd"});
+	allCmd.emplace_back((a){ "ls" , "[path]"});
+	allCmd.emplace_back((a){ "cp" , "src dst"});
+	allCmd.emplace_back((a){ "mv" , "src dst"});
+	allCmd.emplace_back((a){ "mk" , "[-d] file"});
+	allCmd.emplace_back((a){ "rm" , "file"});
+	allCmd.emplace_back((a){"calc", "expression"});
 }

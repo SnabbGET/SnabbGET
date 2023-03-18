@@ -1,3 +1,12 @@
+# Tests
+# =====
+
+*test*
+!tests/*
+SnabbGET_demo.cast
+exprtk_*[!.][!?][!?][!?]
+
+#===============================================================================
 # C/C++
 # =====
 
@@ -35,13 +44,13 @@
 *.dylib
 
 # Executables
-[^bin/]*.exe
-[^bin/]*.out
-[^bin/]*.app
-[^bin/]*.i*86
-[^bin/]*.x86_64
-[^bin/]*.hex
-[^bin/]*.bin
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+*.bin
 output
 gui
 includes

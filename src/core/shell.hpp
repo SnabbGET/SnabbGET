@@ -167,6 +167,8 @@
 
 		std::string cmd[MAX_INPUT];
 		unsigned int cmdLen = 0;
+		unsigned short tabOpen = 1;
+		char *oldLine = (char*)"";
 
 		/* #####  #    #
 		 * #    # # /\ #
@@ -276,6 +278,7 @@
 				#define MV   8
 				#define MK   9
 				#define RM   10
+				#define CALC 11
 			#endif
 
 			std::string _exit_(std::string[], int, std::string);
@@ -289,13 +292,14 @@
 			std::string _mv_  (std::string[], int, std::string);
 			std::string _mk_  (std::string[], int, std::string);
 			std::string _rm_  (std::string[], int, std::string);
+			std::string _calc_(std::string[], int, std::string);
 			
 			std::vector<
 				std::function<
 					std::string(std::string[], int, std::string)
 				>
 			> cmdLst;
-			std::vector<const char*> allCmd;
+			std::vector<std::vector<const char*>> allCmd;
 		}
 
 		void addToSCREEN(std::string txt)

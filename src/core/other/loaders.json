@@ -1,0 +1,24 @@
+[
+	{
+		"name": "Braille chars;8pts;1on",
+		"type": "char",
+		"l": ["⠁","⠈","⠐","⠠","⢀","⡀","⠄","⠂"],
+		"//": "https://www.unicode.org/charts/PDF/U2800.pdf"
+	},{
+		"name": "Braille chars;8pts;2on",
+		"type": "char",
+		"l": ["⠉","⠘","⠰","⢠","⣀","⡄","⠆","⠃"]
+	},{
+		"name": "Braille chars;8pts;3on",
+		"type": "char",
+		"l": ["⠙","⠸","⢰","⣠","⣄","⡆","⠇","⠋"]
+	},{
+		"name": "Block chars;4pts;1on",
+		"type": "char",
+		"l": ["▘", "▝", "▗", "▖"]
+	},{
+		"name": "Block chars;15diff",
+		"type": "char",
+		"l": ["▁","▂","▃","▄","▅","▆","▇","█","▉","▊","▋","▌","▍","▎"," ","▎","▍","▌","▋","▊","▉","█","▇","▆","▅","▄","▃","▂","▁"," "]
+	}
+]

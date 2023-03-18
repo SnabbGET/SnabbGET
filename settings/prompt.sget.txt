@@ -14,9 +14,9 @@
 # bold  green    @    reset :  blue     reset  #  orange         gold     rose     |>
 #           user   machine          dir                      time     debug
 # Linux prompt:
-# \033[1m\033[92m$u@$m\033[39m:\033[94m$d $$
+#\033[1m\033[92m$u@$m\033[39m:\033[94m$d $$
 # Windows prompt:
-# $d>
+#$d>
 # Powershell prompt:
 # \033[97m\033[48;2;00;36;86m
-# PS $d>
+#PS $d>

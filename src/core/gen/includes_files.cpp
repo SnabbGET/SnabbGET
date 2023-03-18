@@ -33,7 +33,7 @@ int main()
 	{
 		fileOut << "#include \"./cmd" << std::string(
 				#ifdef _WIN32
-					replaceAll(to_string(entry.path()), "./src/core/cmd", "")
+					replaceAll(std::to_string(entry.path()), "./src/core/cmd", "")
 				#else
 					replaceAll(entry.path(), "./src/core/cmd", "")
 				#endif

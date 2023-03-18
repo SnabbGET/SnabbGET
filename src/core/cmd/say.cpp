@@ -23,6 +23,6 @@
  */
 std::string SnabbGET::CMDS::_say_(std::string cmd[],int,std::string input_user)
 {
-	if (input_user.length() < 4) return "";
+	if (input_user.length() < cmd[0].length()+1) return "";
 	else return input_user.substr(cmd[0].length()+1).c_str();
 }

@@ -18,7 +18,7 @@ int main(int argc, char **argv)
 	#endif
 	while (true)
 	{
-		line = readline("> ");
+		line = readline(">hgfreyuefhèegzhn_vhg_erh egroger ");
 		if (!line) break;
 		if (*line) add_history(line);
 		if (strcmp(line, "exit") == 0)

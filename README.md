@@ -74,6 +74,13 @@ make
 make run
 ```
 
+# Thanks
+
+SnabbGET use the
+[GNU Readline library 8.2](https://git.savannah.gnu.org/cgit/readline.git) under the GNU
+GPL License, and the [exprtk library](https://github.com/ArashPartow/exprtk) under the
+MIT License.
+
 _More informaitons about the GUI version will be given soon_
 
 ## FAQ & Links
