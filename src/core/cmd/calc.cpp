@@ -33,7 +33,7 @@ std::string SnabbGET::CMDS::_calc_(std::string cmd[],int,std::string input_user)
 	typedef exprtk::parser<double>       parser_t;
 
 	symbol_table_t symbol_table;
-	//symbol_table.add_constants();
+	symbol_table.add_constants();
 
 	expression_t expression;
 	expression.register_symbol_table(symbol_table);
