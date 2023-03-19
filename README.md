@@ -74,16 +74,9 @@ make
 make run
 ```
 
-# Thanks
-
-SnabbGET use the
-[GNU Readline library 8.2](https://git.savannah.gnu.org/cgit/readline.git) under the GNU
-GPL License, and the [exprtk library](https://github.com/ArashPartow/exprtk) under the
-MIT License.
-
 _More informaitons about the GUI version will be given soon_
 
-## FAQ & Links
+# FAQ & Links
 
 You have questions about SnabbGET?
 
@@ -94,6 +87,13 @@ You have questions about SnabbGET?
 
 You can also open [a PR](https://github.com/SnabbGET/SnabbGET/pulls) to contribute to this project.
 
-## License
+# Thanks
+
+SnabbGET use the
+[GNU Readline library 8.2](https://git.savannah.gnu.org/cgit/readline.git) under the GNU
+GPL License, and the [exprtk library](https://github.com/ArashPartow/exprtk) under the
+MIT License.
+
+# License
 
 SnabbGET is under the [MIT License](https://github.com/SnabbGET/SnabbGET/blob/main/LICENSE.txt).
