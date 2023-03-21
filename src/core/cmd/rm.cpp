@@ -1,5 +1,7 @@
 // Rm command
 
+#include "../shell.hpp"
+
 #include <iostream>
 #include <string>
 #include <chrono>

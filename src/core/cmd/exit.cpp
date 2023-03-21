@@ -1,5 +1,7 @@
 // Exit command
 
+#include "../shell.hpp"
+
 #include <iostream>
 #include <string>
 #include <chrono>
@@ -20,6 +22,9 @@
  * @param input_user [NOT USED]
  * @return [std::string] Command result
  */
+
+extern char *SnabbGET::oldLine;
+
 std::string SnabbGET::CMDS::_exit_(std::string[], int, std::string)
 {
 	SnabbGET::Raw_mode::pause();

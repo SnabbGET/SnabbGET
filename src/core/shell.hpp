@@ -30,6 +30,7 @@
 	#include <sstream>
 
 	#include "utils.hpp"
+	#include "other/errors.hpp"
 
 	#define VERSION "0.2.0"
 	#ifndef MAX_INPUT
@@ -105,27 +106,23 @@
 		 */
 		std::string new_line();
 
-		#ifdef __EMSCRIPTEN__
-			bool one_line = true;
-		#else
-			bool one_line = false;
-		#endif
-
 		// Last user input.
-		std::string input_user;
+		extern std::string input_user;
 		// Time when the shell was started.
-		std::time_t dateOpen;
+		extern std::time_t dateOpen;
 		// File with the history.
-		std::fstream historyFile;
+		extern std::fstream historyFile;
 
 		// User name and computer name.
-		std::string userName = "User";
-		std::string computerName = "Computer";
-		std::string currentDir = "/";
+		extern std::string userName;
+		extern std::string computerName;
+		extern std::string currentDir;
 
-		bool CMD_LINE = false;
+		extern bool CMD_LINE;
 
-		std::vector<std::string> SCREEN;
+		extern std::vector<std::string> SCREEN;
+
+		extern bool one_line;
 
 		/**
 		 * @brief Set the user name object in the var
@@ -165,10 +162,10 @@
 		 */
 		int rlKeysFuncs(int count, int key);
 
-		std::string cmd[MAX_INPUT];
-		unsigned int cmdLen = 0;
-		unsigned short tabOpen = 1;
-		char *oldLine = (char*)"";
+		extern std::string cmd[MAX_INPUT];
+		extern unsigned int cmdLen;
+		extern unsigned short tabOpen;
+		extern char *oldLine;
 
 		/* #####  #    #
 		 * #    # # /\ #
@@ -193,7 +190,7 @@
 			 * @param enlabed [OPTIONAL]
 			 * @return Nothing
 			 */
-			void Raw_mode(int echo = 0, bool enlabed = true);
+			void Raw_mode(int echo, bool enlabed);
 
 			/**
 			 * @brief Stop the raw mode
@@ -212,7 +209,7 @@
 			/**
 			 * @brief Define the key actions
 			 */
-			enum KEY_ACTIO
+			enum KEY_ACTION
 			{
 				KEY_NULL = 0,		/* NULL */
 				CTRL_C = 3,			/* Ctrl-c */
@@ -241,7 +238,7 @@
 			#ifdef __linux__
 				static struct termios old, new1;
 			#endif
-			bool on = true;
+			extern bool on;
 		}
 
 		/*  ####  #    # #####
@@ -294,20 +291,15 @@
 			std::string _rm_  (std::string[], int, std::string);
 			std::string _calc_(std::string[], int, std::string);
 			
-			std::vector<
+			extern std::vector<
 				std::function<
 					std::string(std::string[], int, std::string)
 				>
 			> cmdLst;
-			std::vector<std::vector<const char*>> allCmd;
+			extern std::vector<std::vector<const char*>> allCmd;
 		}
 
-		void addToSCREEN(std::string txt)
-		{
-			SCREEN.emplace_back(txt);
-			if (SCREEN.size() > MAX_SCREEN_ELEMENTS)
-				SCREEN.erase(SCREEN.begin());
-		}
+		void addToSCREEN(std::string txt);
 
 		/**
 		 * @brief Refresh the screen
@@ -371,67 +363,31 @@
 			{
 				public:
 					// Default constructor
-					newIo() {}
+					newIo();
 					// Output function
-					int (*outFunct)(const char *, ...) = &std::printf;
-					int (* inFunct)(const char *, ...) = &std::scanf;
+					static int (*outFunct)(const char *, ...);
+					static int (* inFunct)(const char *, ...);
 					// Constructor with the funtion in param
 					newIo(int (o)(const char *, ...),
-						int (i)(const char *, ...)) {outFunct = o; inFunct = i;}
+						int (i)(const char *, ...));
 					// Destructor
-					~newIo() {}
+					~newIo();
 			};
 
-			std::string endl = "\r\n";
+			extern const std::string endl;
 
 			// Default io
-			newIo io;
+			extern newIo io;
 
 			typedef std::basic_ostream<char, std::char_traits<char>> stdCoutTpe;
 			// this is the function signature of std::endl
 			typedef stdCoutTpe& (*stdEndl)(stdCoutTpe&);
 
-			template<class T> inline newIo &operator<<(newIo &exp, T &arg)
-			{
-				exp.outFunct(arg); // TODO: test with int
-				return exp;
-			}
-			inline newIo &operator<<(newIo &exp, stdEndl)
-			// std::endl is a pointer
-			{
-				exp.outFunct(endl.c_str());
-				return exp;
-			}
-			inline newIo &operator<<(newIo &exp, std::string &arg)
-			{
-				exp.outFunct(arg.c_str());
-				return exp;
-			}
-
-			template<class T> inline newIo &operator>>(newIo &exp, T &arg)
-			{
-				std::string r = "%c";
-					 if (typeid(T) == typeid(int)) r = "%d";
-				else if (typeid(T) == typeid(char)) r = "%c";
-				else if (typeid(T) == typeid(signed char)) r = "%c";
-				else if (typeid(T) == typeid(unsigned char)) r = "%c";
-				else if (typeid(T) == typeid(float)) r = "%f";
-				else if (typeid(T) == typeid(double)) r = "%lf";
-				else if (typeid(T) == typeid(long double)) r = "%Lf";
-				else if (typeid(T) == typeid(short)) r = "%hd";
-				else if (typeid(T) == typeid(unsigned)) r = "%u";
-				else if (typeid(T) == typeid(long)) r = "%li";
-				else if (typeid(T) == typeid(long long)) r = "%lli";
-				else if (typeid(T) == typeid(unsigned long)) r = "%lu";
-				else if (typeid(T) == typeid(unsigned long long)) r = "%llu";
-				exp.inFunct(r.c_str(), &arg);
-				return exp;
-			}
-			inline newIo &operator>>(newIo &exp, std::string &arg)
-			{
-				exp.inFunct("%s", arg.c_str());
-				return exp;
-			}
+			template<class T> inline newIo &operator<<(newIo &exp, T &arg);
+			inline newIo &operator<<(newIo &exp, stdEndl);
+			inline newIo &operator<<(newIo &exp, std::string &arg);
+			template<class T> inline newIo &operator>>(newIo &exp, T &arg);
+			inline newIo &operator>>(newIo &exp, std::string &arg);
 		}
 
 		// To replace 'SnabbGET::Raw_mode'
@@ -439,14 +395,6 @@
 	}
 	// To replace 'SnabbGET::'
 	namespace sget = SnabbGET;
-
-	// WARNING!!!!! THOSE LINES MUST STAY LIKE THAT!!!
-	//                          ====
-	#include "other/errors.cpp"
-	#include "shell.cpp"
-	#include "./includesAll.hpp"
-	#include "./settings/reader.cpp"
-	#include "./cli/cli.cpp"
 
 #endif // SNABBGET_CORE
 

@@ -33,6 +33,126 @@
  *       It can be read on a mini-map ;D
  */
 
+//#ifndef SNABBGET_CORE_CPP
+//#define SNABBGET_CORE_CPP
+
+#include "shell.hpp"
+
+/* ########### #    # ####### #########
+ *      #      ##   #    #        #
+ *      #      # #  #    #        #
+ *      #      #  # #    #        #
+ *      #      #   ##    #        #
+ * ########### #    # #######     #
+ */
+
+#ifdef __EMSCRIPTEN__
+	/*extern*/ bool SnabbGET::one_line = true;
+#else
+	/*extern*/ bool SnabbGET::one_line = false;
+#endif
+
+/*extern*/ std::string SnabbGET::userName = "User";
+
+/*extern*/ std::string SnabbGET::computerName = "Computer";
+/*extern*/ std::string SnabbGET::currentDir = "/";
+/*extern*/ bool SnabbGET::CMD_LINE = false;
+
+/*extern*/ std::string SnabbGET::cmd[MAX_INPUT] = {(std::string)""};
+/*extern*/ unsigned SnabbGET::cmdLen = 0;
+/*extern*/ std::string SnabbGET::input_user = "";
+/*extern*/ std::time_t SnabbGET::dateOpen = std::time(0);
+/*extern*/ unsigned short SnabbGET::tabOpen = 1;
+/*extern*/ char *SnabbGET::oldLine = (char*)"";
+
+/*extern*/ std::vector<std::string> SnabbGET::SCREEN = (std::vector<std::string>){};
+
+/*extern*/ std::vector<
+	std::function<
+		std::string(std::string[], int, std::string)
+	>
+> SnabbGET::CMDS::cmdLst =
+	(std::vector<std::function<std::string(std::string[], int, std::string)>>){};
+/*extern*/ std::vector<std::vector<const char*>> SnabbGET::CMDS::allCmd =
+	(std::vector<std::vector<const char*>>){};
+
+extern int (*SnabbGET::io::newIo::outFunct)(const char *, ...);
+extern int (*SnabbGET::io::newIo:: inFunct)(const char *, ...);
+
+/*extern*/ bool SnabbGET::Raw_mode::on = true;
+
+/*extern*/ const std::string SnabbGET::io::endl = "\r\n";
+
+void SnabbGET::addToSCREEN(std::string txt)
+{
+	SCREEN.emplace_back(txt);
+	if (SCREEN.size() > MAX_SCREEN_ELEMENTS)
+		SCREEN.erase(SCREEN.begin());
+}
+
+SnabbGET::io::newIo::newIo() {}
+// Constructor with the funtion in param
+SnabbGET::io::newIo::newIo(int (o)(const char *, ...),
+	int (i)(const char *, ...)) {outFunct = o; inFunct = i;}
+// Destructor
+SnabbGET::io::newIo::~newIo() {}
+
+template<class T> inline SnabbGET::io::newIo &SnabbGET::io::operator<<(
+	SnabbGET::io::newIo &exp, T &arg)
+{
+	exp.outFunct(arg); // TODO: test with int
+	return exp;
+}
+
+inline SnabbGET::io::newIo &SnabbGET::io::operator<<(
+	SnabbGET::io::newIo &exp, SnabbGET::io::stdEndl)
+// std::endl is a pointer
+{
+	exp.outFunct(endl.c_str());
+	return exp;
+}
+
+inline SnabbGET::io::newIo &SnabbGET::io::operator<<(
+	SnabbGET::io::newIo &exp, std::string &arg)
+{
+	exp.outFunct(arg.c_str());
+	return exp;
+}
+
+template<class T> inline SnabbGET::io::newIo &SnabbGET::io::operator>>(
+	SnabbGET::io::newIo &exp, T &arg)
+{
+	std::string r = "%c";
+		 if (typeid(T) == typeid(int)) r = "%d";
+	else if (typeid(T) == typeid(char)) r = "%c";
+	else if (typeid(T) == typeid(signed char)) r = "%c";
+	else if (typeid(T) == typeid(unsigned char)) r = "%c";
+	else if (typeid(T) == typeid(float)) r = "%f";
+	else if (typeid(T) == typeid(double)) r = "%lf";
+	else if (typeid(T) == typeid(long double)) r = "%Lf";
+	else if (typeid(T) == typeid(short)) r = "%hd";
+	else if (typeid(T) == typeid(unsigned)) r = "%u";
+	else if (typeid(T) == typeid(long)) r = "%li";
+	else if (typeid(T) == typeid(long long)) r = "%lli";
+	else if (typeid(T) == typeid(unsigned long)) r = "%lu";
+	else if (typeid(T) == typeid(unsigned long long)) r = "%llu";
+	exp.inFunct(r.c_str(), &arg);
+	return exp;
+}
+inline SnabbGET::io::newIo &SnabbGET::io::operator>>(
+	SnabbGET::io::newIo &exp, std::string &arg)
+{
+	exp.inFunct("%s", arg.c_str());
+	return exp;
+}
+
+// WARNING!!!!! THOSE LINES MUST STAY LIKE THAT!!!
+//                          ====
+#include "other/errors.cpp"
+//#include "./includesAll.hpp"
+#include "./settings/reader.cpp"
+#include "./cli/cli.cpp"
+
 /**
  * @file src/core/core.cpp
  * @brief Main part of the project.
@@ -222,6 +342,10 @@ Under the  MIT License\r\n\
 	//msg += "\033[1A\r\n";
 	//msg += new_line();
 	return msg;
+
+	// Output function
+	SnabbGET::io::newIo::outFunct = &std::printf;
+	SnabbGET::io::newIo::inFunct = &std::scanf;
 }
 
 void SnabbGET::get_command(std::string input_user_t)
@@ -583,3 +707,5 @@ void SnabbGET::CMDS::CMDS()
 	allCmd.emplace_back((a){ "rm" , "file"});
 	allCmd.emplace_back((a){"calc", "expression"});
 }
+
+//#endif

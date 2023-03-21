@@ -1,5 +1,7 @@
 // Cp command
 
+#include "../shell.hpp"
+
 // Yes, I know, the name of this file... ;)
 
 #include <iostream>

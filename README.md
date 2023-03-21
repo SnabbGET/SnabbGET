@@ -57,13 +57,24 @@ Compiling the terminal edition (CLI):
 ### First use
 
 ```sh
-make libs # Not tested on Windows
+
+make first_time
+./output
 ```
 
-### Makefile
+### Contribute
+
+If you want to change something, you must recompile the file:
+
+* File in `cmd`? `compile_cmds` or recompile only the file with the command.
+* `utils.cpp`? `compile_utils`.
+* `utils.hpp`, `shell.hpp` or `errors.hpp`? you can recompile all. Just wite `make`.
+* `shell.cpp`, `errors.cpp`, `reader.cpp` or `cli.cpp`? `compile_shell`
+* `main.cpp`? `compile_main`
 
 ```sh
-make DEBUG=off
+make #<your command here>
+make link
 ./output #.exe
 ```
 
@@ -74,7 +85,7 @@ make
 make run
 ```
 
-_More informaitons about the GUI version will be given soon_
+*More informaitons about the GUI version will be given soon.*
 
 # FAQ & Links
 
@@ -85,15 +96,17 @@ You have questions about SnabbGET?
 [see the wiki](https://github.com/SnabbGET/SnabbGET/wiki) or
 [see our project](https://github.com/orgs/SnabbGET/projects/1/views/1?query=is%3Aopen+sort%3Aupdated-desc).
 
-You can also open [a PR](https://github.com/SnabbGET/SnabbGET/pulls) to contribute to this project.
+You can also open [a PR](https://github.com/SnabbGET/SnabbGET/pulls)
+to contribute to this project.
 
 # Thanks
 
 SnabbGET use the
-[GNU Readline library 8.2](https://git.savannah.gnu.org/cgit/readline.git) under the GNU
-GPL License, and the [exprtk library](https://github.com/ArashPartow/exprtk) under the
-MIT License.
+[GNU Readline library 8.2](https://git.savannah.gnu.org/cgit/readline.git)
+under the GNU GPL License, and the
+[exprtk library](https://github.com/ArashPartow/exprtk) under the MIT License.
 
 # License
 
-SnabbGET is under the [MIT License](https://github.com/SnabbGET/SnabbGET/blob/main/LICENSE.txt).
+SnabbGET is under the
+[MIT License](https://github.com/SnabbGET/SnabbGET/blob/main/LICENSE.txt).

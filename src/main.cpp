@@ -32,7 +32,7 @@
 	#define print(x, ...) std::cout << x // For a friend :D
 
 	#include "../include/readline/readline.h"
-	#include  "../include/readline/history.h"
+	#include "../include/readline/history.h"
 #endif
 #ifdef HAVE_LOCALE_H
 	#include <locale.h>
@@ -61,7 +61,7 @@
 int main()
 {	
 	sget::SnabbGET();
-	sget::rw::Raw_mode(0);
+	sget::rw::Raw_mode(0, 0);
 	sget::init();
 	std::cout << sget::new_line();
 	sget::read_input("exit");
@@ -74,7 +74,7 @@ EXTERN EMSCRIPTEN_KEEPALIVE void RunSnabbGETCommand(
 	/*int argc, char **argv*/)
 {
 	sget::SnabbGET();
-	sget::rw::Raw_mode(0);
+	sget::rw::Raw_mode(0, 0);
 	sget::init();
 	std::string cmd;
 	std::cin >> cmd;
@@ -86,6 +86,8 @@ EXTERN EMSCRIPTEN_KEEPALIVE void RunSnabbGETCommand(
 // End Wasm
 
 /* Start */
+
+//extern sget::io::io.out
 
 //std::string input_user;
 //std::vector<char16_t> input;
@@ -107,8 +109,6 @@ int main(int argc, char *argv[])
 				// escape codes don't work on Windows :(
 	if (argc == 1 && !one_line)
 	{
-		//using namespace SnabbGET sget;
-		//using SnabbGET::Raw_mode rw(0);
 		sget::addToSCREEN(sget::init());
 		// Printf is faster than std::cout and \n is faster than std::endl
 		printf("%s", sget::FRAME().c_str());
@@ -116,98 +116,7 @@ int main(int argc, char *argv[])
 
 		while (true)
 		{
-			/*
-			//getline(std::cin, input_user);
-			// Raw mode: BIG SH*T
-
-			int c = '\0', right_count = 0;
-		//chars_count:Not really char count,but the number of chars left to read
-
-			//input_user = "";
-			input.clear();
-			pos = 0;
-
-			// Use the Raw mode to read the input from the user
-			// and hide escape sequences (e.g. ^[[A).
-			while (true)
-			{
-				printf(sget::FRAME().c_str());
-				std::string in(input.begin(),input.end());
-				// std::cout is faster than printf for concat (<< vs. "%", )
-				std::cout << "\n\n\033[9999;0H\033[1A──────────────────────\r\n"
-					<< sget::new_line().c_str() << "\0337" << in << "\0338"
-					<< std::string("\033[C")*pos
-					#ifdef __linux__
-					<< "\033[1A\n"
-					#endif
-					;
-				read(0, &c, 1);
-				if (c == '\n') break;
-				if (((32  <= c) &&
-					(126 >= c)) ||
-					((161 <= c) &&
-					(255 >= c)) ||
-					c == sget::rw::TAB)
-				{
-					input.emplace(input.begin() + pos, (char)c);
-					pos++;
-				}
-				if (c == '(')
-				{
-					input.emplace(input.begin() + pos, ')');
-					right_count++;
-				}
-				if (c == '[')
-				{
-					input.emplace(input.begin() + pos, ']');
-					right_count++;
-				}
-				if (c == '{')
-				{
-					input.emplace(input.begin() + pos, '}');
-					right_count++;
-				}
-				if (c == '"' || c == '\'' || c == '`')
-				{
-					input.emplace(input.begin() + pos, (char)c);
-					right_count++;
-				}
-				if (c == sget::rw::BACKSPACE)
-				{
-					if (pos > 0)
-					{
-						input.erase(input.end()-1);
-						pos--;
-					}
-				}
-				if ((int)c == sget::rw::ESC) // ESC like \[ \033 \x1b
-				{
-					read(0, &c, 1);
-					if (c == '[')
-					{
-						read(0, &c, 1);
-						//if (c == 'A') input_user += "UP";
-						//if (c == 'B') input_user += "DOWN";
-						if (c == 'C' && right_count > 0)
-						{
-							//printf("\033[C");
-							right_count--;
-							pos++;
-						}
-						if (c == 'D' && pos > 0)
-						{
-							//printf("\033[D");
-							right_count++;
-							pos--;
-						}
-					}
-				}
-				#ifdef __linux__
-					//std::cout << input_user_tmp << "\033[1A\n";
-				#endif
-			}*/
 			line = readline(("\r\n" + sget::new_line()).c_str());
-			//sget::rw::Raw_mode(0, true);
 			try
 			{
 				if (!line) break;
@@ -227,11 +136,6 @@ int main(int argc, char *argv[])
 				std::cout << "";
 				return EXIT_SUCCESS;
 				exit(EXIT_SUCCESS);
-			}
-			else
-			{
-				//printf(sget::FRAME().c_str());
-				//std::cout << "";
 			}
 
 			free(line);
@@ -253,16 +157,6 @@ int main(int argc, char *argv[])
 		sget::read_input("exit");
 		//sget::rw::pause();
 		return EXIT_SUCCESS;
-	}
-	else // one_line
-	{
-		/*SnabbGET sget(true);
-		SnabbGET::Raw_mode rw(0);
-		sget.init();
-		std::string cmd;
-		std::cin >> cmd;
-		std::cout << sget.read_input(cmd) << "\r\n";
-		return EXIT_SUCCESS;*/
 	}
 }
 

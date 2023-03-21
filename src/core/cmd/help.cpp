@@ -11,7 +11,7 @@
 #include <unistd.h>
 #include <algorithm>
 
-//#include "../shell.hpp"
+#include "../shell.hpp"
 
 /**
  * @brief Help command

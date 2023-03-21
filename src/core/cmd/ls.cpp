@@ -1,5 +1,7 @@
 // Ls command
 
+#include "../shell.hpp"
+
 #include <iostream>
 #include <string>
 #include <chrono>
@@ -25,6 +27,8 @@ std::string h(std::uintmax_t size)
 	//mantissa += "BKMGTPE"[i];
 	return std::to_string(a) + "oKMGTPE"[i] + (i > 1 ? 'o':' ');
 }
+
+extern std::string SnabbGET::currentDir;
 
 /**
  * @brief Ls command
