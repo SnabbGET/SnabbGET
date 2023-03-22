@@ -41,7 +41,7 @@ compile_shell:
 
 compile_main:
 	@echo "Compiling main.cpp"
-	@extern ${GCC} -Wall -Wextra -D DEBUG -O3 -g3 src/main.cpp -o \
+	@${GCC} -Wall -Wextra -D DEBUG -O3 -g3 src/main.cpp -o \
 	"main.o" -c -std=c++1z -L./libs/readline-8.2 -lreadline \
 	-lhistory -ltinfo
 
