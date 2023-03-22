@@ -6,7 +6,7 @@
 	</a>
 </p>
 
-*Graphic and fast terminal in C/C++.*
+*Graphic and fast shell in C/C++.*
 
 ---
 
