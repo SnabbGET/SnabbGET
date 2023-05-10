@@ -106,6 +106,11 @@ SnabbGET use the
 under the GNU GPL License, and the
 [exprtk library](https://github.com/ArashPartow/exprtk) under the MIT License.
 
+I use and adapt
+[torrycrass' image converter](https://github.com/torrycrass/image-to-ansi) to
+generate the images in /assets.
+The image came form [Pixbay](https://pixabay.com/images/search/background/).
+
 # License
 
 SnabbGET is under the

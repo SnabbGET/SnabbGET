@@ -38,12 +38,12 @@
 
 #include "shell.hpp"
 
-/* ########### #    # ####### #########
- *      #      ##   #    #        #
- *      #      # #  #    #        #
- *      #      #  # #    #        #
- *      #      #   ##    #        #
- * ########### #    # #######     #
+/* ####### ##   ## ####### #######
+ *   ###   ###  ##   ###     ###
+ *   ###   #### ##   ###     ###
+ *   ###   ## ####   ###     ###
+ *   ###   ##  ###   ###     ###
+ * ####### ##   ## #######   ###
  */
 
 #ifdef __EMSCRIPTEN__
@@ -625,6 +625,7 @@ void SnabbGET::set_current_dir()
 			THROW_ERR_MSG(err::GET_PATH_PWD, (char*)"Not available on MacOS;");
 		#endif
 	#endif
+	rl_set_prompt(promptSettings().c_str());
 }
 
 /* Initialize new terminal i/o settings */
