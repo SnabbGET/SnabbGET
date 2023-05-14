@@ -73,7 +73,7 @@ If you want to change something, you must recompile the file:
 * `main.cpp`? `compile_main`
 
 ```sh
-make #<your command here>
+make # <your command here>
 make link
 ./output #.exe
 ```
