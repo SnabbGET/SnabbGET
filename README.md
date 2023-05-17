@@ -2,7 +2,8 @@
 
 <p align="center">
     <a href="https://snabbget.github.io/">
-        <img src="https://github.com/SnabbGET/.github/blob/main/logo_small.png" alt="SnabbGET logo">
+        <img src="https://github.com/SnabbGET/.github/blob/main/logo_small.png"
+        alt="SnabbGET logo">
     </a>
 </p>
 
@@ -100,7 +101,7 @@ make
 make run
 ```
 
-*More informaitons about the GUI version will be given soon*
+*More informaitons about the GUI version will be given soon.*
 
 # FAQ & Links
 
