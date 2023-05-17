@@ -72,13 +72,24 @@ Compiling the terminal edition (CLI):
 ### First use
 
 ```sh
-make libs # Not tested on Windows
+
+make first_time
+./output
 ```
 
-### Makefile
+### Contribute
+
+If you want to change something, you must recompile the file:
+
+* File in `cmd`? `compile_cmds` or recompile only the file with the command.
+* `utils.cpp`? `compile_utils`.
+* `utils.hpp`, `shell.hpp` or `errors.hpp`? you can recompile all. Just wite `make`.
+* `shell.cpp`, `errors.cpp`, `reader.cpp` or `cli.cpp`? `compile_shell`
+* `main.cpp`? `compile_main`
 
 ```sh
-make DEBUG=off
+make # <your command here>
+make link
 ./output #.exe
 ```
 
@@ -109,6 +120,11 @@ SnabbGET use the
 [GNU Readline library 8.2](https://git.savannah.gnu.org/cgit/readline.git)
 under the GNU GPL License, and the
 [exprtk library](https://github.com/ArashPartow/exprtk) under the MIT License.
+
+I use and adapt
+[torrycrass' image converter](https://github.com/torrycrass/image-to-ansi) to
+generate the images in /assets.
+The image came form [Pixbay](https://pixabay.com/images/search/background/).
 
 # License
 

@@ -1,7 +1,7 @@
 # Tests
 # =====
 
-*test*
+*test*[^.][^ch]*
 !tests/*
 SnabbGET_demo.cast
 exprtk_*[!.][!?][!?][!?]

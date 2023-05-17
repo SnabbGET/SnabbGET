@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef SNABBGET_UTILS
+#define SNABBGET_UTILS
+
 #include <iostream>
 #include <string>
 #include <cmath>
@@ -27,6 +30,4 @@ std::string join(std::vector<std::string> const &strings, const char *delim);
 std::vector<std::string> split(const std::string &str, const char &token);
 int get_pos(int *y, int *x);
 
-#ifdef FILEENUMERR
-	#include "utils.cpp"
 #endif

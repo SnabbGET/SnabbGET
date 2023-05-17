@@ -1,5 +1,7 @@
 // Exe command
 
+#include "../shell.hpp"
+
 #include <iostream>
 #include <string>
 #include <chrono>
@@ -22,6 +24,9 @@
  * @param input_user The user input
  * @return [std::string] Command result
  */
+
+extern std::string SnabbGET::currentDir;
+
 std::string SnabbGET::CMDS::_exe_(std::string[], int, std::string input_user)
 {
 	try

@@ -87,3 +87,20 @@ A ==> |Result| C
 ```
 
 See `syntax.ebnf` for syntax details.
+
+Diagram of wha file is included by who:
+
+> (`()` = `#ifndef ...` && `[]` != `#ifndef`)
+
+```mermaid
+flowchart LR
+
+A{compile_cmds} ==> Aa[src/core/cmd/*.cpp]
+Aa --> B(shell.hpp)
+B  --> C(utils.hpp)
+B  --> D[other/errors.cpp]
+B  --> E[includesAll.hpp]
+B  --> F[settings/reader.cpp]
+C  --> G[cli/cli.cpp]
+H(shell.cpp) --> I(include/readline/)
+```

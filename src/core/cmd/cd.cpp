@@ -1,5 +1,7 @@
 // Cd command
 
+#include "../shell.hpp"
+
 #include <iostream>
 #include <string>
 #include <chrono>
@@ -16,7 +18,7 @@
 
 	#define _CD_
 
-	// #include "../shell.hpp" // NO
+	// #include "../shell.hpp" // NO // SI
 	/**
 	 * @brief CD command
 	 * 
@@ -25,6 +27,9 @@
 	 * @param input_user [NOT USED]
 	 * @return [std::string] Command result
 	 */
+
+	extern std::string SnabbGET::currentDir;
+
 	std::string SnabbGET::CMDS::_cd_(std::string cmd[], int cmdLen,std::string)
 	{
 		#if __cplusplus >= 201703L
@@ -49,8 +54,8 @@
 						__snabbget.currentDir = "~";*/
 
 					#ifdef _WIN32
-
-						std::filesystem::current_path(currentDir.c_str());
+						std::filesystem::current_path(
+							SnabbGET::currentDir.c_str());
 					#elif __linux__
 						if (cmdLen > 1)
 						{
