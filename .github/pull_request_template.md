@@ -24,4 +24,4 @@ I add ... function to ...
   - [ ] Linux
   - [ ] MacOS
 
-**Version of the shell**: [e.g. 0.1.0]
+**Version of the shell**: (e.g. 0.1.0)

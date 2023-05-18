@@ -30,12 +30,13 @@ allowing the user to run: python image-to-ansi.py <filename>
 -torrycrass
 """
 
-__author__    = "Micah Elliott http://MicahElliott.com; Kevin Lange <k@dakko.us>; Takumi Sueda <puhitaku@gmail.com>; Torry Crass <tc.github@outlook.com>"
+__author__ = "Micah Elliott http://MicahElliott.com; Kevin Lange <k@dakko.us>; \
+Takumi Sueda <puhitaku@gmail.com>; Torry Crass <tc.github@outlook.com>"
 __copyright__ = "Copyright (C) 2011 Micah Elliott.  All rights reserved."
 __credits__ = ["Micah Elliott", "Kevin Lange", "Takumi Sueda", "Torry Crass"]
 
-__license__   = "WTFPL http://sam.zoy.org/wtfpl/"
-__version__   = "0.2"
+__license__ = "WTFPL http://sam.zoy.org/wtfpl/"
+__version__ = "0.2"
 __maintainer__ = "Torry Crass"
 __email__ = "tc.github@outlook.com"
 __status__ = "Development"
@@ -312,12 +313,12 @@ def print_help():
     print(30 * "=", "IMAGE to ANSI", 30 * "=")
     print(75 * "=")
 
-    print("\nCredits: ", __credits__[0], "\n\t", 
+    print("\nCredits: ", __credits__[0], "\n\t",
           __credits__[1], "\n\t", __credits__[2], "\n\t", __credits__[3])
     print("License: ", __license__)
     print("Version: ", __version__)
     print("Maintainer: ", __maintainer__, " ", __email__)
-    print("Status: ",  __status__)
+    print("Status: ", __status__)
 
     print("\nThis program allows you to convert a graphic file (preferably png) into\n" \
           "ANSI code that will display a rendition of the image in a console that\n" \
@@ -418,7 +419,7 @@ if __name__ == '__main__':
                         out.append(f"\033[48;2;{p[0]};{p[1]};{p[2]}m ")
                 lst[0] = j
                 lst[1] = p
-                    #s.append("\033[48;5;%sm " % short)
+                #s.append("\033[48;5;%sm " % short)
 
             if (i+1) % x == 0:
                 j += 1 #s.append("\033[0m\n")

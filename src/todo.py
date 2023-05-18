@@ -64,8 +64,8 @@ def lstdir(d, dico_all_td=[]):
     global MAX_LINE_NUM
     global MAX_FILE_NUM
     global MAX_TEXT_NUM
-    for f2 in os.listdir(d):
-        p = os.path.join(d, f2)
+    for f_2 in os.listdir(d):
+        p = os.path.join(d, f_2)
     #    print(p)
         if os.path.isfile(p):
             try:
@@ -76,8 +76,8 @@ def lstdir(d, dico_all_td=[]):
                             try:
                                 dico_all_td = read_file(p, line_in_f, all_lines, dico_all_td, file_in_d)
                             except IndexError:
-                            #    print(file_in_d.name, "\033[35m@", all_lines.index(line_in_f),
-                            #        ":\033[33m", line_in_f, end="\033[0m")
+                                #print(file_in_d.name, "\033[35m@", all_lines.index(line_in_f),
+                                #":\033[33m", line_in_f, end="\033[0m")
                                 to_do_text = line_in_f.split("\n")
                                 to_do_text = to_do_text[0]
                                 dico_all_td += [{"line": all_lines.index(line_in_f),
@@ -92,7 +92,7 @@ def lstdir(d, dico_all_td=[]):
             except UnicodeDecodeError:
                 pass
         elif os.path.isdir(p) and os.path.basename(p) != ".git":
-        #    print("Cd in", os.path.basename(p))
+            #print("Cd in", os.path.basename(p))
             lstdir(p, dico_all_td)
     return dico_all_td
 
@@ -116,6 +116,7 @@ def todos():
     return dico_all_td
 
 #lstdir("./src")
+
 
 to_do_text = lstdir("./src")
 print(to_do_text, MAX_LINE_NUM, MAX_TEXT_NUM, MAX_FILE_NUM)

@@ -188,7 +188,8 @@ class Gui extends JFrame implements ActionListener {
 
 				try {
 					// String
-					String s1 = "", sl = "";
+					String s1 = "";
+					String sl = "";
 
 					// File reader
 					FileReader fr = new FileReader(fi);
