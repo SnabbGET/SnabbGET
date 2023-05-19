@@ -1,8 +1,7 @@
 *               linguist-detectable=true
 *               linguist-documentation=false
 LICENSE         linguist-documentation=true
-assets/*        linguist-documentation=true
+assets/**       linguist-documentation=true
 web/*.js        linguist-documentation=true
 html_template/* linguist-documentation=true
 libs/**/*       linguist-documentation=true
-libs/**/*       linguist-detectable=true

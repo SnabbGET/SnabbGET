@@ -6,7 +6,7 @@ import java.awt.event.*;
 import javax.swing.plaf.metal.*;
 import javax.swing.text.*;
 
-class gui extends JFrame implements ActionListener {
+class Gui extends JFrame implements ActionListener {
 	// Text component
 	/* JTextArea */JTextField t;
 	JTextField p;
@@ -15,7 +15,7 @@ class gui extends JFrame implements ActionListener {
 	JFrame f;
 
 	// Constructor
-	gui()
+	Gui()
 	{
 		// Create a frame
 		f = new JFrame("gui");
@@ -188,7 +188,8 @@ class gui extends JFrame implements ActionListener {
 
 				try {
 					// String
-					String s1 = "", sl = "";
+					String s1 = "";
+					String sl = "";
 
 					// File reader
 					FileReader fr = new FileReader(fi);
@@ -302,6 +303,6 @@ class gui extends JFrame implements ActionListener {
 
 	// Main class
 	public static void main(String args[]) {
-		gui e = new gui();
+		Gui e = new Gui();
 	}
 }

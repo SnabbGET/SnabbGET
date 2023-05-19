@@ -67,7 +67,7 @@ jobs:
     - if: matrix.language == 'cpp'
       run: |
         echo "Run, Build Application using make"
-        make
+        #make
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2

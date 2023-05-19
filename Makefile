@@ -85,7 +85,7 @@ endif
 
 gui:
 	@echo "Generating the gui..."
-	${CD} src/interface && ${JAVAC} gui.java
+	${CD} src/interface && ${JAVAC} Gui.java
 	${GCC} -D _FORJAVAGUI_ src/*.cpp src/core/utils.cpp -std=c++1z -o \
 	"src/interface/prompt"
 

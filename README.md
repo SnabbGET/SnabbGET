@@ -1,25 +1,35 @@
 <h1 align="center">SnabbGET 🐐</h1>
 
 <p align="center">
-	<a href="https://snabbget.github.io/">
-		<img src="https://github.com/SnabbGET/.github/blob/main/logo_small.png" alt="SnabbGET logo">
-	</a>
+    <a href="https://snabbget.github.io/">
+        <img src="https://github.com/SnabbGET/.github/blob/main/logo_small.png"
+        alt="SnabbGET logo">
+    </a>
 </p>
 
-*Graphic and fast terminal in C/C++.*
+*Graphic and fast shell in C/C++.*
 
 ---
 
 <p align="center">
-	<a href="https://forthebadge.com"><img title="Powered" height="35" src="https://forthebadge.com/images/badges/powered-by-electricity.svg" /></a>
-	<a href="https://forthebadge.com"><img title="Build" height="35" src="https://forthebadge.com/images/badges/built-by-developers.svg" /></a>
-	<a href="https://forthebadge.com"><img title="Made" height="35" src="https://forthebadge.com/images/badges/made-with-c-plus-plus.svg" /></a>
-	<a href="https://forthebadge.com"><img title="Open" height="35" src="https://forthebadge.com/images/badges/open-source.svg" /></a>
-	<a href="https://forthebadge.com"><img title="Uses" height="35" src="https://forthebadge.com/images/badges/uses-badges.svg" /></a>
-	<a href="src/core/shell.cpp"><img title="v0.2.0" height="35" src="https://img.shields.io/badge/Version-0.2.0-9cf?style=for-the-badge" /></a>
-	<a href="https://forthebadge.com"><img title="forthebadge" height="35" src="https://forthebadge.com/images/badges/works-on-my-machine.svg" /></a>
-	<a href="https://forthebadge.com"><img title="Gluten" height="35" src="https://forthebadge.com/images/badges/gluten-free.svg" /></a>
-	<a href="https://forthebadge.com"><img title="Contains" height="35" src="https://user-images.githubusercontent.com/97749743/202749038-e8e5be0e-0253-41ce-a077-364479331bbd.svg" /></a>
+    <a href="https://forthebadge.com"><img title="Powered" height="35"
+    src="https://forthebadge.com/images/badges/powered-by-electricity.svg"/></a>
+    <a href="https://forthebadge.com"><img title="Build" height="35"
+    src="https://forthebadge.com/images/badges/built-by-developers.svg" /></a>
+    <a href="https://forthebadge.com"><img title="Made" height="35"
+    src="https://forthebadge.com/images/badges/made-with-c-plus-plus.svg" /></a>
+    <a href="https://forthebadge.com"><img title="Open" height="35"
+    src="https://forthebadge.com/images/badges/open-source.svg" /></a>
+    <a href="https://forthebadge.com"><img title="Uses" height="35"
+    src="https://forthebadge.com/images/badges/uses-badges.svg" /></a>
+    <a href="src/core/shell.cpp"><img title="v0.2.0" height="35"
+    src="https://img.shields.io/badge/Version-0.2.0-9cf?style=for-the-badge" /></a>
+    <a href="https://forthebadge.com"><img title="forthebadge" height="35"
+    src="https://forthebadge.com/images/badges/works-on-my-machine.svg" /></a>
+    <a href="https://forthebadge.com"><img title="Gluten" height="35"
+    src="https://forthebadge.com/images/badges/gluten-free.svg" /></a>
+    <a href="https://forthebadge.com"><img title="Contains" height="35"
+    src="https://user-images.githubusercontent.com/97749743/202749038-e8e5be0e-0253-41ce-a077-364479331bbd.svg" /></a>
 </p>
 
 [![CodeFactor](https://www.codefactor.io/repository/github/snabbget/snabbget/badge)](https://www.codefactor.io/repository/github/snabbget/snabbget)
@@ -29,17 +39,22 @@
 ## What is SnabbGET?
 
 <p align="center">
-	<a href="https://snabbget.github.io/more/"><img src="https://user-images.githubusercontent.com/97749743/215259179-b06d1422-fd8b-4cd1-914c-d4f0a2ee2340.png" alt="SnabbGET demo image" width="80%" /></a>
+    <a href="https://snabbget.github.io/more/">
+        <img src="https://user-images.githubusercontent.com/97749743/215259179-b06d1422-fd8b-4cd1-914c-d4f0a2ee2340.png"
+        alt="SnabbGET demo image" width="80%" /></a>
 </p>
 
 <p align="right">
-	<sup>Made with <a href="https://asciinema.org/">Asciinema</a></sup>
+    <sup>Made with <a href="https://asciinema.org/">Asciinema</a></sup>
 </p>
 
-SnabbGET is a 'guified' terminal built with love ❤ for all beginners learning how to use a terminal. <!--_It's not meant for professional uses._-->
+SnabbGET is a 'guified' terminal built with love ❤ for all beginners learning
+how to use a terminal.<!--_It's not meant for professional uses._-->
 
-The idea of creating this kind of terminal came out because we tought that it's pretty easy to be confused using a terminal, as a beginner.
-This terminal makes everything easier with an user interface! We will do our best to do the most beginner-friendly & easy to use terminal.
+The idea of creating this kind of terminal came out because we tought that it's
+pretty easy to be confused using a terminal, as a beginner.
+This terminal makes everything easier with an user interface! We will do our
+best to do the most beginner-friendly & easy to use terminal.
 
 We'll focus on OS such as Windows and Linux. No MacOS for the moment, sorry :(
 
@@ -50,7 +65,8 @@ Compiling the terminal edition (CLI):
 ### Tools required
 
 > * Version of C++ used : C++17.
-> * Any Linux architecture but a 64 bits arch. is required for Windows (MacOS not available).
+> * Any Linux architecture but a 64 bits arch. is required for Windows
+    (MacOS not available).
 > * `make` (Required only for the first use, we work on that.)
 > * The `Makefile` use `g++` and `gdb` to compile and debug.
 
