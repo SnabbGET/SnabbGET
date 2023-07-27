@@ -92,9 +92,9 @@ std::string SnabbGET::CMDS::_ls_(std::string[], int, std::string)
 		{
 			for (const auto &entry:std::filesystem::directory_iterator(currDir))
 			{
-				std::filesystem::file_size(entry, ec);
+				auto f_size = std::filesystem::file_size(entry, ec);
 				if (!ec)
-					msg += std::string("\t\t\t\t\t") +h(entry.file_size())+"\r";
+					msg += std::string("\t\t\t\t\t") +h(f_size)+"\r";
 					// TODO: use std::setw()
 				msg += (entry.is_directory() ? "\033[38;5;75m":
 						(entry.is_regular_file() ? "\033[0m":
@@ -106,7 +106,7 @@ std::string SnabbGET::CMDS::_ls_(std::string[], int, std::string)
 						))))))) + 
 					std::string(replaceAll(
 						replaceAll(
-							replaceAll(entry.path(), currDir, ""),
+							replaceAll(std::string(entry.path().u8string()), currDir, ""),
 							"/", ""
 						), "\\", ""
 					)) + std::string("\033[0m\r\n");

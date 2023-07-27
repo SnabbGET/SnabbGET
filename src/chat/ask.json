@@ -1,0 +1,51 @@
+{
+	"init": "Hi! I'm the SnabbGET' chatbox!",
+	"bad_r": "Please enter the number alone",
+	//"back": "Enter 0 to exit. If you want to write '0' but not exit, you must put ",
+	"q": "What do you want to do? Please enter the number:"
+"	0.  Exit"
+"	1.  Show the help of SnabbGET shell."
+"	2.  Clear the screen"
+"	3.  Print a message on this screen"
+"	4.  Navigate to a directory / Show current directory"
+"	5.  Execute a command/file"
+"	6.  List things in the directory"
+"	7.  Copy a file somewhere"
+"	8.  Move a file somewhere / Rename a file"
+"	9.  Create a file"
+"	10. Remove a file"
+"	11. Claculator",
+	"end": false,
+	/* Q: What is "stack+"?
+	 * A: "stack+" is a stack of arguments, that will be passed to the function.
+	 *    The agguments will be concatenated, that's why they must be in a list.
+	 *    Eg.: "stack+":[0, ["cp"]]			-> arguments: (0, ["cp"])
+	 *         "stack+":[7, ["toto1.txt"]]	-> arguments: (7, ["cp", "toto1.txt"])
+	 *         "stack+":[null, [null, "hi"]]-> arguments: (7, ["cp", "toto1.txt", "<user's response>, "hi"])
+	 */
+	"r": [
+		{"q":"Bye!","end":null,"stack+":[0, ["exit"]]},
+		{"q":"",    "end":true,"stack+":[1, ["help"]]},
+		{"q":"",    "end":true,"stack+":[2, ["cls"]]},
+		{"q":"What message do you want to print?","end": true,"stack+":[3, ["say", null]]},
+		{"q":"Where do you want to go? Leave blank for the actual path.","end":true,"stack+":[4, ["cd", null]]},
+		{"q":"What do you want to execute?","end":true,"stack+":[5, ["exe", null]]},
+		{"q":"",    "end":true,"stack+":[6, ["ls"]]},
+		{
+			"q":"What file do you want to copy?",
+			"end":false,
+			"stack+":[7, ["cp", null]],
+			"r": {"q":"What is the new file name (and localisation)?","end":true,"stack+":[null, [null]]}
+		},
+		{
+			"q":"What file do you want to move?",
+			"end":false,
+			"stack+":[8, ["mv", null]],
+			"r": {"q":"What is the new file name (and localisation)?","end":true,"stack+":[null, [null]]}
+		},
+		{"q":"What file do you want to create?","end":true,"stack+":[9, ["mk", null]]},
+		{"q":"What file do you want to remove?","end":true,"stack+":[10,["rm", null]]},
+		{"q":"What do you want to eval?","end":true,"stack+":[11, ["calc", null]]}
+		
+	]
+}

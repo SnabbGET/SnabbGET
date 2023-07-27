@@ -188,7 +188,7 @@ int get_pos(int *y, int *x)
 {
 	#ifdef __WIN32
 		CONSOLE_SCREEN_BUFFER_INFO cbsi;
-		HANDLE hConsoleOutput;
+		HANDLE hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 		if (GetConsoleScreenBufferInfo(hConsoleOutput, &cbsi))
 		{
 			*x = cbsi.dwCursorPosition.X;

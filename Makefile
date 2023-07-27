@@ -3,31 +3,31 @@ DEBUG = on
 arg =
 wasm = off
 
-GCC = g++
+cmd_files = ./src/core/cmd/*.cpp
+
+CC = ..\mingw64\bin\g++.exe -Wa,-mbig-obj
 EMCC = em++
-GDB = gdb
+GDB = ..\mingw64\bin\gdb.exe
 CD = cd
-MAKE = make
+MAKE = ..\mingw64\bin\mingw32-make.exe
 JAVA = java
 JAVAC = javac
 
-.PHONY: all compile_cmds compile_utils compile_shell link gui libs
+.PHONY: all $(cmd_files) compile_utils compile_shell link gui libs
 
-all: compile_cmds compile_utils compile_shell compile_main link
+all: $(cmd_files) compile_utils compile_shell compile_main link
 
-first_time: libs compile_cmds compile_utils compile_shell compile_main link
+first_time: libs $(cmd_files) compile_utils compile_shell compile_main link
 
-compile_cmds: ./src/core/cmd/*.cpp
-	@for file in $^ ; do \
-		echo "Compiling $${file}..." ;\
-		${GCC} -Wall -Wextra -D DEBUG -O3 -g3 $${file} -o \
-		"$${file}.o" -c -std=c++1z -L./libs/readline-8.2 -lreadline \
-		-lhistory -ltinfo;\
-	done
+$(cmd_files): %:
+	@echo "Compiling $@..."
+	@${CC} -Wall -Wextra -D DEBUG -O3 -g3 $@ -o \
+	"$@.o" -c -std=c++1z -L./libs/readline-8.2 -lreadline \
+	-lhistory -ltinfo
 
 compile_utils:
 	@echo "Compiling utils.cpp..."
-	@${GCC} -Wall -Wextra -D DEBUG -O3 -g3 src/core/utils.cpp -o \
+	@${CC} -Wall -Wextra -D DEBUG -O3 -g3 src/core/utils.cpp -o \
 	"utils.o" -c -std=c++1z -L./libs/readline-8.2 -lreadline \
 	-lhistory -ltinfo
 #	g++ src/core/gen/includes_files.cpp -o "includes" -std=c++1z
@@ -35,26 +35,29 @@ compile_utils:
 
 compile_shell:
 	@echo "Compiling shell.cpp"
-	@${GCC} -Wall -Wextra -D DEBUG -O3 -g3 src/core/shell.cpp -o \
+	@${CC} -Wall -Wextra -D DEBUG -O3 -g3 src/core/shell.cpp -o \
 	"shell.o" -c -std=c++1z -L./libs/readline-8.2 -lreadline \
 	-lhistory -ltinfo
 
 compile_main:
 	@echo "Compiling main.cpp"
-	@${GCC} -Wall -Wextra -D DEBUG -O3 -g3 src/main.cpp -o \
+	@${CC} -Wall -Wextra -D DEBUG -O3 -g3 src/main.cpp -o \
 	"main.o" -c -std=c++1z -L./libs/readline-8.2 -lreadline \
 	-lhistory -ltinfo
 
 link: ./src/core/cmd/*.cpp.o
 	@echo "Generating..."
+	@echo "If you have an error like 'ld: cannot find -ltinfo', install the 'libncurses-dev' package."
 ifeq (${DEBUG}, on)
-	@${GCC} -Wall -Wextra -O3 -g3 ./utils.o ./shell.o ./main.o $^ -o \
+	@${CC} -Wall -Wextra -O3 -g3 ./utils.o ./shell.o ./main.o $^ -o \
 	"${filename}" -std=c++1z -L./libs/readline-8.2 -lreadline \
 	-lhistory -ltinfo
 else
-	@${GCC} -Wall -Wextra -O3 -g3 src/*.cpp src/core/utils.cpp -o \
+	@${CC} -Wall -Wextra -O3 -g3 src/*.cpp src/core/utils.cpp -o \
 	"${filename}" -std=c++1z -L./libs/readline-8.2 -lreadline \
 	-lhistory -ltinfo
+	#TODO: change in all compilations the '-D DEBUG': use that only if the user wants
+	# (add ifeq (${DEBUG}, on))
 endif
 ifneq (${wasm}, off)
 	@${EMCC} -D DEBUG src/*.cpp src/core/utils.cpp -o \
@@ -86,7 +89,7 @@ endif
 gui:
 	@echo "Generating the gui..."
 	${CD} src/interface && ${JAVAC} Gui.java
-	${GCC} -D _FORJAVAGUI_ src/*.cpp src/core/utils.cpp -std=c++1z -o \
+	${CC} -D _FORJAVAGUI_ src/*.cpp src/core/utils.cpp -std=c++1z -o \
 	"src/interface/prompt"
 
 runGui: gui
