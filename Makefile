@@ -6,11 +6,11 @@ wasm = off
 
 cmd_files = ./src/core/cmd/*.cpp
 
-CC = ..\mingw64\bin\g++.exe
+CC = g++
 EMCC = em++
-GDB = ..\mingw64\bin\gdb.exe
+GDB = gdb
 CD = cd
-MAKE = ..\mingw64\bin\mingw32-make.exe
+MAKE = make
 JAVA = java
 JAVAC = javac
 
