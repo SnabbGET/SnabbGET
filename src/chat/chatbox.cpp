@@ -17,7 +17,8 @@
 #include <string>
 #include <vector>
 #include <cassert>
-#include "../../libs/json/json.hpp"
+#define JSON_HAS_CPP_17 1
+#include "../../include/json/json.hpp"
 #include "../core/shell.hpp"
 #include "../core/utils.hpp"
 

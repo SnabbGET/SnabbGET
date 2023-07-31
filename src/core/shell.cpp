@@ -306,7 +306,7 @@ void SnabbGET::SnabbGET()
 				}
 			}
 			oldLine = (char *) malloc(strlen(rl_line_buffer)+1);
-			strcpy(oldLine, rl_line_buffer);
+			snprintf(oldLine, strlen(rl_line_buffer)+1, "s", rl_line_buffer);
 			return 0;
 		});
 		/*rl_bind_key (27, rlKeysFuncs); //ascii code for ESC
