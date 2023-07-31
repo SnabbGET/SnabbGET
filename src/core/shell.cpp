@@ -419,6 +419,8 @@ std::string SnabbGET::read_input(std::string input_user_t)
  *  ######  #####  ##   ## ##   ## ##   ## ##   ## #####   ###### 
  */
 
+	// TODO: use std::find(allCmds[0])
+
 	//Check if 'cmd' contain '-?'
 	else if (cmd[0] != "exe" && contain(cmd, cmdLen, "-?") && cmd[0] != "-?")
 		return help_params(cmd[0]);
