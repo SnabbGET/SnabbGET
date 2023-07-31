@@ -38,7 +38,7 @@ extern std::string SnabbGET::currentDir;
  * @param input_user The user input
  * @return [std::string] Command result
  */
-std::string SnabbGET::CMDS::_ls_(std::string[], int, std::string)
+std::string SnabbGET::CMDS::_ls_(std::string[], int&, std::string&)
 {
 	#if __cplusplus >= 201703L
 		std::string msg = "";

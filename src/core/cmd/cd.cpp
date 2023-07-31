@@ -30,7 +30,7 @@
 
 	extern std::string SnabbGET::currentDir;
 
-	std::string SnabbGET::CMDS::_cd_(std::string cmd[], int cmdLen,std::string)
+	std::string SnabbGET::CMDS::_cd_(std::string cmd[], int &cmdLen, std::string&)
 	{
 		#if __cplusplus >= 201703L
 			if (contain(cmd, cmdLen, "--pwd") || contain(cmd, cmdLen, "-p"))
@@ -39,10 +39,15 @@
 			}
 			else
 			{
-				std::string msg = "cd ";
+				std::string msg = "cd \"";
 				msg += SnabbGET::currentDir;
-				msg += " && cd ";
+				#ifdef _WIN32
+					msg += "\" & cd \"";
+				#else
+					msg += "\" && cd \"";
+				#endif
 				msg += cmd[1];
+				msg += '"';
 				#ifdef DEBUG
 					std::cout << "CMD = " << msg << "\r\n";
 				#endif

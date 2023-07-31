@@ -278,22 +278,22 @@
 				#define CALC 11
 			#endif
 
-			std::string _exit_(std::string[], int, std::string);
-			std::string _help_(std::string[], int, std::string);
-			std::string _cls_ (std::string[], int, std::string);
-			std::string _say_ (std::string[], int, std::string);
-			std::string _cd_  (std::string[], int, std::string);
-			std::string _exe_ (std::string[], int, std::string);
-			std::string _ls_  (std::string[], int, std::string);
-			std::string _cp_  (std::string[], int, std::string);
-			std::string _mv_  (std::string[], int, std::string);
-			std::string _mk_  (std::string[], int, std::string);
-			std::string _rm_  (std::string[], int, std::string);
-			std::string _calc_(std::string[], int, std::string);
+			std::string _exit_(std::string[], int&, std::string&);
+			std::string _help_(std::string[], int&, std::string&);
+			std::string _cls_ (std::string[], int&, std::string&);
+			std::string _say_ (std::string[], int&, std::string&);
+			std::string _cd_  (std::string[], int&, std::string&);
+			std::string _exe_ (std::string[], int&, std::string&);
+			std::string _ls_  (std::string[], int&, std::string&);
+			std::string _cp_  (std::string[], int&, std::string&);
+			std::string _mv_  (std::string[], int&, std::string&);
+			std::string _mk_  (std::string[], int&, std::string&);
+			std::string _rm_  (std::string[], int&, std::string&);
+			std::string _calc_(std::string[], int&, std::string&);
 			
 			extern std::vector<
 				std::function<
-					std::string(std::string[], int, std::string)
+					std::string(std::string[], int&, std::string&)
 				>
 			> cmdLst;
 			extern std::vector<std::vector<const char*>> allCmd;

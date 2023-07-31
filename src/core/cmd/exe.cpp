@@ -27,7 +27,7 @@
 
 extern std::string SnabbGET::currentDir;
 
-std::string SnabbGET::CMDS::_exe_(std::string[], int, std::string input_user)
+std::string SnabbGET::CMDS::_exe_(std::string[], int&, std::string &input_user)
 {
 	try
 	{

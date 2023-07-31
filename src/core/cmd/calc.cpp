@@ -1,5 +1,7 @@
 // Calc command
 
+#include "../../../include/exprtk/exprtk.hpp"
+
 #include "../shell.hpp"
 
 #include <iostream>
@@ -15,8 +17,6 @@
 
 //#include "../shell.hpp"
 
-#include "../../../include/exprtk/exprtk.hpp"
-
 /**
  * @brief Calc command
  * 
@@ -25,7 +25,7 @@
  * @param input_user The user input
  * @return [std::string] Command result
  */
-std::string SnabbGET::CMDS::_calc_(std::string cmd[],int,std::string input_user)
+std::string SnabbGET::CMDS::_calc_(std::string cmd[],int&,std::string& input_user)
 {
 	if (input_user.length() < cmd[0].length()+1)
 		return "0";

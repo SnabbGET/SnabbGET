@@ -1,11 +1,12 @@
 filename = output
 DEBUG = on
-arg =
+arg = -Wa,-mbig-obj -Wall -Wextra -O3 -g3 -std=c++1z -fuse-ld=lld -Wno-implicit-fallthrough
+readline_arg = -L./libs/readline-8.2 -lreadline -lhistory -ltinfo
 wasm = off
 
 cmd_files = ./src/core/cmd/*.cpp
 
-CC = ..\mingw64\bin\g++.exe -Wa,-mbig-obj
+CC = ..\mingw64\bin\g++.exe
 EMCC = em++
 GDB = ..\mingw64\bin\gdb.exe
 CD = cd
@@ -13,63 +14,68 @@ MAKE = ..\mingw64\bin\mingw32-make.exe
 JAVA = java
 JAVAC = javac
 
-.PHONY: all $(cmd_files) compile_utils compile_shell link gui libs
+.PHONY: all $(cmd_files) compile_utils compile_shell compile_main compile_chatbox link gui libs link_for_chatbox
 
 all: $(cmd_files) compile_utils compile_shell compile_main link
+
+chatbox: $(cmd_files) compile_utils compile_shell compile_chatbox link_for_chatbox
+	readline_arg=-D NO_RL
 
 first_time: libs $(cmd_files) compile_utils compile_shell compile_main link
 
 $(cmd_files): %:
 	@echo "Compiling $@..."
-	@${CC} -Wall -Wextra -D DEBUG -O3 -g3 $@ -o \
-	"$@.o" -c -std=c++1z -L./libs/readline-8.2 -lreadline \
-	-lhistory -ltinfo
+	@${CC} -D DEBUG $@ -o "$@.o" -c ${arg} ${readline_arg}
 
 compile_utils:
 	@echo "Compiling utils.cpp..."
-	@${CC} -Wall -Wextra -D DEBUG -O3 -g3 src/core/utils.cpp -o \
-	"utils.o" -c -std=c++1z -L./libs/readline-8.2 -lreadline \
-	-lhistory -ltinfo
+	@${CC} -D DEBUG src/core/utils.cpp -o "utils.o" -c ${arg} ${readline_arg}
 #	g++ src/core/gen/includes_files.cpp -o "includes" -std=c++1z
 #	./includes
 
 compile_shell:
 	@echo "Compiling shell.cpp"
-	@${CC} -Wall -Wextra -D DEBUG -O3 -g3 src/core/shell.cpp -o \
-	"shell.o" -c -std=c++1z -L./libs/readline-8.2 -lreadline \
-	-lhistory -ltinfo
-
+	@${CC} -D DEBUG src/core/shell.cpp -o "shell.o" -c ${arg} ${readline_arg}
 compile_main:
 	@echo "Compiling main.cpp"
-	@${CC} -Wall -Wextra -D DEBUG -O3 -g3 src/main.cpp -o \
-	"main.o" -c -std=c++1z -L./libs/readline-8.2 -lreadline \
-	-lhistory -ltinfo
+	@${CC} -D DEBUG src/main.cpp -o "main.o" -c ${arg} ${readline_arg}
+
+compile_chatbox:
+	@echo "Compiling chatbox.cpp"
+	@${CC} -D DEBUG src/chat/chatbox.cpp -o "chatbox.o" -c ${arg}
 
 link: ./src/core/cmd/*.cpp.o
 	@echo "Generating..."
 	@echo "If you have an error like 'ld: cannot find -ltinfo', install the 'libncurses-dev' package."
 ifeq (${DEBUG}, on)
-	@${CC} -Wall -Wextra -O3 -g3 ./utils.o ./shell.o ./main.o $^ -o \
-	"${filename}" -std=c++1z -L./libs/readline-8.2 -lreadline \
-	-lhistory -ltinfo
+	@${CC} ./utils.o ./shell.o ./main.o $^ -o "${filename}" ${arg}
 else
-	@${CC} -Wall -Wextra -O3 -g3 src/*.cpp src/core/utils.cpp -o \
-	"${filename}" -std=c++1z -L./libs/readline-8.2 -lreadline \
-	-lhistory -ltinfo
-	#TODO: change in all compilations the '-D DEBUG': use that only if the user wants
-	# (add ifeq (${DEBUG}, on))
+	@${CC} src/*.cpp src/core/utils.cpp -o "${filename}" ${arg}
+#	TODO: change in all compilations the '-D DEBUG': use that only if the user wants
+#	(add ifeq (${DEBUG}, on))
 endif
 ifneq (${wasm}, off)
 	@${EMCC} -D DEBUG src/*.cpp src/core/utils.cpp -o \
 	"web/${filename}.html" --shell-file \
 	html_template/shell_minimal.html -s NO_EXIT_RUNTIME=1 -s \
-	"EXPORTED_RUNTIME_METHODS=['ccall']" -std=c++1z \
-	-L./libs/readline-8.2 -lreadline -lhistory
+	"EXPORTED_RUNTIME_METHODS=['ccall']" ${arg}
 endif
 
-# Compile libs
-libs: # TODO: Windows       |---------v
+link_for_chatbox:
+	@echo "Generating..."
+	${CC} ./utils.o ./shell.o ./chatbox.o ./src/core/cmd/*.cpp.o -o "${filename}_chatbox" ${arg}
+
+lib_readline:
+	@echo "Precompiling Readline..."
 	@${CD} libs/readline-8.2 && ./configure && ${MAKE} && ${CD} ../../
+
+lib_exprtk:
+	@echo "Precompiling exprtk..."
+	@${CC} "include/exprtk/exprtk.hpp" -o "include/exprtk/exprtk.hpp.gch" -c ${arg}
+
+# Compile libs
+libs: lib_readline lib_exprtk
+
 #	cd libs/exprtk-master && g++ exprtk.hpp -pedantic-errors -Wall -Wextra \
 #	-Werror -Wno-long-long -O3 && cd ../../
 #	cp libs/exprtk-master/exprtk.hpp.gch include/exprtk/
