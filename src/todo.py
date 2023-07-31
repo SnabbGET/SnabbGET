@@ -69,7 +69,7 @@ def lstdir(d, dico_all_td=[]):
     #    print(p)
         if os.path.isfile(p):
             try:
-                with open(p, 'r') as file_in_d:
+                with open(p, 'r', -1, 'UTF-8') as file_in_d:
                     all_lines = file_in_d.readlines()
                     for line_in_f in all_lines:
                         if line_in_f.find(TO_DO_WORD) != -1:

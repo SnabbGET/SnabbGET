@@ -356,6 +356,7 @@ def _create_incs_lut():
                 break
     return res
 
+
 RGB2SHORT_DICT = dict(CLUT)
 INCS_LUT = _create_incs_lut()
 
