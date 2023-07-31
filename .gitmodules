@@ -3,7 +3,7 @@
 	url = https://github.com/ArashPartow/exprtk.git
 [submodule "libs/readline-8.2"]
 	path = libs/readline-8.2
-	url = https://git.savannah.gnu.org/git/readline.git
+	url = git://git.savannah.gnu.org/git/readline.git
 [submodule "libs/nlohmann-json"]
 	path = libs/nlohmann-json
 	url = https://github.com/nlohmann/json.git
