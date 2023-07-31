@@ -320,12 +320,12 @@ def print_help():
     print("Maintainer: ", __maintainer__, " ", __email__)
     print("Status: ", __status__)
 
-    print("\nThis program allows you to convert a graphic file (preferably png) into\n" \
-          "ANSI code that will display a rendition of the image in a console that\n" \
+    print("\nThis program allows you to convert a graphic file (preferably png) into\n"
+          "ANSI code that will display a rendition of the image in a console that\n"
           "supports ANSI color codes.\n")
 
-    print("You need to have python, python-image, python-pillow. You can either\n" \
-          "install these with your package manager (apt/yum) or install python-pip\n" \
+    print("You need to have python, python-image, python-pillow. You can either\n"
+          "install these with your package manager (apt/yum) or install python-pip\n"
           "and install the necessary modules from there.\n")
 
     print("See the github repository for more information (if available).\n")
@@ -355,6 +355,7 @@ def _create_incs_lut():
                     res.append('%02x' % b)
                 break
     return res
+
 
 RGB2SHORT_DICT = dict(CLUT)
 INCS_LUT = _create_incs_lut()
@@ -387,8 +388,8 @@ if __name__ == '__main__':
     elif os.path.isfile(sys.argv[1]) is not True:
         print("")
         print(30 * ">", "ERROR", 30 * "<")
-        print("\nError: This program requires an input file, the value provided\n" \
-            "is not a file. Please use a valid file name.\n")
+        print("\nError: This program requires an input file, the value provided\n"
+              "is not a file. Please use a valid file name.\n")
         print(67 * "^")
         print("")
 

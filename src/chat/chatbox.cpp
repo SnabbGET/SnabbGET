@@ -17,7 +17,8 @@
 #include <string>
 #include <vector>
 #include <cassert>
-#include "../../libs/json/json.hpp"
+#define JSON_HAS_CPP_17 1
+#include "../../include/json/json.hpp"
 #include "../core/shell.hpp"
 #include "../core/utils.hpp"
 
@@ -96,6 +97,8 @@ std::pair<std::vector<std::string>, int> next_q(
 
 int main()
 {
+	system("");
+
 	// Init SnabbGET
 	sget::SnabbGET();
 	sget::rw::Raw_mode(0, false);

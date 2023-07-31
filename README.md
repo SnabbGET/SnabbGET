@@ -7,7 +7,7 @@
     </a>
 </p>
 
-*Graphic and fast shell in C/C++.*
+*Graphic and fast shell and chatbox in C/C++.*
 
 ---
 
@@ -22,8 +22,8 @@
     src="https://forthebadge.com/images/badges/open-source.svg" /></a>
     <a href="https://forthebadge.com"><img title="Uses" height="35"
     src="https://forthebadge.com/images/badges/uses-badges.svg" /></a>
-    <a href="src/core/shell.cpp"><img title="v0.2.0" height="35"
-    src="https://img.shields.io/badge/Version-0.2.0-9cf?style=for-the-badge" /></a>
+    <a href="src/core/shell.cpp"><img title="v0.3.0" height="35"
+    src="https://img.shields.io/badge/Version-0.3.0-9cf?style=for-the-badge" /></a>
     <a href="https://forthebadge.com"><img title="forthebadge" height="35"
     src="https://forthebadge.com/images/badges/works-on-my-machine.svg" /></a>
     <a href="https://forthebadge.com"><img title="Gluten" height="35"
@@ -37,6 +37,8 @@
 ---
 
 ## What is SnabbGET?
+
+A video of the shell:
 
 <p align="center">
     <a href="https://snabbget.github.io/more/">
@@ -58,16 +60,20 @@ best to do the most beginner-friendly & easy to use terminal.
 
 We'll focus on OS such as Windows and Linux. No MacOS for the moment, sorry :(
 
+You can use the SnabbGET shell or the chatbox. Same features.
+
 ## Compiling
 
 Compiling the terminal edition (CLI):
 
 ### Tools required
 
-> * Version of C++ used : C++17.
-<!-->> * Any Linux architecture but a 64 bits arch. is required for Windows
+<!-- > * Any Linux architecture but a 64 bits arch. is required for Windows
     (MacOS not available).-->
-> * `make` (Required only for the first use, we work on that.)
+
+> * Version of C++ used : C++17.
+> * `make` (Required only for the first on Linux if you want to use the shell),
+>   or Execute the Make.* file
 > * A C++ compiler (with lld)
 
 ### First use
