@@ -65,16 +65,25 @@ Compiling the terminal edition (CLI):
 ### Tools required
 
 > * Version of C++ used : C++17.
-> * Any Linux architecture but a 64 bits arch. is required for Windows
-    (MacOS not available).
+<!-->> * Any Linux architecture but a 64 bits arch. is required for Windows
+    (MacOS not available).-->
 > * `make` (Required only for the first use, we work on that.)
-> * The `Makefile` use `g++` and `gdb` to compile and debug.
+> * A C++ compiler (with lld)
 
 ### First use
 
-```sh
+Warning! Use that command only if tou use Linux and the SnabbGET shell!
 
+```sh
 make first_time
+./output
+```
+
+The chatbox (available for Windows):
+
+```batch
+make lib_exprtk
+make chatbox
 ./output
 ```
 
@@ -82,16 +91,18 @@ make first_time
 
 If you want to change something, you must recompile the file:
 
-* File in `cmd`? `compile_cmds` or recompile only the file with the command.
+* File in `cmd`? `<path/to/file>`.
 * `utils.cpp`? `compile_utils`.
 * `utils.hpp`, `shell.hpp` or `errors.hpp`? you can recompile all. Just wite `make`.
-* `shell.cpp`, `errors.cpp`, `reader.cpp` or `cli.cpp`? `compile_shell`
-* `main.cpp`? `compile_main`
+* `shell.cpp`, `errors.cpp`, `reader.cpp` or `cli.cpp`? `compile_shell`.
+* `main.cpp`? `compile_main`.
+* `chatbox.cpp`? `compile_chatbox`.
+* You created a file, and you won't modify the Makefile? `<path/to/file>`
 
 ```sh
 make # <your command here>
-make link
-./output #.exe
+make link # or link_chatbox
+./output # [_chatbox] [.exe]
 ```
 
 **Debug**:
@@ -126,7 +137,7 @@ and the library
 
 I used and adapt
 [torrycrass' image converter](https://github.com/torrycrass/image-to-ansi) to
-generate the images in /assets.
+generate the images in `/assets``.
 The image came form [Pixbay](https://pixabay.com/images/search/background/).
 
 # License
