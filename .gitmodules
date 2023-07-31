@@ -4,3 +4,6 @@
 [submodule "libs/nlohmann-json"]
 	path = libs/nlohmann-json
 	url = https://github.com/nlohmann/json.git
+[submodule "libs/readline"]
+	path = libs/readline
+	url = git://git.savannah.gnu.org/git/readline.git
