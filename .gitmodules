@@ -1,7 +1,3 @@
-[submodule "exprtk"]
-	path = libs/exprtk
-	url = https://github.com/ArashPartow/exprtk.git
-	branch = *
 [submodule "libs/exprtk"]
 	path = libs/exprtk
 	url = https://github.com/ArashPartow/exprtk.git
