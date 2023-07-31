@@ -25,7 +25,7 @@
 
 extern char *SnabbGET::oldLine;
 
-std::string SnabbGET::CMDS::_exit_(std::string[], int, std::string)
+std::string SnabbGET::CMDS::_exit_(std::string[], int&, std::string&)
 {
 	SnabbGET::Raw_mode::pause();
 	free(oldLine);

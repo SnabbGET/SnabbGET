@@ -8,6 +8,7 @@
 		"*.JSON-tmLanguage": "json",
 		"*.hex": "hexEditor.hexedit",
 		"*.ini": "hexEditor.hexedit",
+		"*.json": "jsonc",
 		"array": "cpp",
 		"atomic": "cpp",
 		"hash_map": "cpp",
@@ -72,7 +73,14 @@
 		"codecvt": "cpp",
 		"iomanip": "cpp",
 		"filesystem": "cpp",
-		"set": "cpp"
+		"set": "cpp",
+		"any": "cpp",
+		"forward_list": "cpp",
+		"numbers": "cpp",
+		"span": "cpp",
+		"valarray": "cpp",
+		"semaphore": "cpp"
 	},
-	"python.analysis.typeCheckingMode": "basic"
+	"python.analysis.typeCheckingMode": "basic",
+	"C_Cpp.default.compilerPath": "../mingw64/bin/g++.exe"
 }

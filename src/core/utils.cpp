@@ -20,6 +20,8 @@
 #include <vector>
 #include <iterator>
 #include <sstream>
+#include <algorithm>
+#include <cctype>
 #ifdef __WIN32
 	#include <windows.h>
 #else
@@ -188,7 +190,7 @@ int get_pos(int *y, int *x)
 {
 	#ifdef __WIN32
 		CONSOLE_SCREEN_BUFFER_INFO cbsi;
-		HANDLE hConsoleOutput;
+		HANDLE hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 		if (GetConsoleScreenBufferInfo(hConsoleOutput, &cbsi))
 		{
 			*x = cbsi.dwCursorPosition.X;
@@ -242,6 +244,12 @@ int get_pos(int *y, int *x)
 		tcsetattr(0, TCSANOW, &restore);
 	#endif
 	return 0;
+}
+
+bool is_number(const std::string& s)
+{
+    return !s.empty() && std::find_if(s.begin(), 
+        s.end(), [](unsigned char c) {return !std::isdigit(c); }) == s.end();
 }
 
 #endif // __SGET_UTILS

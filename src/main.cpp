@@ -61,7 +61,6 @@
 int main()
 {	
 	sget::SnabbGET();
-	sget::rw::Raw_mode(0, 0);
 	sget::init();
 	std::cout << sget::new_line();
 	sget::read_input("exit");
@@ -70,17 +69,18 @@ int main()
 
 #else 
 
+//EXTERN EMSCRIPTEN_KEEPALIVE v
+
 EXTERN EMSCRIPTEN_KEEPALIVE void RunSnabbGETCommand(
 	/*int argc, char **argv*/)
 {
 	sget::SnabbGET();
-	sget::rw::Raw_mode(0, 0);
 	sget::init();
 	std::string cmd;
 	std::cin >> cmd;
 	std::cout << sget::read_input(cmd) << "\r\n";
 	std::string tmp[0];
-	sget::CMDS::_exit_(tmp, 0, "");
+	sget::CMDS::_exit_(tmp, 0, std::string(""));
 }
 
 // End Wasm

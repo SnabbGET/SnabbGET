@@ -119,10 +119,12 @@ to contribute to this project.
 
 SnabbGET use the
 [GNU Readline library 8.2](https://git.savannah.gnu.org/cgit/readline.git)
-under the GNU GPL License, and the
-[exprtk library](https://github.com/ArashPartow/exprtk) under the MIT License.
+under the GNU GPL License, the
+[exprtk library](https://github.com/ArashPartow/exprtk) under the MIT License,
+and the library
+"[Lohmann, N. (2022). JSON for Modern C++ (Version 3.11.2) [Computer software].](https://github.com/nlohmann)".
 
-I use and adapt
+I used and adapt
 [torrycrass' image converter](https://github.com/torrycrass/image-to-ansi) to
 generate the images in /assets.
 The image came form [Pixbay](https://pixabay.com/images/search/background/).

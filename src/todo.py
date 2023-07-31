@@ -118,7 +118,7 @@ def todos():
 #lstdir("./src")
 
 
-to_do_text = lstdir("./src")
+to_do_text = lstdir("./")
 print(to_do_text, MAX_LINE_NUM, MAX_TEXT_NUM, MAX_FILE_NUM)
 file_in_d = tkinter.Tk()
 file_in_d.title("ToDo")

@@ -23,7 +23,7 @@
  * @param input_user [NOT USED]
  * @return [std::string] Command result
  */
-std::string SnabbGET::CMDS::_cls_(std::string[], int, std::string)
+std::string SnabbGET::CMDS::_cls_(std::string[], int&, std::string&)
 {
 	SCREEN.clear();
 	return "\033[J\033[2J\033[3J\033[H";
