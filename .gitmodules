@@ -1,4 +1,4 @@
 [submodule "exprtk"]
-	path = libs/exprtk-master
+	path = libs/exprtk
 	url = https://github.com/ArashPartow/exprtk.git
 	branch = *
