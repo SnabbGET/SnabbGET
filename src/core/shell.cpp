@@ -355,6 +355,7 @@ Version: ";
 	msg += "\r\n\
 Copyright (c) SnabbGET\r\n\
 Under the  MIT License\r\n\
+Type 'help'  for infos\r\n\
 ──────────────────────";
 	//msg += "\033[1A\r\n";
 	//msg += new_line();

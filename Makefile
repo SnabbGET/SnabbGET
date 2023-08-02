@@ -18,8 +18,8 @@ JAVAC = javac
 
 all: $(cmd_files) compile_utils compile_shell compile_main link
 
+chatbox: readline_arg=-D NO_RL
 chatbox: $(cmd_files) compile_utils compile_shell compile_chatbox link_for_chatbox
-	readline_arg=-D NO_RL
 
 first_time: libs $(cmd_files) compile_utils compile_shell compile_main link
 
@@ -44,6 +44,10 @@ compile_chatbox:
 	@echo "Compiling chatbox.cpp"
 	@${CC} -D DEBUG src/chat/chatbox.cpp -o "chatbox.o" -c ${arg}
 
+link_for_chatbox:
+	@echo "Generating..."
+	${CC} ./utils.o ./shell.o ./chatbox.o ./src/core/cmd/*.cpp.o -o "${filename}_chatbox" ${arg}
+
 link: ./src/core/cmd/*.cpp.o
 	@echo "Generating..."
 	@echo "If you have an error like 'ld: cannot find -ltinfo', install the 'libncurses-dev' package."
@@ -60,10 +64,6 @@ ifneq (${wasm}, off)
 	html_template/shell_minimal.html -s NO_EXIT_RUNTIME=1 -s \
 	"EXPORTED_RUNTIME_METHODS=['ccall']" ${arg}
 endif
-
-link_for_chatbox:
-	@echo "Generating..."
-	${CC} ./utils.o ./shell.o ./chatbox.o ./src/core/cmd/*.cpp.o -o "${filename}_chatbox" ${arg}
 
 lib_readline:
 	@echo "Precompiling Readline..."

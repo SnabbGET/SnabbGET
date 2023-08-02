@@ -120,7 +120,10 @@ int main()
 		response.clear();
 		std::cin >> response;
 
-		while (!is_number_better(response))
+		while (
+			!is_number/*_better*/(response) ||
+			atoi(response.c_str()) < 0 ||
+			atoll(response.c_str()) >= (long long)sget::CMDS::allCmd.size())
 		{
 			std::cout << ask["bad_r"].template get<std::string>() << std::endl << ">>> ";
 			response.clear();

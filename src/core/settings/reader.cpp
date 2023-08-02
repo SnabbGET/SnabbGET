@@ -79,7 +79,7 @@ std::string SnabbGET::promptSettings()
 			}
 			else
 			{
-				promptFile << &*txt;
+				promptFile << txt;
 				promptFile.close();
 				promptFile.open("../../settings/prompt.sget.txt");
 			}

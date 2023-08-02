@@ -1,1 +1,1 @@
-../../libs/nlohmann-json/include/nlohmann/json.hpp
+../../libs/nlohmann-json/single_include/nlohmann/json.hpp

@@ -1,6 +1,6 @@
 {
 	"init": "Hi! I'm the SnabbGET' chatbox!",
-	"bad_r": "Please enter the number alone",
+	"bad_r": "Please enter the number alone. Type '1' for help.",
 	//"back": "Enter 0 to exit. If you want to write '0' but not exit, you must put ",
 	"q": [
 		"What do you want to do? Please enter the number:",
