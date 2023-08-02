@@ -143,7 +143,7 @@ and the library
 
 I used and adapt
 [torrycrass' image converter](https://github.com/torrycrass/image-to-ansi) to
-generate the images in `/assets``.
+generate the images in `/assets`.
 The image came form [Pixbay](https://pixabay.com/images/search/background/).
 
 # License
