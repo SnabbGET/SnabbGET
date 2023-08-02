@@ -331,7 +331,7 @@ def print_help():
     print("See the github repository for more information (if available).\n")
 
     print("\n### USAGE ###\n")
-    print("Standard:\n" \
+    print("Standard:\n"
         "\tpython image-to-ansi.py <inputfile>\n")
 
     print(75 * "-")

@@ -80,7 +80,9 @@ EXTERN EMSCRIPTEN_KEEPALIVE void RunSnabbGETCommand(
 	std::cin >> cmd;
 	std::cout << sget::read_input(cmd) << "\r\n";
 	std::string tmp[0];
-	sget::CMDS::_exit_(tmp, 0, std::string(""));
+	int x = 0;
+	std::string y("");
+	sget::CMDS::_exit_(tmp, x, y);
 }
 
 // End Wasm

@@ -79,7 +79,10 @@
 		"numbers": "cpp",
 		"span": "cpp",
 		"valarray": "cpp",
-		"semaphore": "cpp"
+		"semaphore": "cpp",
+		"csignal": "cpp",
+		"unordered_set": "cpp",
+		"variant": "cpp"
 	},
 	"python.analysis.typeCheckingMode": "basic",
 	"C_Cpp.default.compilerPath": "../mingw64/bin/g++.exe"

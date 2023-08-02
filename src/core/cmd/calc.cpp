@@ -1,5 +1,7 @@
 // Calc command
 
+#pragma GCC optimize("O1")
+
 #include "../../../include/exprtk/exprtk.hpp"
 
 #include "../shell.hpp"

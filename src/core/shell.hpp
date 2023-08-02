@@ -84,6 +84,12 @@
 		std::string init();
 
 		/**
+		 * @brief Initialize Readline
+		 * 
+		 */
+		void init_rl();
+
+		/**
 		 * @brief Read the input from the user
 		 * 
 		 * @param input_user_t A string contain the user's command
