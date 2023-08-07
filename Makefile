@@ -1,47 +1,51 @@
 filename = output
 DEBUG = on
-arg = -Wa,-mbig-obj -Wall -Wextra -O3 -g3 -std=c++1z -fuse-ld=lld -Wno-implicit-fallthrough
-readline_arg = -L./libs/readline-8.2 -lreadline -lhistory -ltinfo
+
+# Add -Wa,-mbig-obj if you can
+arg = -Wall -Wextra -O3 -g3 -std=c++1z -fuse-ld=lld -Wno-implicit-fallthrough -Wno-unused-result
+isocline_arg =
 wasm = off
 
 cmd_files = ./src/core/cmd/*.cpp
 
-CC = ..\mingw64\bin\g++.exe
+CC = g++
 EMCC = em++
-GDB = ..\mingw64\bin\gdb.exe
+GDB = gdb
 CD = cd
-MAKE = ..\mingw64\bin\mingw32-make.exe
+MAKE = make
 JAVA = java
 JAVAC = javac
 
-.PHONY: all $(cmd_files) compile_utils compile_shell compile_main compile_chatbox link gui libs link_for_chatbox
+.PHONY: all $(cmd_files) compile_cmd compile_utils compile_shell compile_main compile_chatbox link gui libs link_for_chatbox
 
-all: $(cmd_files) compile_utils compile_shell compile_main link
+all: compile_utils compile_shell compile_main link
 
-chatbox: readline_arg=-D NO_RL
+chatbox: isocline_arg=-D NO_RL
 chatbox: $(cmd_files) compile_utils compile_shell compile_chatbox link_for_chatbox
 
 first_time: libs $(cmd_files) compile_utils compile_shell compile_main link
 
+compile_cmd: $(cmd_files)
+
 $(cmd_files): %:
 	@echo "Compiling $@..."
-	@${CC} -D DEBUG $@ -o "$@.o" -c ${arg} ${readline_arg}
+	@${CC} -D DEBUG $@ -o "$@.o" -c ${arg} ${isocline_arg}
 
 compile_utils:
 	@echo "Compiling utils.cpp..."
-	@${CC} -D DEBUG src/core/utils.cpp -o "utils.o" -c ${arg} ${readline_arg}
+	@${CC} -D DEBUG src/core/utils.cpp -o "utils.o" -c ${arg} ${isocline_arg}
 #	g++ src/core/gen/includes_files.cpp -o "includes" -std=c++1z
 #	./includes
 
 compile_shell:
-	@echo "Compiling shell.cpp"
-	@${CC} -D DEBUG src/core/shell.cpp -o "shell.o" -c ${arg} ${readline_arg}
+	@echo "Compiling shell.cpp..."
+	@${CC} -D DEBUG src/core/shell.cpp -o "shell.o" -c ${arg} ${isocline_arg}
 compile_main:
-	@echo "Compiling main.cpp"
-	@${CC} -D DEBUG src/main.cpp -o "main.o" -c ${arg} ${readline_arg}
+	@echo "Compiling main.cpp..."
+	@${CC} -D DEBUG src/main.cpp -o "main.o" -c ${arg} ${isocline_arg}
 
 compile_chatbox:
-	@echo "Compiling chatbox.cpp"
+	@echo "Compiling chatbox.cpp..."
 	@${CC} -D DEBUG src/chat/chatbox.cpp -o "chatbox.o" -c ${arg}
 
 link_for_chatbox:
@@ -52,7 +56,7 @@ link: ./src/core/cmd/*.cpp.o
 	@echo "Generating..."
 	@echo "If you have an error like 'ld: cannot find -ltinfo', install the 'libncurses-dev' package."
 ifeq (${DEBUG}, on)
-	@${CC} ./utils.o ./shell.o ./main.o $^ -o "${filename}" ${arg}
+	@${CC} ./utils.o ./shell.o ./main.o ./isocline.o $^ -o "${filename}" ${arg}
 else
 	@${CC} src/*.cpp src/core/utils.cpp -o "${filename}" ${arg}
 #	TODO: change in all compilations the '-D DEBUG': use that only if the user wants
@@ -65,16 +69,16 @@ ifneq (${wasm}, off)
 	"EXPORTED_RUNTIME_METHODS=['ccall']" ${arg}
 endif
 
-lib_readline:
-	@echo "Precompiling Readline..."
-	@${CD} libs/readline-8.2 && ./configure && ${MAKE} && ${CD} ../../
-
 lib_exprtk:
 	@echo "Precompiling exprtk..."
 	@${CC} "include/exprtk/exprtk.hpp" -o "include/exprtk/exprtk.hpp.gch" -c ${arg}
 
+lib_isoline:
+	@echo "Compiling Isocline..."
+	@${CC} ./libs/isocline/src/isocline.c -o "isocline.o" -c ${arg}
+
 # Compile libs
-libs: lib_readline lib_exprtk
+libs: lib_exprtk lib_isoline
 
 #	cd libs/exprtk-master && g++ exprtk.hpp -pedantic-errors -Wall -Wextra \
 #	-Werror -Wno-long-long -O3 && cd ../../

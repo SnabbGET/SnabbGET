@@ -31,6 +31,7 @@
 
 	#include "utils.hpp"
 	#include "other/errors.hpp"
+	#include "../../include/isocline/isocline.h"
 
 	#define VERSION "0.2.0"
 	#ifndef MAX_INPUT
@@ -365,17 +366,18 @@
 
 		namespace io
 		{
+			// 1st argument: output; 2nd: input function
 			class newIo
 			{
 				public:
 					// Default constructor
 					newIo();
 					// Output function
-					static int (*outFunct)(const char *, ...);
-					static int (* inFunct)(const char *, ...);
+					template<class T> static T   (*outFunct)(const char *, ...);
+					                  static int (* inFunct)(const char *, ...);
 					// Constructor with the funtion in param
-					newIo(int (o)(const char *, ...),
-						int (i)(const char *, ...));
+					template<class T> newIo(T (o)(const char *, ...),
+						                  int (i)(const char *, ...));
 					// Destructor
 					~newIo();
 			};
@@ -389,7 +391,7 @@
 			// this is the function signature of std::endl
 			typedef stdCoutTpe& (*stdEndl)(stdCoutTpe&);
 
-			template<class T> inline newIo &operator<<(newIo &exp, T &arg);
+			template<class T> inline newIo &operator<<(newIo &exp, const T &arg);
 			inline newIo &operator<<(newIo &exp, stdEndl);
 			inline newIo &operator<<(newIo &exp, std::string &arg);
 			template<class T> inline newIo &operator>>(newIo &exp, T &arg);

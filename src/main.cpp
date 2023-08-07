@@ -24,15 +24,14 @@
 	#include <iostream>
 	#include <cstdio>
 	#include <string>
+	#include <cstring>
 	#include <chrono>
-	#include <cstdio>
 	#include <vector>
 	#include <sstream>
 	#define std_def
 	#define print(x, ...) std::cout << x // For a friend :D
 
-	#include "../include/readline/readline.h"
-	#include "../include/readline/history.h"
+	#include "../include/isocline/isocline.h"
 #endif
 #ifdef HAVE_LOCALE_H
 	#include <locale.h>
@@ -95,17 +94,85 @@ EXTERN EMSCRIPTEN_KEEPALIVE void RunSnabbGETCommand(
 //std::vector<char16_t> input;
 //long pos;
 
+// ISOCLINE FUNCS
+
+static void word_completer(ic_completion_env_t* cenv, const char* word )
+{
+	for (auto a : sget::CMDS::allCmd)
+		if (word[0] != 0 && ic_istarts_with(a[0], word))
+			ic_add_completion_ex(cenv, a[0], a[0], a[1]);
+}
+
+static void completer(ic_completion_env_t* cenv, const char* input)
+{
+	ic_complete_filename(cenv, input, 0, ".;/usr/local;c:\\Program Files" , NULL);
+	ic_complete_word(cenv, input, &word_completer, NULL);        
+}
+
+static void highlighter(ic_highlight_env_t* henv, const char* input, void* arg)
+{
+	(void)(arg);
+	
+	long len = (long)strlen(input);
+
+	for (long i = 0; i < len; )
+	{
+		static std::vector<const char*> keywords;
+		for (auto a : sget::CMDS::allCmd)
+			keywords.emplace_back(a[0]);
+
+		//static const char* controls[] = { "return", "if", "then", "else", NULL };
+		//static const char* types[]    = { "int", "double", "char", "void", NULL };
+		long tlen;  // token length
+		if ((tlen = ic_match_any_token(input, i, &ic_char_is_idletter, keywords.data())) > 0)
+		{
+			ic_highlight(henv, i, tlen, "keyword"); 
+			i += tlen;
+		}
+		/*else if ((tlen = ic_match_any_token(input, i, &ic_char_is_idletter, controls)) > 0)
+		{
+			ic_highlight(henv, i, tlen, "control"); // html color (or use the `control` style)
+			i += tlen;
+		}*/
+		else if ((tlen = strlen(input+i) - strlen(strchr(input+i, ' '))) > 0)
+		{
+			ic_highlight(henv, i, tlen, "type"); 
+			i += tlen;
+		}
+		else if ((tlen = ic_is_token(input, i, &ic_char_is_digit)) > 0)
+		{ // digits
+			ic_highlight(henv, i, tlen, "number");
+			i += tlen;
+		}
+		else if (ic_starts_with(input + i,"//"))
+		{  // line comment
+			tlen = 2;
+			while (i+tlen < len && input[i+tlen] != '\n') { tlen++; }
+				ic_highlight(henv, i, tlen, "comment"); // or use a spefic color like "#408700"
+				i += tlen;
+		}
+		else
+		{
+			ic_highlight(henv, i, 1, NULL);  // anything else (including utf8 continuation bytes)
+			i++;
+		}
+	}
+}
+
+// MAIN
+
 int main(int argc, char *argv[])
 {
 	sget::SnabbGET();
 	sget::rw::Raw_mode(0, false);
-	sget::io::io.outFunct = &std::printf;
-	sget::io::io.inFunct = &std::scanf;
+	sget::io::io = sget::io::newIo(&ic_printf, &std::scanf);
 	// To use: io << "foo"; io >> bar;
 	
-	#ifdef HAVE_SETLOCALE
-		setlocale(LC_ALL, "");
-	#endif
+	setlocale(LC_ALL,"C.UTF-8");
+	ic_set_history(NULL, 200);
+	ic_set_default_completer(&completer, NULL);
+	ic_set_default_highlighter(highlighter, NULL);
+	ic_enable_auto_tab(true);
 
 	system(""); // I don't kwon why I must put that, but if I don't add that,
 				// escape codes don't work on Windows :(
@@ -113,25 +180,17 @@ int main(int argc, char *argv[])
 	{
 		sget::addToSCREEN(sget::init());
 		// Printf is faster than std::cout and \n is faster than std::endl
-		printf("%s", sget::FRAME().c_str());
+		sget::io::io << sget::FRAME();
 		char *line;
 
 		while (true)
 		{
-			line = readline(("\r\n" + sget::new_line()).c_str());
-			try
-			{
-				if (!line) break;
-				if (*line)
-					add_history(line);
-			}
-			catch (std::logic_error &e)
-			{}
+			line = ic_readline(("\r\n" + sget::new_line()).c_str());
 
 			sget::addToSCREEN(sget::new_line());
 			sget::SCREEN.back() += std::string(line);
 			sget::addToSCREEN(sget::read_input(std::string(line)));
-			printf("%s", (sget::FRAME()).c_str());
+			sget::io::io << sget::FRAME();
 
 			if (strstr(line, "exit") != NULL) 
 			{

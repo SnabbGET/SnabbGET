@@ -37,6 +37,7 @@
 //#define SNABBGET_CORE_CPP
 
 #include "shell.hpp"
+#include "../../include/isocline/isocline.h"
 
 /* ####### ##   ## ####### #######
  *   ###   ###  ##   ###     ###
@@ -53,7 +54,7 @@
 #endif
 
 #ifdef NO_RL
-	#warning Readline dislabed!
+	#warning Isocline dislabed!
 #endif
 /*extern*/ std::string SnabbGET::userName = "User";
 
@@ -79,8 +80,8 @@
 /*extern*/ std::vector<std::vector<const char*>> SnabbGET::CMDS::allCmd =
 	(std::vector<std::vector<const char*>>){};
 
-extern int (*SnabbGET::io::newIo::outFunct)(const char *, ...);
-extern int (*SnabbGET::io::newIo:: inFunct)(const char *, ...);
+template<class T> extern T (*SnabbGET::io::newIo::outFunct)(const char *, ...);
+                extern int (*SnabbGET::io::newIo:: inFunct)(const char *, ...);
 
 /*extern*/ bool SnabbGET::Raw_mode::on = true;
 
@@ -95,15 +96,16 @@ void SnabbGET::addToSCREEN(std::string txt)
 
 SnabbGET::io::newIo::newIo() {}
 // Constructor with the funtion in param
-SnabbGET::io::newIo::newIo(int (o)(const char *, ...),
-	int (i)(const char *, ...)) {outFunct = o; inFunct = i;}
+template<class T> SnabbGET::io::newIo::newIo(
+	T   (o)(const char *, ...),
+	int (i)(const char *, ...)) {outFunct<T> = o; inFunct = i;}
 // Destructor
 SnabbGET::io::newIo::~newIo() {}
 
 template<class T> inline SnabbGET::io::newIo &SnabbGET::io::operator<<(
-	SnabbGET::io::newIo &exp, T &arg)
+	SnabbGET::io::newIo &exp, const T &arg)
 {
-	exp.outFunct(arg); // TODO: test with int
+	exp.outFunct<void>(arg); // TODO: test with int
 	return exp;
 }
 
@@ -111,14 +113,14 @@ inline SnabbGET::io::newIo &SnabbGET::io::operator<<(
 	SnabbGET::io::newIo &exp, SnabbGET::io::stdEndl)
 // std::endl is a pointer
 {
-	exp.outFunct(endl.c_str());
+	exp << endl.c_str();
 	return exp;
 }
 
 inline SnabbGET::io::newIo &SnabbGET::io::operator<<(
 	SnabbGET::io::newIo &exp, std::string &arg)
 {
-	exp.outFunct(arg.c_str());
+	exp << arg.c_str();
 	return exp;
 }
 
@@ -191,8 +193,7 @@ inline SnabbGET::io::newIo &SnabbGET::io::operator>>(
 
 #define READLINE_LIBRARY
 
-#include "../../include/readline/readline.h"
-#include  "../../include/readline/history.h"
+#include "../../include/isocline/isocline.h"
 
 /* ####### ##   ## ##   ##  ###### ####### #######  #####  ##   ##  ######
  * ##      ##   ## ###  ## ###       ###     ###   ### ### ###  ## ##
@@ -223,12 +224,12 @@ void SnabbGET::SnabbGET()
 	init();
 
 	#ifndef NO_RL
-		init_rl();
+		//init_rl();
 	#endif
 
 	// Output function
-	SnabbGET::io::newIo::outFunct = &std::printf;
-	SnabbGET::io::newIo::inFunct = &std::scanf;
+	/*SnabbGET::io::newIo::outFunct<int> = &std::printf;
+	SnabbGET::io::newIo::inFunct = &std::scanf;*/
 	
 	CMDS::CMDS();
 	set_current_dir();
@@ -240,7 +241,7 @@ void SnabbGET::SnabbGET(bool cmd_line)
 	CMD_LINE = cmd_line;
 }
 
-int SnabbGET::rlKeysFuncs(
+/*int SnabbGET::rlKeysFuncs(
 	int, int
 #ifndef NO_RL
 	key
@@ -256,7 +257,7 @@ int SnabbGET::rlKeysFuncs(
 		rl_point--; // TODO: Optimize
 	#endif
 	return 0;
-}
+}*/
 
 std::string SnabbGET::init()
 {
@@ -275,7 +276,7 @@ Type 'help'  for infos\r\n\
 	return msg;
 }
 
-void SnabbGET::init_rl()
+/*void SnabbGET::init_rl()
 {
 	rl_command_func_t rlKeysFuncs;
 	rl_bind_key('"', rlKeysFuncs);
@@ -362,9 +363,9 @@ void SnabbGET::init_rl()
 		snprintf(oldLine, strlen(rl_line_buffer)+1, "%s", rl_line_buffer);
 		return 0;
 	});
-	/*rl_bind_key (27, rlKeysFuncs); //ascii code for ESC
-	rl_bind_keyseq ("\\C-a", rlKeysFuncs);*/
-}
+	*rl_bind_key (27, rlKeysFuncs); //ascii code for ESC
+	rl_bind_keyseq ("\\C-a", rlKeysFuncs);*
+}*/
 
 void SnabbGET::get_command(std::string input_user_t)
 {
@@ -645,9 +646,7 @@ void SnabbGET::set_current_dir()
 			THROW_ERR_MSG(err::GET_PATH_PWD, (char*)"Not available on MacOS;");
 		#endif
 	#endif
-	#ifndef NO_RL
-		rl_set_prompt(promptSettings().c_str());
-	#endif
+	
 }
 
 /* Initialize new terminal i/o settings */
@@ -700,6 +699,14 @@ void SnabbGET::Raw_mode::resume()
 		tcsetattr(0, TCSANOW, &SnabbGET::Raw_mode::new1);
 	#endif
 }
+
+/*  ###### ##    ## #####    ######
+ * ###     ###  ### ##   ## ##
+ * ##      ######## ##   ##   ##
+ * ##      ## ## ## ##   ##    ##
+ * ###     ##    ## ##   ##      ##
+ *  ###### ##    ## #####   ###### 
+ */
 
 void SnabbGET::CMDS::CMDS()
 {
