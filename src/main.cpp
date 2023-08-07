@@ -171,7 +171,7 @@ int main(int argc, char *argv[])
 	setlocale(LC_ALL,"C.UTF-8");
 	ic_set_history(NULL, 200);
 	ic_set_default_completer(&completer, NULL);
-	ic_set_default_highlighter(highlighter, NULL);
+	//ic_set_default_highlighter(highlighter, NULL);
 	ic_enable_auto_tab(true);
 	ic_set_prompt_marker("", "|");
 
@@ -186,7 +186,7 @@ int main(int argc, char *argv[])
 
 		while (true)
 		{
-			line = ic_readline(("\r\n" + sget::new_line()).c_str());
+			line = ic_readline(sget::new_line().c_str());
 
 			sget::addToSCREEN(sget::new_line());
 			sget::SCREEN.back() += std::string(line);

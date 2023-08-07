@@ -6,6 +6,12 @@ arg = -Wall -Wextra -O3 -g3 -std=c++1z -fuse-ld=lld -Wno-implicit-fallthrough -W
 isocline_arg =
 wasm = off
 
+ifeq ($(OS),Windows_NT)
+	o_ext = obj
+else
+	o_ext = o
+endif
+
 cmd_files = ./src/core/cmd/*.cpp
 
 CC = g++
@@ -29,32 +35,32 @@ compile_cmd: $(cmd_files)
 
 $(cmd_files): %:
 	@echo "Compiling $@..."
-	@${CC} -D DEBUG $@ -o "$@.o" -c ${arg} ${isocline_arg}
+	@${CC} -D DEBUG $@ -o "$@.${o_ext}" -c ${arg} ${isocline_arg}
 
 compile_utils:
 	@echo "Compiling utils.cpp..."
-	@${CC} -D DEBUG src/core/utils.cpp -o "utils.o" -c ${arg} ${isocline_arg}
+	@${CC} -D DEBUG src/core/utils.cpp -o "utils.${o_ext}" -c ${arg} ${isocline_arg}
 #	g++ src/core/gen/includes_files.cpp -o "includes" -std=c++1z
 #	./includes
 
 compile_shell:
 	@echo "Compiling shell.cpp..."
-	@${CC} -D DEBUG src/core/shell.cpp -o "shell.o" -c ${arg} ${isocline_arg}
+	@${CC} -D DEBUG src/core/shell.cpp -o "shell.${o_ext}" -c ${arg} ${isocline_arg}
 compile_main:
 	@echo "Compiling main.cpp..."
-	@${CC} -D DEBUG src/main.cpp -o "main.o" -c ${arg} ${isocline_arg}
+	@${CC} -D DEBUG src/main.cpp -o "main.${o_ext}" -c ${arg} ${isocline_arg}
 
 compile_chatbox:
 	@echo "Compiling chatbox.cpp..."
-	@${CC} -D DEBUG src/chat/chatbox.cpp -o "chatbox.o" -c ${arg}
+	@${CC} -D DEBUG src/chat/chatbox.cpp -o "chatbox.${o_ext}" -c ${arg}
 
 link_for_chatbox:
 	@echo "Generating..."
-	${CC} ./utils.o ./shell.o ./chatbox.o ./src/core/cmd/*.cpp.o -o "${filename}_chatbox" ${arg}
+	${CC} ./utils.${o_ext} ./shell.${o_ext} ./chatbox.${o_ext} ./src/core/cmd/*.cpp.${o_ext} -o "${filename}_chatbox" ${arg}
 
-link: $(cmd_files).o
+link: $(cmd_files).${o_ext}
 	@echo "Generating..."
-	@${CC} ./utils.o ./shell.o ./main.o ./isocline.o $^ -o "${filename}" ${arg}
+	@${CC} ./utils.${o_ext} ./shell.${o_ext} ./main.${o_ext} ./isocline.${o_ext} $^ -o "${filename}" ${arg}
 #	TODO: change in all compilations the '-D DEBUG': use that only if the user wants
 #	(add ifeq (${DEBUG}, on))
 ifneq (${wasm}, off)
@@ -70,7 +76,7 @@ lib_exprtk:
 
 lib_isoline:
 	@echo "Compiling Isocline..."
-	@${CC} ./libs/isocline/src/isocline.c -o "isocline.o" -c ${arg}
+	@${CC} ./libs/isocline/src/isocline.c -o "isocline.${o_ext}" -c ${arg}
 
 # Compile libs
 libs: lib_exprtk lib_isoline
