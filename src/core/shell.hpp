@@ -371,15 +371,15 @@
 			{
 				public:
 					// Default constructor
-					newIo();
-					// Output function
-					template<class T> static T   (*outFunct)(const char *, ...);
-					                  static int (* inFunct)(const char *, ...);
+					newIo() {}
+					// Output/Input function
+					static void (*outFunct)(const char *, ...);
+					static void (* inFunct)(const char *, ...);
 					// Constructor with the funtion in param
-					template<class T> newIo(T (o)(const char *, ...),
-						                  int (i)(const char *, ...));
+					template<class T, class Y> newIo(T (o)(const char *, ...),
+						                             Y (i)(const char *, ...));
 					// Destructor
-					~newIo();
+					~newIo() {}
 			};
 
 			extern const std::string endl;
@@ -403,6 +403,64 @@
 	}
 	// To replace 'SnabbGET::'
 	namespace sget = SnabbGET;
+
+	// INIT IO
+
+	// Constructor with the funtion in param
+	template<class T, class Y> SnabbGET::io::newIo::newIo(
+		T (o)(const char *, ...),
+		Y (i)(const char *, ...))
+		{outFunct = (void (*)(const char *, ...))o;
+		 inFunct  = (void (*)(const char *, ...))i;}
+
+	template<typename T> inline SnabbGET::io::newIo &SnabbGET::io::operator<<(
+		SnabbGET::io::newIo &exp, const T &arg)
+	{
+		exp.outFunct(arg); // TODO: test with int
+		return exp;
+	}
+
+	inline SnabbGET::io::newIo &SnabbGET::io::operator<<(
+		SnabbGET::io::newIo &exp, SnabbGET::io::stdEndl)
+	// std::endl is a pointer
+	{
+		exp << endl.c_str();
+		return exp;
+	}
+
+	inline SnabbGET::io::newIo &SnabbGET::io::operator<<(
+		SnabbGET::io::newIo &exp, std::string &arg)
+	{
+		exp << arg.c_str();
+		return exp;
+	}
+
+	template<class T> inline SnabbGET::io::newIo &SnabbGET::io::operator>>(
+		SnabbGET::io::newIo &exp, T &arg)
+	{
+		std::string r = "%c";
+			if (typeid(T) == typeid(int)) r = "%d";
+		else if (typeid(T) == typeid(char)) r = "%c";
+		else if (typeid(T) == typeid(signed char)) r = "%c";
+		else if (typeid(T) == typeid(unsigned char)) r = "%c";
+		else if (typeid(T) == typeid(float)) r = "%f";
+		else if (typeid(T) == typeid(double)) r = "%lf";
+		else if (typeid(T) == typeid(long double)) r = "%Lf";
+		else if (typeid(T) == typeid(short)) r = "%hd";
+		else if (typeid(T) == typeid(unsigned)) r = "%u";
+		else if (typeid(T) == typeid(long)) r = "%li";
+		else if (typeid(T) == typeid(long long)) r = "%lli";
+		else if (typeid(T) == typeid(unsigned long)) r = "%lu";
+		else if (typeid(T) == typeid(unsigned long long)) r = "%llu";
+		exp.inFunct(r.c_str(), &arg);
+		return exp;
+	}
+	inline SnabbGET::io::newIo &SnabbGET::io::operator>>(
+		SnabbGET::io::newIo &exp, std::string &arg)
+	{
+		exp.inFunct("%s", arg.c_str());
+		return exp;
+	}
 
 #endif // SNABBGET_CORE
 

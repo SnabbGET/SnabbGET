@@ -15,7 +15,7 @@
 
 /* INCLUDES */
 
-#include "core/shell.hpp"
+#include "./core/shell.hpp"
 //#include "interface/gui.cpp"
 #ifndef READLINE_LIBRARY
 	#define READLINE_LIBRARY
@@ -173,6 +173,7 @@ int main(int argc, char *argv[])
 	ic_set_default_completer(&completer, NULL);
 	ic_set_default_highlighter(highlighter, NULL);
 	ic_enable_auto_tab(true);
+	ic_set_prompt_marker("", "|");
 
 	system(""); // I don't kwon why I must put that, but if I don't add that,
 				// escape codes don't work on Windows :(
@@ -180,7 +181,7 @@ int main(int argc, char *argv[])
 	{
 		sget::addToSCREEN(sget::init());
 		// Printf is faster than std::cout and \n is faster than std::endl
-		sget::io::io << sget::FRAME();
+		sget::io::io << sget::FRAME().c_str();
 		char *line;
 
 		while (true)
@@ -190,7 +191,7 @@ int main(int argc, char *argv[])
 			sget::addToSCREEN(sget::new_line());
 			sget::SCREEN.back() += std::string(line);
 			sget::addToSCREEN(sget::read_input(std::string(line)));
-			sget::io::io << sget::FRAME();
+			sget::io::io << sget::FRAME().c_str();
 
 			if (strstr(line, "exit") != NULL) 
 			{

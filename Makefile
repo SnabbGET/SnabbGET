@@ -52,16 +52,11 @@ link_for_chatbox:
 	@echo "Generating..."
 	${CC} ./utils.o ./shell.o ./chatbox.o ./src/core/cmd/*.cpp.o -o "${filename}_chatbox" ${arg}
 
-link: ./src/core/cmd/*.cpp.o
+link: $(cmd_files).o
 	@echo "Generating..."
-	@echo "If you have an error like 'ld: cannot find -ltinfo', install the 'libncurses-dev' package."
-ifeq (${DEBUG}, on)
 	@${CC} ./utils.o ./shell.o ./main.o ./isocline.o $^ -o "${filename}" ${arg}
-else
-	@${CC} src/*.cpp src/core/utils.cpp -o "${filename}" ${arg}
 #	TODO: change in all compilations the '-D DEBUG': use that only if the user wants
 #	(add ifeq (${DEBUG}, on))
-endif
 ifneq (${wasm}, off)
 	@${EMCC} -D DEBUG src/*.cpp src/core/utils.cpp -o \
 	"web/${filename}.html" --shell-file \

@@ -80,8 +80,8 @@
 /*extern*/ std::vector<std::vector<const char*>> SnabbGET::CMDS::allCmd =
 	(std::vector<std::vector<const char*>>){};
 
-template<class T> extern T (*SnabbGET::io::newIo::outFunct)(const char *, ...);
-                extern int (*SnabbGET::io::newIo:: inFunct)(const char *, ...);
+extern void (*SnabbGET::io::newIo::outFunct)(const char *, ...);
+extern void (*SnabbGET::io::newIo:: inFunct)(const char *, ...);
 
 /*extern*/ bool SnabbGET::Raw_mode::on = true;
 
@@ -92,63 +92,6 @@ void SnabbGET::addToSCREEN(std::string txt)
 	SCREEN.emplace_back(txt);
 	if (SCREEN.size() > MAX_SCREEN_ELEMENTS)
 		SCREEN.erase(SCREEN.begin());
-}
-
-SnabbGET::io::newIo::newIo() {}
-// Constructor with the funtion in param
-template<class T> SnabbGET::io::newIo::newIo(
-	T   (o)(const char *, ...),
-	int (i)(const char *, ...)) {outFunct<T> = o; inFunct = i;}
-// Destructor
-SnabbGET::io::newIo::~newIo() {}
-
-template<class T> inline SnabbGET::io::newIo &SnabbGET::io::operator<<(
-	SnabbGET::io::newIo &exp, const T &arg)
-{
-	exp.outFunct<void>(arg); // TODO: test with int
-	return exp;
-}
-
-inline SnabbGET::io::newIo &SnabbGET::io::operator<<(
-	SnabbGET::io::newIo &exp, SnabbGET::io::stdEndl)
-// std::endl is a pointer
-{
-	exp << endl.c_str();
-	return exp;
-}
-
-inline SnabbGET::io::newIo &SnabbGET::io::operator<<(
-	SnabbGET::io::newIo &exp, std::string &arg)
-{
-	exp << arg.c_str();
-	return exp;
-}
-
-template<class T> inline SnabbGET::io::newIo &SnabbGET::io::operator>>(
-	SnabbGET::io::newIo &exp, T &arg)
-{
-	std::string r = "%c";
-		 if (typeid(T) == typeid(int)) r = "%d";
-	else if (typeid(T) == typeid(char)) r = "%c";
-	else if (typeid(T) == typeid(signed char)) r = "%c";
-	else if (typeid(T) == typeid(unsigned char)) r = "%c";
-	else if (typeid(T) == typeid(float)) r = "%f";
-	else if (typeid(T) == typeid(double)) r = "%lf";
-	else if (typeid(T) == typeid(long double)) r = "%Lf";
-	else if (typeid(T) == typeid(short)) r = "%hd";
-	else if (typeid(T) == typeid(unsigned)) r = "%u";
-	else if (typeid(T) == typeid(long)) r = "%li";
-	else if (typeid(T) == typeid(long long)) r = "%lli";
-	else if (typeid(T) == typeid(unsigned long)) r = "%lu";
-	else if (typeid(T) == typeid(unsigned long long)) r = "%llu";
-	exp.inFunct(r.c_str(), &arg);
-	return exp;
-}
-inline SnabbGET::io::newIo &SnabbGET::io::operator>>(
-	SnabbGET::io::newIo &exp, std::string &arg)
-{
-	exp.inFunct("%s", arg.c_str());
-	return exp;
 }
 
 // WARNING!!!!! THOSE LINES MUST STAY LIKE THAT!!!
