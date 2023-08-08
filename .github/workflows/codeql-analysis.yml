@@ -19,6 +19,7 @@ on:
     branches: [ main, in-dev ]
   schedule:
     - cron: '1 2 * * 3'
+  workflow_dispatch:
 
 jobs:
   analyze:
@@ -67,6 +68,7 @@ jobs:
     - if: matrix.language == 'cpp'
       run: |
         echo "Run, Build Application using make"
+        pwd
         make libs
         make compile_cmd
         make

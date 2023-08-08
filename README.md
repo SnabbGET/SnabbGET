@@ -134,11 +134,9 @@ to contribute to this project.
 
 # Thanks
 
-SnabbGET use the
-[GNU Readline library 8.2](https://git.savannah.gnu.org/cgit/readline.git)
-under the GNU GPL License, the
-[exprtk library](https://github.com/ArashPartow/exprtk) under the MIT License,
-and the library
+SnabbGET use the [Isocline library](https://github.com/daanx/isocline) under the
+MIT License, the [exprtk library](https://github.com/ArashPartow/exprtk) under
+the MIT License, and the library
 "[Lohmann, N. (2022). JSON for Modern C++ (Version 3.11.2) [Computer software].](https://github.com/nlohmann)".
 
 I used and adapt
