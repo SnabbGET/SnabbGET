@@ -12,27 +12,27 @@
 ---
 
 <p align="center">
-    <a href="https://forthebadge.com"><img title="Powered" height="35"
-    src="https://forthebadge.com/images/badges/powered-by-electricity.svg"/></a>
-    <a href="https://forthebadge.com"><img title="Build" height="35"
-    src="https://forthebadge.com/images/badges/built-by-developers.svg" /></a>
-    <a href="https://forthebadge.com"><img title="Made" height="35"
-    src="https://forthebadge.com/images/badges/made-with-c-plus-plus.svg" /></a>
-    <a href="https://forthebadge.com"><img title="Open" height="35"
-    src="https://forthebadge.com/images/badges/open-source.svg" /></a>
-    <a href="https://forthebadge.com"><img title="Uses" height="35"
-    src="https://forthebadge.com/images/badges/uses-badges.svg" /></a>
+    <a href="https://www.codefactor.io/repository/github/snabbget/snabbget"><img title="Codefactor" height="35"
+    src="https://www.codefactor.io/repository/github/snabbget/snabbget/badge?style=for-the-badge" /></a>
+    <a href="https://img.shields.io"><img title="Maintenance" height="35"
+    src="https://img.shields.io/github/commit-activity/t/SnabbGET/SnabbGET?style=for-the-badge"/></a>
+    <a href="https://img.shields.io"><img title="Contributors" height="35"
+    src="https://img.shields.io/github/contributors/SnabbGET/SnabbGET?style=for-the-badge" /></a>
+    <a href="https://img.shields.io"><img title="Issues" height="35"
+    src="https://img.shields.io/github/issues/SnabbGET/SnabbGET?style=for-the-badge" /></a>
+    <a href="https://img.shields.io"><img title="OpenSource" height="35"
+    src="https://img.shields.io/badge/Open-Source-777?style=for-the-badge" /></a>
+    <a href="https://img.shields.io"><img title="Last commit" height="35"
+    src="https://img.shields.io/github/last-commit/SnabbGET/SnabbGET/in-dev?style=for-the-badge" /></a>
+    <a href="https://img.shields.io"><img title="License" height="35"
+    src="https://img.shields.io/github/license/SnabbGET/SnabbGET?style=for-the-badge"></a>
     <a href="src/core/shell.cpp"><img title="v0.3.0" height="35"
     src="https://img.shields.io/badge/Version-0.3.0-9cf?style=for-the-badge" /></a>
-    <a href="https://forthebadge.com"><img title="forthebadge" height="35"
-    src="https://forthebadge.com/images/badges/works-on-my-machine.svg" /></a>
-    <a href="https://forthebadge.com"><img title="Gluten" height="35"
-    src="https://forthebadge.com/images/badges/gluten-free.svg" /></a>
-    <a href="https://forthebadge.com"><img title="Contains" height="35"
-    src="https://user-images.githubusercontent.com/97749743/202749038-e8e5be0e-0253-41ce-a077-364479331bbd.svg" /></a>
+    <a href="https://img.shields.io"><img title="C++" height="35"
+    src="https://img.shields.io/github/languages/top/SnabbGET/SnabbGET?style=for-the-badge" /></a>
+    <a href="https://img.shields.io"><img title="Contains" height="35"
+    src="https://img.shields.io/badge/Contains-Code-0aa?style=for-the-badge" /></a>
 </p>
-
-[![CodeFactor](https://www.codefactor.io/repository/github/snabbget/snabbget/badge)](https://www.codefactor.io/repository/github/snabbget/snabbget)
 
 ---
 
