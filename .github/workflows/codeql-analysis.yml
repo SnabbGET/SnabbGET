@@ -68,6 +68,7 @@ jobs:
     - if: matrix.language == 'cpp'
       run: |
         echo "Run, Build Application using make"
+        pwd
         make libs
         make compile_cmd
         make
