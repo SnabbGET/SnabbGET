@@ -36,6 +36,20 @@
 
 ---
 
+## Cloning
+
+Use this command to clone SnabbGET:
+
+```git
+git clone --recurse-submodules https://github.com/SnabbGET/SnabbGET
+```
+
+**If you forgot to clone the submodules, you can still do:**
+
+```git
+git submodule update --init --recursive
+```
+
 ## What is SnabbGET?
 
 A video of the shell:

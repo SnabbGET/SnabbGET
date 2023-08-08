@@ -68,6 +68,7 @@ jobs:
     - if: matrix.language == 'cpp'
       run: |
         echo "Run, Build Application using make"
+        git submodule update --init --recursive
         pwd
         make libs
         make compile_cmd
