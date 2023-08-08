@@ -72,7 +72,7 @@ jobs:
         pwd
         make libs
         make compile_cmd
-        make
+        make arg="-Wall -Wextra -O3 -g3 -std=c++1z -Wno-implicit-fallthrough -Wno-unused-result"
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
