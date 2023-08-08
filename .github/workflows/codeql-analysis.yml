@@ -19,6 +19,7 @@ on:
     branches: [ main, in-dev ]
   schedule:
     - cron: '1 2 * * 3'
+  workflow_dispatch:
 
 jobs:
   analyze:
@@ -67,7 +68,9 @@ jobs:
     - if: matrix.language == 'cpp'
       run: |
         echo "Run, Build Application using make"
-        #make
+        make libs
+        make compile_cmd
+        make
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
