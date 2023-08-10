@@ -68,7 +68,11 @@ jobs:
     - if: matrix.language == 'cpp'
       run: |
         echo "Run, Build Application using make"
-        make chatbox
+        git submodule update --init --recursive
+        pwd
+        make libs
+        make compile_cmd
+        make arg="-Wall -Wextra -O3 -g3 -std=c++1z -Wno-implicit-fallthrough -Wno-unused-result"
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2

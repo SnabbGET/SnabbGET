@@ -42,7 +42,7 @@ std::string SnabbGET::CMDS::_ls_(std::string[], int&, std::string&)
 {
 	#if __cplusplus >= 201703L
 		std::string msg = "";
-		std::vector<char *> files;
+		//std::vector<char *> files;
 
 		std::string currDir;
 		if (input_user.length() < cmd[0].length()+1)

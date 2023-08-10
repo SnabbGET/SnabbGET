@@ -1,3 +1,6 @@
+#ifndef SNABBGET_ERRORS
+#define SNABBGET_ERRORS
+
 #include <cstdio>
 #include <stdexcept>
 
@@ -48,6 +51,9 @@ namespace SnabbGET::err
 		addToSCREEN(std::string(m) + "; " + msg + " File " + file + " line "
 					+ std::to_string(line));
 		if (e == FATAL)
-			throw;
+			throw (e);
 	}
 }
+
+#include "errors.cpp"
+#endif

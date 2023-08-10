@@ -37,6 +37,7 @@
 //#define SNABBGET_CORE_CPP
 
 #include "shell.hpp"
+#include "../../include/isocline/isocline.h"
 
 /* ####### ##   ## ####### #######
  *   ###   ###  ##   ###     ###
@@ -53,7 +54,7 @@
 #endif
 
 #ifdef NO_RL
-	#warning Readline dislabed!
+	#warning Isocline dislabed!
 #endif
 /*extern*/ std::string SnabbGET::userName = "User";
 
@@ -79,8 +80,8 @@
 /*extern*/ std::vector<std::vector<const char*>> SnabbGET::CMDS::allCmd =
 	(std::vector<std::vector<const char*>>){};
 
-extern int (*SnabbGET::io::newIo::outFunct)(const char *, ...);
-extern int (*SnabbGET::io::newIo:: inFunct)(const char *, ...);
+extern void (*SnabbGET::io::newIo::outFunct)(const char *, ...);
+extern void (*SnabbGET::io::newIo:: inFunct)(const char *, ...);
 
 /*extern*/ bool SnabbGET::Raw_mode::on = true;
 
@@ -91,62 +92,6 @@ void SnabbGET::addToSCREEN(std::string txt)
 	SCREEN.emplace_back(txt);
 	if (SCREEN.size() > MAX_SCREEN_ELEMENTS)
 		SCREEN.erase(SCREEN.begin());
-}
-
-SnabbGET::io::newIo::newIo() {}
-// Constructor with the funtion in param
-SnabbGET::io::newIo::newIo(int (o)(const char *, ...),
-	int (i)(const char *, ...)) {outFunct = o; inFunct = i;}
-// Destructor
-SnabbGET::io::newIo::~newIo() {}
-
-template<class T> inline SnabbGET::io::newIo &SnabbGET::io::operator<<(
-	SnabbGET::io::newIo &exp, T &arg)
-{
-	exp.outFunct(arg); // TODO: test with int
-	return exp;
-}
-
-inline SnabbGET::io::newIo &SnabbGET::io::operator<<(
-	SnabbGET::io::newIo &exp, SnabbGET::io::stdEndl)
-// std::endl is a pointer
-{
-	exp.outFunct(endl.c_str());
-	return exp;
-}
-
-inline SnabbGET::io::newIo &SnabbGET::io::operator<<(
-	SnabbGET::io::newIo &exp, std::string &arg)
-{
-	exp.outFunct(arg.c_str());
-	return exp;
-}
-
-template<class T> inline SnabbGET::io::newIo &SnabbGET::io::operator>>(
-	SnabbGET::io::newIo &exp, T &arg)
-{
-	std::string r = "%c";
-		 if (typeid(T) == typeid(int)) r = "%d";
-	else if (typeid(T) == typeid(char)) r = "%c";
-	else if (typeid(T) == typeid(signed char)) r = "%c";
-	else if (typeid(T) == typeid(unsigned char)) r = "%c";
-	else if (typeid(T) == typeid(float)) r = "%f";
-	else if (typeid(T) == typeid(double)) r = "%lf";
-	else if (typeid(T) == typeid(long double)) r = "%Lf";
-	else if (typeid(T) == typeid(short)) r = "%hd";
-	else if (typeid(T) == typeid(unsigned)) r = "%u";
-	else if (typeid(T) == typeid(long)) r = "%li";
-	else if (typeid(T) == typeid(long long)) r = "%lli";
-	else if (typeid(T) == typeid(unsigned long)) r = "%lu";
-	else if (typeid(T) == typeid(unsigned long long)) r = "%llu";
-	exp.inFunct(r.c_str(), &arg);
-	return exp;
-}
-inline SnabbGET::io::newIo &SnabbGET::io::operator>>(
-	SnabbGET::io::newIo &exp, std::string &arg)
-{
-	exp.inFunct("%s", arg.c_str());
-	return exp;
 }
 
 // WARNING!!!!! THOSE LINES MUST STAY LIKE THAT!!!
@@ -191,8 +136,7 @@ inline SnabbGET::io::newIo &SnabbGET::io::operator>>(
 
 #define READLINE_LIBRARY
 
-#include "../../include/readline/readline.h"
-#include  "../../include/readline/history.h"
+#include "../../include/isocline/isocline.h"
 
 /* ####### ##   ## ##   ##  ###### ####### #######  #####  ##   ##  ######
  * ##      ##   ## ###  ## ###       ###     ###   ### ### ###  ## ##
@@ -223,99 +167,12 @@ void SnabbGET::SnabbGET()
 	init();
 
 	#ifndef NO_RL
-		rl_command_func_t rlKeysFuncs;
-		rl_bind_key('"', rlKeysFuncs);
-		rl_bind_key('\'',rlKeysFuncs);
-		rl_bind_key('(', rlKeysFuncs);
-		rl_bind_key('[', rlKeysFuncs);
-		rl_bind_key('{', rlKeysFuncs);
-		rl_bind_key('`', rlKeysFuncs);
-		rl_bind_key(4, [](int, int)->int {
-			printf("\n%s", SnabbGET::read_input("exit").c_str());
-			exit(EXIT_SUCCESS);
-			return 0;
-		});
-		rl_bind_key(3, [](int, int)->int {
-			printf("\n%s", SnabbGET::read_input("exit").c_str());
-			exit(EXIT_SUCCESS);
-			return 0;
-		});
-		rl_bind_key('\t', [](int, int)->int {
-			printf("%s", sget::FRAME().c_str());
-			//printf("\n%s | %s", rl_line_buffer, oldLine);
-			rl_forced_update_display();
-			if (strcmp(rl_line_buffer, oldLine) == 0)
-			{
-				tabOpen++;
-				tabOpen %= 3;
-			}
-			if (tabOpen != 1)
-			{
-				std::vector<std::string> tmp;
-				for (auto i : CMDS::allCmd)
-				{
-					std::string s;
-					if (tabOpen == 2)
-						s = std::string(i[0]);
-					else
-						s = std::string(i[0]) + " " + std::string(i[1]);
-					if ((s.substr(0, strlen(rl_line_buffer)) == rl_line_buffer) &&
-						(std::find(tmp.begin(), tmp.end(), s)) == tmp.end())
-						tmp.emplace_back(s);
-				}
-				int posX, posY;
-				get_pos(&posY, &posX);
-				if (tmp.size() > 0)
-				{
-					if (tmp.size()+3 <= (long unsigned)posY)
-						CLI::list(posX, posY-tmp.size() - 2, tmp);
-					else
-						CLI::list(posX, posY+1, tmp);
-				}
-				else
-				{
-					for (auto i : CMDS::allCmd)
-					{
-						std::string s;
-						if (tabOpen == 2)
-							s = std::string(i[0]);
-						else
-							s = std::string(i[0]) + " " + std::string(i[1]);
-						if (std::find(tmp.begin(), tmp.end(), std::string(s))
-							== tmp.end())
-							tmp.emplace_back(s);
-					}
-					if (tmp.size()+3 <= (long unsigned)posY)
-						CLI::list(posX, posY-tmp.size() - 2, tmp);
-					else
-						CLI::list(posX, posY+1, tmp);
-				}
-				if (tmp.size() == 1)
-				{
-					std::vector<std::string> tmp2;
-					for (auto i : CMDS::allCmd)
-					{
-						std::string s = std::string(i[0]);
-						if ((s.substr(0, strlen(rl_line_buffer)) == rl_line_buffer) &&
-							(std::find(tmp2.begin(), tmp2.end(), s)) == tmp2.end())
-							tmp2.emplace_back(s);
-
-					}
-					rl_insert_text((tmp2[0].substr(strlen(rl_line_buffer)) + " ")
-						.c_str());
-				}
-			}
-			oldLine = (char *) malloc(strlen(rl_line_buffer)+1);
-			snprintf(oldLine, strlen(rl_line_buffer)+1, "s", rl_line_buffer);
-			return 0;
-		});
-		/*rl_bind_key (27, rlKeysFuncs); //ascii code for ESC
-		rl_bind_keyseq ("\\C-a", rlKeysFuncs);*/
+		//init_rl();
 	#endif
 
 	// Output function
-	SnabbGET::io::newIo::outFunct = &std::printf;
-	SnabbGET::io::newIo::inFunct = &std::scanf;
+	/*SnabbGET::io::newIo::outFunct<int> = &std::printf;
+	SnabbGET::io::newIo::inFunct = &std::scanf;*/
 	
 	CMDS::CMDS();
 	set_current_dir();
@@ -327,7 +184,7 @@ void SnabbGET::SnabbGET(bool cmd_line)
 	CMD_LINE = cmd_line;
 }
 
-int SnabbGET::rlKeysFuncs(
+/*int SnabbGET::rlKeysFuncs(
 	int, int
 #ifndef NO_RL
 	key
@@ -343,7 +200,7 @@ int SnabbGET::rlKeysFuncs(
 		rl_point--; // TODO: Optimize
 	#endif
 	return 0;
-}
+}*/
 
 std::string SnabbGET::init()
 {
@@ -355,11 +212,103 @@ Version: ";
 	msg += "\r\n\
 Copyright (c) SnabbGET\r\n\
 Under the  MIT License\r\n\
+Type 'help'  for infos\r\n\
 ──────────────────────";
 	//msg += "\033[1A\r\n";
 	//msg += new_line();
 	return msg;
 }
+
+/*void SnabbGET::init_rl()
+{
+	rl_command_func_t rlKeysFuncs;
+	rl_bind_key('"', rlKeysFuncs);
+	rl_bind_key('\'',rlKeysFuncs);
+	rl_bind_key('(', rlKeysFuncs);
+	rl_bind_key('[', rlKeysFuncs);
+	rl_bind_key('{', rlKeysFuncs);
+	rl_bind_key('`', rlKeysFuncs);
+	rl_bind_key(4, [](int, int)->int {
+		printf("\n%s", SnabbGET::read_input("exit").c_str());
+		exit(EXIT_SUCCESS);
+		return 0;
+	});
+	rl_bind_key(3, [](int, int)->int {
+		printf("\n%s", SnabbGET::read_input("exit").c_str());
+		exit(EXIT_SUCCESS);
+		return 0;
+	});
+	rl_bind_key('\t', [](int, int)->int {
+		printf("%s", sget::FRAME().c_str());
+		//printf("\n%s | %s", rl_line_buffer, oldLine);
+		rl_forced_update_display();
+		if (strcmp(rl_line_buffer, oldLine) == 0)
+		{
+			tabOpen++;
+			tabOpen %= 3;
+		}
+		if (tabOpen != 1)
+		{
+			std::vector<std::string> tmp;
+			for (auto i : CMDS::allCmd)
+			{
+				std::string s;
+				if (tabOpen == 2)
+					s = std::string(i[0]);
+				else
+					s = std::string(i[0]) + " " + std::string(i[1]);
+				if ((s.substr(0, strlen(rl_line_buffer)) == rl_line_buffer) &&
+					(std::find(tmp.begin(), tmp.end(), s)) == tmp.end())
+					tmp.emplace_back(s);
+			}
+			int posX, posY;
+			get_pos(&posY, &posX);
+			if (tmp.size() > 0)
+			{
+				if (tmp.size()+3 <= (long unsigned)posY)
+					CLI::list(posX, posY-tmp.size() - 2, tmp);
+				else
+					CLI::list(posX, posY+1, tmp);
+			}
+			else
+			{
+				for (auto i : CMDS::allCmd)
+				{
+					std::string s;
+					if (tabOpen == 2)
+						s = std::string(i[0]);
+					else
+						s = std::string(i[0]) + " " + std::string(i[1]);
+					if (std::find(tmp.begin(), tmp.end(), std::string(s))
+						== tmp.end())
+						tmp.emplace_back(s);
+				}
+				if (tmp.size()+3 <= (long unsigned)posY)
+					CLI::list(posX, posY-tmp.size() - 2, tmp);
+				else
+					CLI::list(posX, posY+1, tmp);
+			}
+			if (tmp.size() == 1)
+			{
+				std::vector<std::string> tmp2;
+				for (auto i : CMDS::allCmd)
+				{
+					std::string s = std::string(i[0]);
+					if ((s.substr(0, strlen(rl_line_buffer)) == rl_line_buffer) &&
+						(std::find(tmp2.begin(), tmp2.end(), s)) == tmp2.end())
+						tmp2.emplace_back(s);
+				}
+				rl_insert_text((tmp2[0].substr(strlen(rl_line_buffer)) + " ")
+					.c_str());
+			}
+		}
+		oldLine = (char *) malloc(strlen(rl_line_buffer)+1);
+		snprintf(oldLine, strlen(rl_line_buffer)+1, "%s", rl_line_buffer);
+		return 0;
+	});
+	*rl_bind_key (27, rlKeysFuncs); //ascii code for ESC
+	rl_bind_keyseq ("\\C-a", rlKeysFuncs);*
+}*/
 
 void SnabbGET::get_command(std::string input_user_t)
 {
@@ -640,9 +589,7 @@ void SnabbGET::set_current_dir()
 			THROW_ERR_MSG(err::GET_PATH_PWD, (char*)"Not available on MacOS;");
 		#endif
 	#endif
-	#ifndef NO_RL
-		rl_set_prompt(promptSettings().c_str());
-	#endif
+	
 }
 
 /* Initialize new terminal i/o settings */
@@ -695,6 +642,14 @@ void SnabbGET::Raw_mode::resume()
 		tcsetattr(0, TCSANOW, &SnabbGET::Raw_mode::new1);
 	#endif
 }
+
+/*  ###### ##    ## #####    ######
+ * ###     ###  ### ##   ## ##
+ * ##      ######## ##   ##   ##
+ * ##      ## ## ## ##   ##    ##
+ * ###     ##    ## ##   ##      ##
+ *  ###### ##    ## #####   ###### 
+ */
 
 void SnabbGET::CMDS::CMDS()
 {

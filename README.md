@@ -36,6 +36,20 @@
 
 ---
 
+## Cloning
+
+Use this command to clone SnabbGET:
+
+```git
+git clone --recurse-submodules https://github.com/SnabbGET/SnabbGET
+```
+
+**If you forgot to clone the submodules, you can still do:**
+
+```git
+git submodule update --init --recursive
+```
+
 ## What is SnabbGET?
 
 A video of the shell:
@@ -134,16 +148,14 @@ to contribute to this project.
 
 # Thanks
 
-SnabbGET use the
-[GNU Readline library 8.2](https://git.savannah.gnu.org/cgit/readline.git)
-under the GNU GPL License, the
-[exprtk library](https://github.com/ArashPartow/exprtk) under the MIT License,
-and the library
+SnabbGET use the [Isocline library](https://github.com/daanx/isocline) under the
+MIT License, the [exprtk library](https://github.com/ArashPartow/exprtk) under
+the MIT License, and the library
 "[Lohmann, N. (2022). JSON for Modern C++ (Version 3.11.2) [Computer software].](https://github.com/nlohmann)".
 
 I used and adapt
 [torrycrass' image converter](https://github.com/torrycrass/image-to-ansi) to
-generate the images in `/assets``.
+generate the images in `/assets`.
 The image came form [Pixbay](https://pixabay.com/images/search/background/).
 
 # License
