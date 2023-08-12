@@ -12,8 +12,9 @@
 ---
 
 <p align="center">
-    <a href="https://www.codefactor.io/repository/github/snabbget/snabbget"><img title="Codefactor" height="35"
-    src="https://www.codefactor.io/repository/github/snabbget/snabbget/badge?style=for-the-badge" /></a>
+    <a href="https://www.codefactor.io/repository/github/snabbget/snabbget">
+	<img title="Codefactor" height="35"
+	src="https://www.codefactor.io/repository/github/snabbget/snabbget/badge?style=for-the-badge" /></a>
     <a href="https://img.shields.io"><img title="Maintenance" height="35"
     src="https://img.shields.io/github/commit-activity/t/SnabbGET/SnabbGET?style=for-the-badge"/></a>
     <a href="https://img.shields.io"><img title="Contributors" height="35"

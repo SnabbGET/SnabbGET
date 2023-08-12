@@ -78,9 +78,9 @@ int main()
 class buffer
 {
 	public:
-		buffer() {}
-		buffer(const char *arg) {buf += arg;}
-		buffer(std::string arg) {buf += arg;}
+		explicit buffer() {}
+		explicit buffer(const char *arg) {buf += arg;}
+		explicit buffer(std::string arg) {buf += arg;}
 		static std::string buf;
 };
 void buffer_in(const char *arg, ...)
@@ -91,7 +91,7 @@ void buffer_in(const char *arg, ...)
 
 std::string buffer::buf = std::string();
 
-EXTERN EMSCRIPTEN_KEEPALIVE const char *RunSnabbGETCommand(
+EXTERN EMSCRIPTEN_KEEPALIVE std::string RunSnabbGETCommand(
 	const char *input)
 {
 	sget::SnabbGET();
@@ -100,7 +100,7 @@ EXTERN EMSCRIPTEN_KEEPALIVE const char *RunSnabbGETCommand(
 
 	auto a = buffer(sget::read_input(input));
 
-	return a.buf.c_str();
+	return a.buf;
 }
 
 // End Wasm
@@ -137,8 +137,11 @@ static void highlighter(ic_highlight_env_t* henv, const char* input, void* arg)
 	for (long i = 0; i < len; )
 	{
 		static std::vector<const char*> keywords;
-		for (auto a : sget::CMDS::allCmd)
-			keywords.emplace_back(a[0]);
+		std::transform(
+			sget::CMDS::allCmd.cbegin(),
+			sget::CMDS::allCmd.cend(),
+			std::back_inserter(keywords),
+			[](std::vector<const char*> a){return a[0];});
 
 		//static const char* controls[] = { "return", "if", "then", "else", NULL };
 		//static const char* types[]    = { "int", "double", "char", "void", NULL };

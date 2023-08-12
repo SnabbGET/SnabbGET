@@ -375,7 +375,7 @@
 			{
 				public:
 					// Default constructor
-					newIo() {}
+					explicit newIo() {}
 					// Output/Input function
 					static void (*outFunct)(const char *, ...);
 					static void (* inFunct)(const char *, ...);

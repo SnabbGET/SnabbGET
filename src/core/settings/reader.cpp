@@ -45,7 +45,14 @@ static inline void replaceAll2(std::string &str, const std::string &from,
 
 std::string SnabbGET::promptSettings()
 {
+	// Solve CWE-362
+	if (std::filesystem::is_symlink(dir/"./settings/prompt.sget.txt"))
+		THROW_ERR_MSG(
+			err::ERR_OPEN_FILE,
+			(char*)"Setting file 'prompt.sget.txt' can't be a symbolic link.");
+
 	std::fstream promptFile;
+
 	promptFile.open(dir/"./settings/prompt.sget.txt");
 
 	// Check the file
