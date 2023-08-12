@@ -28,6 +28,7 @@
 	#include <chrono>
 	#include <vector>
 	#include <sstream>
+	#include <filesystem>
 	#define std_def
 	#define print(x, ...) std::cout << x // For a friend :D
 
@@ -68,20 +69,38 @@ int main()
 
 #else 
 
-//EXTERN EMSCRIPTEN_KEEPALIVE v
+/**
+ * @brief Just a simple global variable that can be use in lamba functions.
+ * 
+ * Apprend to the buffer: buffer(<your text>)
+ * Read: buffer::buf
+ */
+class buffer
+{
+	public:
+		buffer() {}
+		buffer(const char *arg) {buf += arg;}
+		buffer(std::string arg) {buf += arg;}
+		static std::string buf;
+};
+void buffer_in(const char *arg, ...)
+{
+	auto a = new buffer(arg);
+	delete a;
+}
 
-EXTERN EMSCRIPTEN_KEEPALIVE void RunSnabbGETCommand(
-	/*int argc, char **argv*/)
+std::string buffer::buf = std::string();
+
+EXTERN EMSCRIPTEN_KEEPALIVE const char *RunSnabbGETCommand(
+	const char *input)
 {
 	sget::SnabbGET();
-	sget::init();
-	std::string cmd;
-	std::cin >> cmd;
-	std::cout << sget::read_input(cmd) << "\r\n";
-	std::string tmp[0];
-	int x = 0;
-	std::string y("");
-	sget::CMDS::_exit_(tmp, x, y);
+	sget::rw::Raw_mode(0, false);
+	sget::io::io = sget::io::newIo(&buffer_in, &std::scanf);
+
+	auto a = buffer(sget::read_input(input));
+
+	return a.buf.c_str();
 }
 
 // End Wasm
@@ -161,8 +180,13 @@ static void highlighter(ic_highlight_env_t* henv, const char* input, void* arg)
 
 // MAIN
 
+std::filesystem::path SnabbGET::dir = std::filesystem::path{};
+
 int main(int argc, char *argv[])
 {
+	SnabbGET::dir = std::filesystem::weakly_canonical(
+		std::filesystem::path(argv[0])
+		).parent_path();
 	sget::SnabbGET();
 	sget::rw::Raw_mode(0, false);
 	sget::io::io = sget::io::newIo(&ic_printf, &std::scanf);
@@ -181,7 +205,7 @@ int main(int argc, char *argv[])
 	{
 		sget::addToSCREEN(sget::init());
 		// Printf is faster than std::cout and \n is faster than std::endl
-		sget::io::io << sget::FRAME().c_str();
+		sget::io::io << sget::FRAME().c_str() << "\r\n";
 		char *line;
 
 		while (true)
@@ -191,7 +215,7 @@ int main(int argc, char *argv[])
 			sget::addToSCREEN(sget::new_line());
 			sget::SCREEN.back() += std::string(line);
 			sget::addToSCREEN(sget::read_input(std::string(line)));
-			sget::io::io << sget::FRAME().c_str();
+			sget::io::io << sget::FRAME().c_str() << "\r\n";
 
 			if (strstr(line, "exit") != NULL) 
 			{

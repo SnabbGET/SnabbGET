@@ -64,10 +64,8 @@ link: $(cmd_files).${o_ext}
 #	TODO: change in all compilations the '-D DEBUG': use that only if the user wants
 #	(add ifeq (${DEBUG}, on))
 ifneq (${wasm}, off)
-	@${EMCC} -D DEBUG src/*.cpp src/core/utils.cpp -o \
-	"web/${filename}.html" --shell-file \
-	html_template/shell_minimal.html -s NO_EXIT_RUNTIME=1 -s \
-	"EXPORTED_RUNTIME_METHODS=['ccall']" ${arg}
+	@${EMCC} -D DEBUG ./utils.${o_ext} ./shell.${o_ext} ./main.${o_ext} -o \
+	"web/${filename}.js" -s NO_EXIT_RUNTIME=1 -s "EXPORTED_RUNTIME_METHODS=['ccall']" ${arg}
 endif
 
 lib_exprtk:

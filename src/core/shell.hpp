@@ -28,6 +28,7 @@
 	#include <vector>
 	#include <iterator>
 	#include <sstream>
+	#include <filesystem>
 
 	#include "utils.hpp"
 	#include "other/errors.hpp"
@@ -173,6 +174,9 @@
 		extern unsigned int cmdLen;
 		extern unsigned short tabOpen;
 		extern char *oldLine;
+
+		// Dir of the executable file
+		extern std::filesystem::path dir;
 
 		/* #####  #    #
 		 * #    # # /\ #

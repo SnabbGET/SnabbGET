@@ -39,54 +39,30 @@
 			}
 			else
 			{
-				std::string msg = "cd \"";
-				msg += SnabbGET::currentDir;
-				#ifdef _WIN32
-					msg += "\" & cd \"";
-				#else
-					msg += "\" && cd \"";
-				#endif
-				msg += cmd[1];
-				msg += '"';
-				#ifdef DEBUG
-					std::cout << "CMD = " << msg << "\r\n";
-				#endif
-				if (! system(msg.c_str()))
-				{
-					/*if (cmdLen > 1)
-						__snabbget.currentDir = cmd[1];
-					else
-						__snabbget.currentDir = "~";*/
+				std::filesystem::path path{cmd[1]};
 
-					#ifdef _WIN32
-						std::filesystem::current_path(
-							SnabbGET::currentDir.c_str());
-					#elif __linux__
-						if (cmdLen > 1)
-						{
-							msg = "cd ";
-							msg += SnabbGET::currentDir;
-							msg += " && cd ";
-							msg += cmd[1];
-							msg += " && pwd";
-							#ifdef DEBUG
-								std::cout << "CMD = " << msg << "\r\n";
-							#endif
-							SnabbGET::currentDir = 
-								((std::string)exec(msg.c_str())) // the result
-									.find_last_of('\n') != std::string::npos ? 
-									// \n is found?
-								((std::string)exec(msg.c_str())) //the result
-									.erase( // delete
-										((std::string)exec(msg.c_str())).length() - 1,
-										// length of the result
-										1 // number of char
-									) :
-								((std::string)exec(msg.c_str())); // the result
-						}
-						else
-							SnabbGET::currentDir = "~";
-						setenv("PWD", SnabbGET::currentDir.c_str(), 1);
+				if (std::filesystem::exists(path) && std::filesystem::is_directory(path))
+				{
+					#ifdef __linux__
+					if (cmdLen > 1)
+					{
+					#endif
+						std::filesystem::current_path(path);
+						SnabbGET::currentDir = path.string();
+							
+						SnabbGET::currentDir = 
+							currentDir.find_last_of('\n') != std::string::npos ? 
+								// \n is found?
+							currentDir.erase( // delete
+									currentDir.length() - 1,
+									// length of the result
+									1 // number of char
+								) :	currentDir; // the result
+					#ifdef __linux__
+					}
+					else
+						SnabbGET::currentDir = "~";
+					setenv("PWD", SnabbGET::currentDir.c_str(), 1);
 					#endif
 					SnabbGET::set_current_dir();
 					return SnabbGET::currentDir;
