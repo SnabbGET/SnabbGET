@@ -2,7 +2,7 @@
 
 g++ "include/exprtk/exprtk.hpp" -o "include/exprtk/exprtk.hpp.gch" -c -Wa,-mbig-obj -Wall -Wextra -O3 -g3 -std=c++1z -fuse-ld=lld -Wno-implicit-fallthrough
 for file in src/core/cmds/*.cpp; do
-    g++ -D DEBUG $file -o $file.o -c -Wa,-mbig-obj -Wall -Wextra -O3 -g3 -std=c++1z -fuse-ld=lld -Wno-implicit-fallthrough
+    g++ -D DEBUG "$file" -o "$file.o" -c -Wa,-mbig-obj -Wall -Wextra -O3 -g3 -std=c++1z -fuse-ld=lld -Wno-implicit-fallthrough
 done
 g++ -D DEBUG src/core/utils.cpp -o utils.o -c -Wa,-mbig-obj -Wall -Wextra -O3 -g3 -std=c++1z -fuse-ld=lld -Wno-implicit-fallthrough
 g++ -D DEBUG src/core/shell.cpp -o shell.o -c -Wa,-mbig-obj -Wall -Wextra -O3 -g3 -std=c++1z -fuse-ld=lld -Wno-implicit-fallthrough

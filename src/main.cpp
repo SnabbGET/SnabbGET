@@ -67,7 +67,7 @@ int main()
 	return EXIT_SUCCESS;
 }
 
-#else 
+#else
 
 /**
  * @brief Just a simple global variable that can be use in lamba functions.
@@ -136,31 +136,35 @@ static void highlighter(ic_highlight_env_t* henv, const char* input, void* arg)
 
 	for (long i = 0; i < len; )
 	{
-		static std::vector<const char*> keywords;
+		std::vector<const char*> keywords_v;
 		std::transform(
 			sget::CMDS::allCmd.cbegin(),
 			sget::CMDS::allCmd.cend(),
-			std::back_inserter(keywords),
+			std::back_inserter(keywords_v),
 			[](std::vector<const char*> a){return a[0];});
+
+		static const char* keywords[] = {NULL};
+		
+		std::copy(keywords, keywords, std::copy(keywords_v.begin(), keywords_v.end(), keywords));
 
 		//static const char* controls[] = { "return", "if", "then", "else", NULL };
 		//static const char* types[]    = { "int", "double", "char", "void", NULL };
 		long tlen;  // token length
-		if ((tlen = ic_match_any_token(input, i, &ic_char_is_idletter, keywords.data())) > 0)
+		if ((tlen = ic_match_any_token(
+						input,
+						i,
+						&ic_char_is_idletter,
+						const_cast<const char**>(keywords)))
+			> 0)
 		{
 			ic_highlight(henv, i, tlen, "keyword"); 
 			i += tlen;
 		}
-		/*else if ((tlen = ic_match_any_token(input, i, &ic_char_is_idletter, controls)) > 0)
-		{
-			ic_highlight(henv, i, tlen, "control"); // html color (or use the `control` style)
-			i += tlen;
-		}*/
-		else if ((tlen = strlen(input+i) - strlen(strchr(input+i, ' '))) > 0)
+		/*else if ((tlen = strlen(input+i) - strlen(strchr(input+i, ' '))) > 0)
 		{
 			ic_highlight(henv, i, tlen, "type"); 
 			i += tlen;
-		}
+		}*/
 		else if ((tlen = ic_is_token(input, i, &ic_char_is_digit)) > 0)
 		{ // digits
 			ic_highlight(henv, i, tlen, "number");
@@ -198,7 +202,7 @@ int main(int argc, char *argv[])
 	setlocale(LC_ALL,"C.UTF-8");
 	ic_set_history(NULL, 200);
 	ic_set_default_completer(&completer, NULL);
-	//ic_set_default_highlighter(highlighter, NULL);
+	ic_set_default_highlighter(&highlighter, NULL);
 	ic_enable_auto_tab(true);
 	ic_set_prompt_marker("", "|");
 
