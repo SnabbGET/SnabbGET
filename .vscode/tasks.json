@@ -26,7 +26,7 @@
 		{
             "type": "cppbuild",
             "label": "C/C++: g++ generate active file",
-            "command": "../mingw64/bin/mingw32-make.exe"
+            "command": "mingw32-make.exe"
         }
     ],
     "version": "2.0.0"

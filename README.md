@@ -36,20 +36,6 @@
 
 ---
 
-## Cloning
-
-Use this command to clone SnabbGET:
-
-```git
-git clone --recurse-submodules https://github.com/SnabbGET/SnabbGET
-```
-
-**If you forgot to clone the submodules, you can still do:**
-
-```git
-git submodule update --init --recursive
-```
-
 ## What is SnabbGET?
 
 A video of the shell:
@@ -75,6 +61,74 @@ best to do the most beginner-friendly & easy to use terminal.
 We'll focus on OS such as Windows and Linux. No MacOS for the moment, sorry :(
 
 You can use the SnabbGET shell or the chatbox. Same features.
+
+## Cloning
+
+### Using Git
+
+Use this command to clone SnabbGET:
+
+```git
+git clone --recurse-submodules https://github.com/SnabbGET/SnabbGET
+```
+
+**If you forgot to clone the submodules, you can still do:**
+
+```git
+git submodule update --init --recursive
+```
+
+### Downloading
+
+If you want to download SnabbGET, go on each library (in `libs/`), download them
+and complete your SnabbGET files. The result should be similar to the GitHub
+preview.
+
+Example: Your actual libs folder:
+
+```txt
+libs/
+ |- lib1/
+ |- lib2/
+...
+```
+
+You need to convert it to:
+
+```txt
+libs/
+ |- lib1/
+ |   |- lib1file1
+ |   |- lib1file2
+ |  ...
+ |- lib2/
+ |   |- lib2file1
+ |   |- lib2file2
+ |  ...
+...
+```
+
+## Symbolic links
+
+This repository contain some symbolic links.
+To clone this repository, you must have:
+
+- `git` initialized to clone the symlinks
+- OR:
+  - **Windows**: Be Admin / Have the Windows Developper mode enabled to execute
+    the `symlink.py` file;
+  - **Linux**: Execute the `symlink` script (Bash or Python, preffer Python);
+  - **Win user without the previous conditions / Fat32 user (e.g. USB key) / if
+    you don't like symlinks**: Open the `symlink.py` file, set `CREATE_SYMLINKS`
+    to `False` and execute it.
+
+> ***For lost cases***: You can still do the work manually: each file in the
+> `include/` folder contains a relative path (from the file): replace the old
+> file by the new file from the relative path. Theoretically, each new file that
+> you will get the path is in `libs/similar-folder-name/similar-name.same-extension`.
+
+> ***For REALLY lost cases***: If you don't find any file in any folder of the
+> `libs/` folder, please look up at the [Cloning section](#cloning).
 
 ## Compiling
 
