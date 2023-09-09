@@ -72,11 +72,11 @@ Use this command to clone SnabbGET:
 git clone --recurse-submodules https://github.com/SnabbGET/SnabbGET
 ```
 
-**If you forgot to clone the submodules, you can still do:**
-
-```git
-git submodule update --init --recursive
-```
+> [!IMPORTANT]
+> If you forgot to clone the submodules, you can still do:
+> ```git
+> git submodule update --init --recursive
+> ```
 
 ### Downloading
 
@@ -122,12 +122,13 @@ To clone this repository, you must have:
     you don't like symlinks**: Open the `symlink.py` file, set `CREATE_SYMLINKS`
     to `False` and execute it.
 
-> ***For lost cases***: You can still do the work manually: each file in the
+> [!NOTE]
+> You can still do the work manually: each file in the
 > `include/` folder contains a relative path (from the file): replace the old
 > file by the new file from the relative path. Theoretically, each new file that
 > you will get the path is in `libs/similar-folder-name/similar-name.same-extension`.
-
-> ***For REALLY lost cases***: If you don't find any file in any folder of the
+>
+> ***For lost cases***: If you don't find any file in any folder of the
 > `libs/` folder, please look up at the [Cloning section](#cloning).
 
 ## Compiling
