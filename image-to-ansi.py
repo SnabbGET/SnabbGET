@@ -332,7 +332,7 @@ def print_help():
 
     print("\n### USAGE ###\n")
     print("Standard:\n"
-        "\tpython image-to-ansi.py <inputfile>\n")
+          "\tpython image-to-ansi.py <inputfile>\n")
 
     print(75 * "-")
 

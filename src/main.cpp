@@ -28,6 +28,7 @@
 	#include <chrono>
 	#include <vector>
 	#include <sstream>
+	#include <filesystem>
 	#define std_def
 	#define print(x, ...) std::cout << x // For a friend :D
 
@@ -66,22 +67,40 @@ int main()
 	return EXIT_SUCCESS;
 }
 
-#else 
+#else
 
-//EXTERN EMSCRIPTEN_KEEPALIVE v
+/**
+ * @brief Just a simple global variable that can be use in lamba functions.
+ * 
+ * Apprend to the buffer: buffer(<your text>)
+ * Read: buffer::buf
+ */
+class buffer
+{
+	public:
+		explicit buffer() {}
+		explicit buffer(const char *arg) {buf += arg;}
+		explicit buffer(std::string arg) {buf += arg;}
+		static std::string buf;
+};
+void buffer_in(const char *arg, ...)
+{
+	auto a = new buffer(arg);
+	delete a;
+}
 
-EXTERN EMSCRIPTEN_KEEPALIVE void RunSnabbGETCommand(
-	/*int argc, char **argv*/)
+std::string buffer::buf = std::string();
+
+EXTERN EMSCRIPTEN_KEEPALIVE std::string RunSnabbGETCommand(
+	const char *input)
 {
 	sget::SnabbGET();
-	sget::init();
-	std::string cmd;
-	std::cin >> cmd;
-	std::cout << sget::read_input(cmd) << "\r\n";
-	std::string tmp[0];
-	int x = 0;
-	std::string y("");
-	sget::CMDS::_exit_(tmp, x, y);
+	sget::rw::Raw_mode(0, false);
+	sget::io::io = sget::io::newIo(&buffer_in, &std::scanf);
+
+	auto a = buffer(sget::read_input(input));
+
+	return a.buf;
 }
 
 // End Wasm
@@ -117,28 +136,35 @@ static void highlighter(ic_highlight_env_t* henv, const char* input, void* arg)
 
 	for (long i = 0; i < len; )
 	{
-		static std::vector<const char*> keywords;
-		for (auto a : sget::CMDS::allCmd)
-			keywords.emplace_back(a[0]);
+		std::vector<const char*> keywords_v;
+		std::transform(
+			sget::CMDS::allCmd.cbegin(),
+			sget::CMDS::allCmd.cend(),
+			std::back_inserter(keywords_v),
+			[](std::vector<const char*> a){return a[0];});
+
+		static const char* keywords[] = {NULL};
+		
+		std::copy(keywords, keywords, std::copy(keywords_v.begin(), keywords_v.end(), keywords));
 
 		//static const char* controls[] = { "return", "if", "then", "else", NULL };
 		//static const char* types[]    = { "int", "double", "char", "void", NULL };
 		long tlen;  // token length
-		if ((tlen = ic_match_any_token(input, i, &ic_char_is_idletter, keywords.data())) > 0)
+		if ((tlen = ic_match_any_token(
+						input,
+						i,
+						&ic_char_is_idletter,
+						const_cast<const char**>(keywords)))
+			> 0)
 		{
 			ic_highlight(henv, i, tlen, "keyword"); 
 			i += tlen;
 		}
-		/*else if ((tlen = ic_match_any_token(input, i, &ic_char_is_idletter, controls)) > 0)
-		{
-			ic_highlight(henv, i, tlen, "control"); // html color (or use the `control` style)
-			i += tlen;
-		}*/
-		else if ((tlen = strlen(input+i) - strlen(strchr(input+i, ' '))) > 0)
+		/*else if ((tlen = strlen(input+i) - strlen(strchr(input+i, ' '))) > 0)
 		{
 			ic_highlight(henv, i, tlen, "type"); 
 			i += tlen;
-		}
+		}*/
 		else if ((tlen = ic_is_token(input, i, &ic_char_is_digit)) > 0)
 		{ // digits
 			ic_highlight(henv, i, tlen, "number");
@@ -161,8 +187,13 @@ static void highlighter(ic_highlight_env_t* henv, const char* input, void* arg)
 
 // MAIN
 
+std::filesystem::path SnabbGET::dir = std::filesystem::path{};
+
 int main(int argc, char *argv[])
 {
+	SnabbGET::dir = std::filesystem::weakly_canonical(
+		std::filesystem::path(argv[0])
+		).parent_path();
 	sget::SnabbGET();
 	sget::rw::Raw_mode(0, false);
 	sget::io::io = sget::io::newIo(&ic_printf, &std::scanf);
@@ -171,7 +202,7 @@ int main(int argc, char *argv[])
 	setlocale(LC_ALL,"C.UTF-8");
 	ic_set_history(NULL, 200);
 	ic_set_default_completer(&completer, NULL);
-	//ic_set_default_highlighter(highlighter, NULL);
+	ic_set_default_highlighter(&highlighter, NULL);
 	ic_enable_auto_tab(true);
 	ic_set_prompt_marker("", "|");
 
@@ -181,7 +212,7 @@ int main(int argc, char *argv[])
 	{
 		sget::addToSCREEN(sget::init());
 		// Printf is faster than std::cout and \n is faster than std::endl
-		sget::io::io << sget::FRAME().c_str();
+		sget::io::io << sget::FRAME().c_str() << "\r\n";
 		char *line;
 
 		while (true)
@@ -191,7 +222,7 @@ int main(int argc, char *argv[])
 			sget::addToSCREEN(sget::new_line());
 			sget::SCREEN.back() += std::string(line);
 			sget::addToSCREEN(sget::read_input(std::string(line)));
-			sget::io::io << sget::FRAME().c_str();
+			sget::io::io << sget::FRAME().c_str() << "\r\n";
 
 			if (strstr(line, "exit") != NULL) 
 			{

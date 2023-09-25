@@ -2,8 +2,11 @@
 #include <string>
 #include <fstream>
 #include <algorithm>
+#include <filesystem>
 
 //#include "../utils.cpp"
+
+#include "../shell.hpp"
 
 const char *txt = "# Here, you can define YOUR prompt.\n\
 # Symbols:\n\
@@ -42,8 +45,15 @@ static inline void replaceAll2(std::string &str, const std::string &from,
 
 std::string SnabbGET::promptSettings()
 {
+	// Solve CWE-362
+	if (std::filesystem::is_symlink(dir/"./settings/prompt.sget.txt"))
+		THROW_ERR_MSG(
+			err::ERR_OPEN_FILE,
+			(char*)"Setting file 'prompt.sget.txt' can't be a symbolic link.");
+
 	std::fstream promptFile;
-	promptFile.open("./settings/prompt.sget.txt");
+
+	promptFile.open(dir/"./settings/prompt.sget.txt");
 
 	// Check the file
 	if (!promptFile.is_open())
@@ -54,7 +64,7 @@ std::string SnabbGET::promptSettings()
 		#endif
 
 		// Try to create the file
-		promptFile.open("./settings/prompt.sget.txt", std::ios_base::out);
+		promptFile.open(dir/"./settings/prompt.sget.txt", std::ios_base::out);
 		if (!promptFile.is_open())
 		{
 			#ifdef DEBUG
@@ -67,7 +77,7 @@ std::string SnabbGET::promptSettings()
 			system("echo \"\" > ./settings/prompt.sget.txt");
 
 			// Try to open the file again
-			promptFile.open("./settings/prompt.sget.txt", std::ios_base::app);
+			promptFile.open(dir/"./settings/prompt.sget.txt", std::ios_base::app);
 			if (!promptFile.is_open())
 			{
 				#ifdef DEBUG
@@ -75,20 +85,39 @@ std::string SnabbGET::promptSettings()
 					THROW_ERR(err::ERR_OPEN_FILE);
 				#endif
 				
-				exit(EXIT_FAILURE);
+				std::filesystem::path path{dir/"./settings"};
+				path /= "prompt.sget.txt";
+				std::filesystem::create_directories(path.parent_path());
+
+				std::ofstream promptFile(path);
+				if (!promptFile.is_open())
+				{
+					#ifdef DEBUG
+						//std::cout << "Erro r opening settings file!" << std::endl;
+						THROW_ERR(err::ERR_OPEN_FILE);
+					#endif
+					
+					exit(EXIT_FAILURE);
+				}
+				else
+				{
+					promptFile << txt;
+					promptFile.close();
+					promptFile.open(dir/"./settings/prompt.sget.txt");
+				}
 			}
 			else
 			{
 				promptFile << txt;
 				promptFile.close();
-				promptFile.open("../../settings/prompt.sget.txt");
+				promptFile.open(dir/"./settings/prompt.sget.txt");
 			}
 		}
 		else
 		{
-			promptFile << &*txt;
+			promptFile << txt;
 			promptFile.close();
-			promptFile.open("../../settings/prompt.sget.txt");
+			promptFile.open(dir/"./settings/prompt.sget.txt");
 		}
 	}
 	std::string tmp = "", tmp2, tmp3;

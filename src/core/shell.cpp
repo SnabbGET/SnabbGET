@@ -567,7 +567,7 @@ void SnabbGET::set_current_dir()
 	#ifdef _WIN32
 		currentDir = getcwd(NULL, 0);
 		#ifdef DEBUG
-			std::cout << "Current dir: " << currentDir << std::endl;
+			//std::cout << "Current dir: " << currentDir << std::endl;
 		#endif
 	#elif __linux__
 		currentDir = getenv("PWD");
