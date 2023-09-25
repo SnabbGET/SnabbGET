@@ -37,6 +37,20 @@
 
 ---
 
+## Cloning
+
+Use this command to clone SnabbGET:
+
+```git
+git clone --recurse-submodules https://github.com/SnabbGET/SnabbGET
+```
+
+**If you forgot to clone the submodules, you can still do:**
+
+```git
+git submodule update --init --recursive
+```
+
 ## What is SnabbGET?
 
 A video of the shell:
@@ -63,75 +77,6 @@ We'll focus on OS such as Windows and Linux. No MacOS for the moment, sorry :(
 
 You can use the SnabbGET shell or the chatbox. Same features.
 
-## Cloning
-
-### Using Git
-
-Use this command to clone SnabbGET:
-
-```git
-git clone --recurse-submodules https://github.com/SnabbGET/SnabbGET
-```
-
-> [!IMPORTANT]
-> If you forgot to clone the submodules, you can still do:
-> ```git
-> git submodule update --init --recursive
-> ```
-
-### Downloading
-
-If you want to download SnabbGET, go on each library (in `libs/`), download them
-and complete your SnabbGET files. The result should be similar to the GitHub
-preview.
-
-Example: Your actual libs folder:
-
-```txt
-libs/
- |- lib1/
- |- lib2/
-...
-```
-
-You need to convert it to:
-
-```txt
-libs/
- |- lib1/
- |   |- lib1file1
- |   |- lib1file2
- |  ...
- |- lib2/
- |   |- lib2file1
- |   |- lib2file2
- |  ...
-...
-```
-
-## Symbolic links
-
-This repository contain some symbolic links.
-To clone this repository, you must have:
-
-- `git` initialized to clone the symlinks
-- OR:
-  - **Windows**: Be Admin / Have the Windows Developper mode enabled to execute
-    the `symlink.py` file;
-  - **Linux**: Execute the `symlink` script (Bash or Python, preffer Python);
-  - **Win user without the previous conditions / Fat32 user (e.g. USB key) / if
-    you don't like symlinks**: Open the `symlink.py` file, set `CREATE_SYMLINKS`
-    to `False` and execute it.
-
-> [!NOTE]
-> You can still do the work manually: each file in the
-> `include/` folder contains a relative path (from the file): replace the old
-> file by the new file from the relative path. Theoretically, each new file that
-> you will get the path is in `libs/similar-folder-name/similar-name.same-extension`.
->
-> ***For lost cases***: If you don't find any file in any folder of the
-> `libs/` folder, please look up at the [Cloning section](#cloning).
-
 ## Compiling
 
 Compiling the terminal edition (CLI):
@@ -141,26 +86,34 @@ Compiling the terminal edition (CLI):
 <!-- > * Any Linux architecture but a 64 bits arch. is required for Windows
     (MacOS not available).-->
 
-> * Version of C++ used : C++17.
-> * `make` (Required only for the first on Linux if you want to use the shell),
->   or Execute the Make.* file
-> * A C++ compiler (with lld)
+> * Version of C++ used: C++17;
+> * `make` (or `nmake` on Visual Studio) or Execute the Make.* file;
+> * A C++ compiler
+>   (lld almost required on Windows: ld take some hours vs 3s for lld);
+> * Python interpreter on Windows, recommended on Linux.
 
 ### First use
 
-Warning! Use that command only if tou use Linux and the SnabbGET shell!
+Use this command to compile the lbraries:
 
 ```sh
-make first_time
-./output
+make libs
 ```
 
-The chatbox (available for Windows):
+### Compile
 
-```batch
-make lib_exprtk
+The Shell:
+
+```sh
+make
+./output # .exe
+```
+
+The chatbox:
+
+```sh
 make chatbox
-./output
+./output_chatbox # .exe
 ```
 
 ### Contribute
@@ -211,7 +164,7 @@ the MIT License, and the library
 
 I used and adapt
 [torrycrass' image converter](https://github.com/torrycrass/image-to-ansi) to
-generate the images in `/assets`.
+generate the images in `assets/`.
 The image came form [Pixbay](https://pixabay.com/images/search/background/).
 
 # License
