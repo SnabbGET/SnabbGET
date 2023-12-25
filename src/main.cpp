@@ -11,10 +11,10 @@
 #include <string>                   // for operator<<, string
 #include <thread>                   // for sleep_for
 #include <vector>                   // for vector
-
+ 
 #include "ftxui/dom/node.hpp"  // for Render
 #include "ftxui/screen/color.hpp"  // for Color, Color::BlueLight, Color::RedLight, Color::YellowLight, ftxui
-
+ 
 class Graph {
  public:
   std::vector<int> operator()(int width, int height) const {
@@ -32,7 +32,7 @@ class Graph {
   }
   int shift = 0;
 };
-
+ 
 std::vector<int> triangle(int width, int height) {
   std::vector<int> output(width);
   for (int i = 0; i < width; ++i) {
@@ -40,13 +40,13 @@ std::vector<int> triangle(int width, int height) {
   }
   return output;
 }
-
+ 
 int main() {
   using namespace ftxui;
   using namespace std::chrono_literals;
-
+ 
   Graph my_graph;
-
+ 
   std::string reset_position;
   for (int i = 0;; ++i) {
     auto document = hbox({
@@ -64,22 +64,22 @@ int main() {
             graph(std::ref(my_graph)) | color(Color::YellowLight),
         }) | flex,
     });
-
+ 
     document |= border;
-
+ 
     const int min_width = 40;
     document |= size(HEIGHT, GREATER_THAN, min_width);
-
+ 
     auto screen = Screen::Create(Dimension::Full(), Dimension::Fit(document));
     Render(screen, document);
     std::cout << reset_position;
     screen.Print();
     reset_position = screen.ResetPosition();
-
+ 
     const auto sleep_time = 0.03s;
     std::this_thread::sleep_for(sleep_time);
     my_graph.shift++;
   }
-
+ 
   return 0;
 }
